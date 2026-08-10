@@ -1,0 +1,1583 @@
+AWS CERTIFIED DEVELOPER – ASSOCIATE (DVA-C02)
+MASTER COURSE TRACKER — CANONICAL VERSION
+ 
+==================================================
+DOCUMENT PURPOSE
+==================================================
+ 
+This document is the SINGLE SOURCE OF TRUTH for the current state of my
+AWS Certified Developer – Associate (DVA-C02) preparation.
+ 
+The Master Tracker contains ONLY canonical course state:
+ 
+- Exam information
+- Study timeline
+- Official DVA-C02 coverage
+- Topic/sub-topic coverage
+- Lesson completion
+- Demonstrated understanding
+- Corrected misconceptions
+- Weak areas
+- System-design enrichment
+- Practice/mock-exam state
+- Exam readiness
+- Exact next lesson
+ 
+Detailed explanations, questions, answers, corrections and teaching history
+belong in:
+ 
+AWS_DVA_Lesson_Archive.txt
+ 
+Do not turn this tracker into a lesson archive.
+ 
+==================================================
+TRACKER RULES
+==================================================
+ 
+1. Never silently delete a syllabus item.
+ 
+2. Every important DVA-C02 skill/sub-topic must remain independently
+   trackable.
+ 
+3. Use these statuses consistently:
+ 
+   ⬜ NOT STARTED
+   🟨 IN PROGRESS
+   🟦 VALIDATED
+   ✅ COMPLETE
+   🔥 STRONG EXAM CONFIDENCE
+ 
+4. COMPLETE means the concept was taught AND demonstrated.
+ 
+5. VALIDATED means the concept was previously learned and has been
+   successfully retrieved/verified without requiring reteaching.
+ 
+6. STRONG EXAM CONFIDENCE requires successful reasoning through
+   exam-style scenarios or repeated strong performance.
+ 
+7. A lesson being complete does NOT mean the entire topic is complete.
+ 
+8. A service being taught does NOT mean every related DVA-C02 skill
+   is complete.
+ 
+9. Do not mark a topic complete merely because it was mentioned.
+ 
+10. Do not restart previously demonstrated concepts.
+ 
+11. If a previously learned concept is relevant to a new lesson, perform
+    a short validation instead of reteaching it.
+ 
+12. If validation exposes a genuine gap, provide a targeted repair lesson.
+ 
+13. Preserve historical completion, misconceptions and confidence unless
+    new evidence justifies an update.
+ 
+14. Never invent completion.
+ 
+15. If evidence is unavailable, keep the item NOT STARTED or IN PROGRESS.
+ 
+16. Official AWS DVA-C02 exam guidance is the authority for certification
+    scope.
+ 
+17. System-design concepts are valuable enrichment but must NOT replace
+    official DVA-C02 coverage.
+ 
+18. During the certification sprint, DVA-C02 takes priority over
+    non-exam system-design exploration.
+ 
+19. Keep this file concise and deterministic.
+ 
+20. Do not copy detailed lesson explanations into this file.
+ 
+==================================================
+EXAM INFORMATION
+==================================================
+ 
+Certification:
+AWS Certified Developer – Associate (DVA-C02)
+ 
+Target Exam Window:
+September 2–3, 2026
+ 
+Preferred Exam Date:
+September 3, 2026
+ 
+Voucher Expiration:
+September 9, 2026
+ 
+Current Mode:
+Accelerated certification preparation
+ 
+Primary Objective:
+Pass DVA-C02 through deep understanding, AWS reasoning and
+scenario-based exam preparation.
+ 
+Secondary Objective:
+Develop AWS/system-design thinking useful for SDE2 interviews and
+long-term engineering leadership.
+ 
+Study Priority:
+ 
+DVA-C02:
+80%
+ 
+System Design Enrichment:
+20%
+ 
+System-design thinking must be embedded into AWS lessons rather than
+becoming a separate full system-design course during this certification
+sprint.
+ 
+==================================================
+CURRENT EXAM STRUCTURE
+==================================================
+ 
+Official DVA-C02 domains:
+ 
+Development with AWS Services:
+32%
+ 
+Security:
+26%
+ 
+Deployment:
+24%
+ 
+Troubleshooting and Optimization:
+18%
+ 
+Exam format:
+ 
+- 50 scored questions
+- 15 unscored questions
+- 130 minutes
+- Multiple choice
+- Multiple response
+- Passing score: 720/1000
+ 
+IMPORTANT:
+ 
+Do not interpret the 720 scaled score as a simple percentage threshold.
+ 
+Do not declare exam readiness from syllabus completion alone.
+ 
+==================================================
+READINESS MODEL
+==================================================
+ 
+Do NOT use arbitrary percentage estimates such as:
+ 
+Development = 17%
+Security = 8%
+ 
+unless there is a clearly defined evidence-based calculation.
+ 
+Instead track each domain using:
+ 
+⬜ NOT STARTED
+🟨 BUILDING
+🟧 DEVELOPING
+🟦 EXAM READY
+🔥 STRONG
+ 
+Readiness must be based on evidence from:
+ 
+1. Theory coverage
+2. Demonstrated reasoning
+3. Scenario questions
+4. Mixed-topic questions
+5. Wrong-answer patterns
+6. Timed practice
+7. Mock exams
+8. Ability to distinguish similar services
+9. Ability to eliminate plausible distractors
+10. Consistency under exam conditions
+ 
+==================================================
+TEACHING PHILOSOPHY
+==================================================
+ 
+Teach like a senior cloud architect mentoring an experienced software
+engineer.
+ 
+- Explain WHY before WHAT.
+- Build from first principles.
+- Focus on reasoning over memorization.
+- Connect concepts to production systems.
+- Connect concepts to system design where useful.
+- Use Java, Spring Boot, React, Node.js and AWS examples where relevant.
+- Do not assume practical exposure means conceptual mastery.
+- Be direct when reasoning is wrong.
+- Explain:
+  - what was wrong
+  - why it was wrong
+  - correct mental model
+  - exam relevance
+- Ask scenario questions.
+- Do not reveal answers before the student responds.
+- Do not repeatedly test concepts already demonstrated.
+- Move forward once understanding is established.
+- Use targeted repair instead of restarting completed material.
+- Never artificially inflate confidence.
+- Never skip an official DVA-C02 skill because it is less interesting.
+- Do not follow unrelated AWS tangents during the certification sprint.
+ 
+==================================================
+PREVIOUSLY COMPLETED LESSONS
+==================================================
+ 
+Lesson 1
+STATUS: ✅ COMPLETE
+Confidence: 94%
+ 
+How AWS Actually Works and Why Cloud Computing Exists
+ 
+ 
+Lesson 2
+STATUS: ✅ COMPLETE
+Confidence: 96%
+ 
+AWS Global Infrastructure
+ 
+ 
+Lesson 3
+STATUS: ✅ COMPLETE
+Confidence: 97%
+ 
+High Availability vs Fault Tolerance
+Scalability vs Elasticity
+ 
+ 
+Lesson 4
+STATUS: ✅ COMPLETE
+Confidence: 98%
+ 
+Shared Responsibility Model
+ 
+DO NOT restart Lessons 1–4.
+ 
+Previously demonstrated concepts should be treated as known unless
+new evidence reveals a gap.
+ 
+==================================================
+DEMONSTRATED UNDERSTANDING
+==================================================
+ 
+The following concepts have already been demonstrated:
+ 
+✅ Capacity planning
+✅ On-premises vs cloud
+✅ AWS physical infrastructure
+✅ AWS service APIs
+✅ Console vs CLI vs SDK
+✅ EC2 responsibility boundary
+✅ Lambda responsibility boundary
+✅ Stateful systems
+✅ Stateless systems
+✅ Shared state
+✅ Redis conceptual role
+✅ Single points of failure
+✅ Redundancy
+✅ Failover
+✅ Availability
+✅ Fault tolerance
+✅ Replication
+✅ Replication lag
+✅ Availability vs consistency
+✅ Regions
+✅ Availability Zones
+✅ Edge Locations
+✅ Failure boundaries
+✅ Regional vs global services
+✅ Scalability
+✅ Elasticity
+✅ Shared Responsibility Model
+ 
+These should receive validation rather than full reteaching.
+ 
+==================================================
+CORRECTED MISCONCEPTIONS
+==================================================
+ 
+Historical misconceptions already corrected:
+ 
+1. One EC2 instance automatically provides high availability.
+ 
+2. AWS patches the EC2 guest operating system.
+ 
+3. A managed service means AWS owns every responsibility.
+ 
+4. Vertical scaling automatically equals elasticity.
+ 
+5. Availability automatically equals redundancy.
+ 
+6. Encryption automatically provides authorization.
+ 
+7. Multiple EC2 instances automatically means Multi-AZ.
+ 
+Do not delete historical misconceptions.
+ 
+Add new misconceptions when discovered.
+ 
+==================================================
+CURRENT WEAK AREAS
+==================================================
+ 
+Current known weak areas:
+ 
+🟨 IAM policy evaluation
+ 
+🟨 Resource-based policies
+ 
+🟨 Temporary credentials
+ 
+🟨 Cross-account access
+ 
+🟨 Authorization models
+ 
+🟨 Federated authentication
+ 
+These should be addressed during IAM and related security lessons.
+ 
+==================================================
+PHASE 1 — FOUNDATIONS
+==================================================
+ 
+1. CLOUD COMPUTING FUNDAMENTALS
+ 
+Why cloud computing exists                    ✅
+On-premises vs Cloud                          ✅
+AWS Infrastructure                            ✅
+Regions                                       ✅
+Availability Zones                            ✅
+Edge Locations                                ✅
+Shared Responsibility Model                   ✅
+Availability                                  ✅
+Fault Tolerance                               ✅
+Resilience                                    🟨
+Scalability                                   ✅
+Elasticity                                    ✅
+Failure Boundaries                            ✅
+Redundancy                                    ✅
+Failover                                      ✅
+Stateful Systems                              ✅
+Stateless Systems                             ✅
+ 
+Developer/system-design enrichment:
+ 
+Tight Coupling                                ⬜
+Loose Coupling                                ⬜
+Synchronous Patterns                          ⬜
+Asynchronous Patterns                         ⬜
+Event-Driven Architecture                     ⬜
+Choreography                                  ⬜
+Orchestration                                 ⬜
+Fanout                                        ⬜
+ 
+STATUS:
+🟨 IN PROGRESS
+ 
+IMPORTANT:
+ 
+The above enrichment concepts support system-design thinking.
+They are NOT individually treated as official DVA-C02 completion
+requirements unless supported by the official exam guide.
+
+==================================================
+PHASE 2 — SECURITY
+==================================================
+ 
+2. IAM, AUTHENTICATION & AUTHORIZATION
+ 
+Authentication                                ⬜
+Authorization                                 ⬜
+IAM Users                                     ⬜
+IAM Groups                                    ⬜
+IAM Roles                                     ⬜
+Human Identities                              ⬜
+Workload Identities                           ⬜
+IAM Policies                                  ⬜
+Identity-Based Policies                       ⬜
+Resource-Based Policies                       ⬜
+Policy Evaluation                             ⬜
+Explicit Deny                                 ⬜
+Allow vs Deny                                 ⬜
+Least Privilege                               ⬜
+STS                                           ⬜
+Temporary Credentials                         ⬜
+AssumeRole                                    ⬜
+Programmatic Access                           ⬜
+Federated Access                              ⬜
+Bearer Tokens                                 ⬜
+Cognito                                       ⬜
+Application-Level Authorization                ⬜
+Fine-Grained Authorization                    ⬜
+Cross-Service Authentication                  ⬜
+ 
+System-design enrichment:
+ 
+Trust Boundaries                              ⬜
+Service-to-Service Authentication             ⬜
+Authorization Boundaries                      ⬜
+Tenant Isolation                              ⬜
+Credential Exposure                           ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+3. ENCRYPTION & SENSITIVE DATA
+ 
+KMS                                           ⬜
+Encryption at Rest                            ⬜
+Encryption in Transit                         ⬜
+Server-Side Encryption                        ⬜
+Client-Side Encryption                        ⬜
+Key Rotation                                  ⬜
+Cross-Account Encryption                      ⬜
+Certificate Management                        ⬜
+AWS Private CA                                ⬜
+Secrets Manager                               ⬜
+Systems Manager Parameter Store               ⬜
+Sensitive Environment Variables               ⬜
+Sensitive Data Handling                       ⬜
+Data Masking / Sanitization                   ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+==================================================
+PHASE 3 — DEVELOPMENT WITH AWS SERVICES
+==================================================
+ 
+4. AWS SERVICE APIs / SDKs / CLI
+ 
+AWS Service APIs                              ⬜
+AWS SDKs                                      ⬜
+AWS CLI                                       ⬜
+AWS CloudShell                                ⬜
+Authentication                                ⬜
+Authorization                                 ⬜
+Request / Response Handling                   ⬜
+API Error Handling                            ⬜
+Retries                                       ⬜
+Backoff                                       ⬜
+Timeouts                                      ⬜
+Idempotency                                   ⬜
+Throttling                                    ⬜
+Partial Failure Handling                      ⬜
+ 
+System-design enrichment:
+ 
+Network Failures                              ⬜
+Partial Failures                              ⬜
+Retry Storms                                  ⬜
+Backpressure                                  ⬜
+Dependency Failures                           ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+5. LAMBDA
+ 
+Execution Model                               ⬜
+Invocation Models                             ⬜
+Synchronous Invocation                        ⬜
+Asynchronous Invocation                       ⬜
+Event Source Mappings                         ⬜
+Event Sources                                 ⬜
+Environment Variables                         ⬜
+Parameters                                    ⬜
+Memory                                        ⬜
+Timeout                                       ⬜
+Runtime                                       ⬜
+Handler                                       ⬜
+Layers                                        ⬜
+Extensions                                    ⬜
+Versions                                      ⬜
+Aliases                                       ⬜
+Concurrency                                   ⬜
+Reserved Concurrency                          ⬜
+Provisioned Concurrency                       ⬜
+Retry Behavior                                ⬜
+Destinations                                  ⬜
+Dead Letter Queues                            ⬜
+Permissions                                   ⬜
+VPC / Private Resource Access                 ⬜
+Testing                                       ⬜
+Lambda Test Events                            ⬜
+AWS Service Integrations                      ⬜
+Performance Tuning                            ⬜
+ 
+System-design enrichment:
+ 
+Statelessness                                 ⬜
+Horizontal Scaling                            ⬜
+Concurrency                                   ⬜
+Downstream Protection                         ⬜
+Failure Isolation                             ⬜
+Retry Storms                                  ⬜
+Idempotency                                   ⬜
+Event-Driven Systems                          ⬜
+Cold Start Trade-offs                         ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+6. API GATEWAY
+ 
+API Concepts                                  ⬜
+REST APIs                                     ⬜
+HTTP APIs                                     ⬜
+Lambda Integration                            ⬜
+Request Transformations                       ⬜
+Response Transformations                      ⬜
+Validation                                    ⬜
+Authentication                                ⬜
+Authorization                                 ⬜
+Throttling                                    ⬜
+Caching                                       ⬜
+Stages                                        ⬜
+Development Endpoints                         ⬜
+Custom Domains                                ⬜
+Deployment                                    ⬜
+Error Handling                                ⬜
+Troubleshooting                               ⬜
+ 
+System-design enrichment:
+ 
+API Boundaries                                ⬜
+Rate Limiting                                 ⬜
+Authentication                                ⬜
+Versioning                                    ⬜
+Service Coupling                              ⬜
+Failure Handling                              ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+7. MESSAGING & EVENT-DRIVEN ARCHITECTURE
+ 
+SQS
+ 
+Standard Queue                                ⬜
+FIFO Queue                                    ⬜
+Visibility Timeout                            ⬜
+Long Polling                                  ⬜
+Dead Letter Queue                             ⬜
+Redrive                                       ⬜
+Retries                                       ⬜
+Ordering                                      ⬜
+At-Least-Once Delivery                        ⬜
+Lambda Integration                            ⬜
+ 
+SNS
+ 
+Topics                                        ⬜
+Publishers                                    ⬜
+Subscribers                                   ⬜
+Fanout                                        ⬜
+Filtering                                     ⬜
+Subscription Filter Policies                  ⬜
+ 
+EventBridge
+ 
+Event Buses                                   ⬜
+Rules                                         ⬜
+Event Patterns                                ⬜
+Targets                                       ⬜
+Scheduling                                    ⬜
+Event-Driven Architecture                     ⬜
+ 
+Step Functions
+ 
+State Machines                                ⬜
+Task                                          ⬜
+Choice                                        ⬜
+Parallel                                      ⬜
+Retry                                         ⬜
+Catch                                         ⬜
+Error Handling                                ⬜
+Orchestration                                 ⬜
+ 
+System-design enrichment:
+ 
+Queue vs Pub/Sub                              ⬜
+Loose Coupling                                ⬜
+Backpressure                                  ⬜
+Asynchronous Processing                       ⬜
+Failure Isolation                             ⬜
+Retry Semantics                               ⬜
+Idempotency                                   ⬜
+Choreography vs Orchestration                 ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+8. STREAMING DATA
+ 
+Amazon Kinesis                                ⬜
+Streaming vs Queue Semantics                  ⬜
+Producers and Consumers                        ⬜
+Ordering / Partition Concepts                  ⬜
+Real-Time Processing Awareness                 ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+9. API / GRAPHQL
+ 
+AWS AppSync                                   ⬜
+GraphQL Awareness                              ⬜
+AppSync vs API Gateway                         ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+==================================================
+PHASE 4 — DATA STORES
+==================================================
+ 
+10. DYNAMODB
+ 
+Tables                                        ⬜
+Partition Keys                                ⬜
+High-Cardinality Partition Keys               ⬜
+Sort Keys                                     ⬜
+Access Patterns                               ⬜
+Query                                         ⬜
+Scan                                          ⬜
+GSIs                                          ⬜
+LSIs                                          ⬜
+Strong Consistency                            ⬜
+Eventual Consistency                           ⬜
+Capacity Modes                                ⬜
+Provisioned Capacity                          ⬜
+On-Demand Capacity                            ⬜
+Conditional Writes                            ⬜
+Transactions                                  ⬜
+TTL                                           ⬜
+Streams                                       ⬜
+Serialization / Deserialization               ⬜
+Caching                                       ⬜
+DAX                                           ⬜
+Hot Partitions                                ⬜
+Throttling                                    ⬜
+Optimization                                  ⬜
+Best Practices                                ⬜
+ 
+System-design enrichment:
+ 
+Access-Pattern Data Modeling                   ⬜
+Partitioning                                  ⬜
+Hot Partitions                                ⬜
+Scalability                                   ⬜
+Consistency Trade-offs                        ⬜
+Caching                                       ⬜
+NoSQL vs Relational Trade-offs                ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+11. AMAZON S3
+ 
+Buckets                                       ⬜
+Objects                                       ⬜
+Versioning                                    ⬜
+Lifecycle Rules                               ⬜
+Storage Classes                               ⬜
+Static Website Hosting                        ⬜
+Bucket Policies                               ⬜
+Pre-Signed URLs                               ⬜
+Encryption                                    ⬜
+Event Notifications                           ⬜
+Replication                                   ⬜
+Access Control                                ⬜
+Performance                                   ⬜
+Data Lifecycle                                ⬜
+ 
+System-design enrichment:
+ 
+Object Storage vs Database                    ⬜
+Durability                                    ⬜
+Event-Driven Processing                       ⬜
+Static Assets                                 ⬜
+Decoupling                                    ⬜
+Large-Object Handling                         ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+12. RDS
+ 
+Relational Database Use Cases                 ⬜
+Developer Perspective                         ⬜
+Transactions                                  ⬜
+Consistency                                   ⬜
+Connection Management                         ⬜
+Scaling Concepts                              ⬜
+RDS vs DynamoDB                               ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+13. AURORA
+ 
+Aurora Basics                                 ⬜
+Aurora vs RDS                                 ⬜
+Developer-Level Use Cases                     ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+14. ELASTICACHE
+ 
+Caching Fundamentals                          ⬜
+Cache-Aside Concept                           ⬜
+Performance                                   ⬜
+Availability Considerations                  ⬜
+Redis / Valkey Awareness                      ⬜
+ 
+System-design enrichment:
+ 
+Latency                                       ⬜
+Database Offloading                           ⬜
+Cache Invalidation                             ⬜
+Availability                                  ⬜
+Stale Data                                    ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+==================================================
+PHASE 5 — COMPUTE & SUPPORTING SERVICES
+==================================================
+ 
+15. EC2 — DEVELOPER LEVEL
+ 
+Instance Types                                ⬜
+AMIs                                          ⬜
+EBS                                           ⬜
+User Data                                     ⬜
+Auto Scaling                                  ⬜
+Load Balancing                                ⬜
+EC2 Responsibility Boundary                   🟦 VALIDATED
+ 
+Do NOT spend time on deep server administration.
+ 
+System-design enrichment:
+ 
+Horizontal Scaling                            ⬜
+Stateless Instances                           ⬜
+Load Balancing                                ⬜
+Failure Replacement                           ⬜
+Availability Zones                            🟦 VALIDATED
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+16. ECS / FARGATE / ECR
+ 
+Containers                                    ⬜
+Container Images                              ⬜
+ECR                                           ⬜
+ECS                                           ⬜
+Fargate                                       ⬜
+Lambda vs Containers                          ⬜
+High-Level Deployment                         ⬜
+EKS Awareness                                 ⬜
+ 
+Do NOT study Kubernetes administration.
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+17. ELASTIC BEANSTALK
+ 
+Purpose                                       ⬜
+Developer Use Case                            ⬜
+Managed Deployment Model                      ⬜
+When to Use vs Other Compute                  ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+18. EBS / EFS
+ 
+EBS                                           ⬜
+EFS                                           ⬜
+EBS vs EFS                                    ⬜
+When to Use Each                              ⬜
+EC2 Integration                               ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+==================================================
+PHASE 6 — OBSERVABILITY / TROUBLESHOOTING
+==================================================
+ 
+19. CLOUDWATCH
+ 
+Metrics                                       ⬜
+Logs                                          ⬜
+Alarms                                        ⬜
+Dashboards                                    ⬜
+Logs Insights / Querying                      ⬜
+Metric Filters                                ⬜
+Structured Logging                            ⬜
+Custom Metrics                                ⬜
+Embedded Metric Format (EMF)                  ⬜
+Application Monitoring                        ⬜
+Notification Alerts                           ⬜
+ 
+20. X-RAY
+ 
+Tracing                                       ⬜
+Segments                                      ⬜
+Service Map                                   ⬜
+Trace Annotations                             ⬜
+Distributed Debugging                         ⬜
+ 
+21. CLOUDTRAIL
+ 
+API Activity                                  ⬜
+Auditing                                      ⬜
+Troubleshooting Relationship                  ⬜
+Security Relationship                         ⬜
+ 
+22. TROUBLESHOOTING & OPTIMIZATION
+ 
+Debugging Defects                             ⬜
+Permission Errors                             ⬜
+Service Integration Errors                    ⬜
+Deployment Failure Logs                       ⬜
+Throttling                                    ⬜
+Retries                                       ⬜
+Timeouts                                      ⬜
+Concurrency                                   ⬜
+Performance Bottlenecks                       ⬜
+Performance Profiling                         ⬜
+Memory / Compute Optimization                 ⬜
+Application-Level Caching                     ⬜
+Header-Based Caching                          ⬜
+SNS Subscription Filter Policies              ⬜
+Resource Optimization                         ⬜
+Cost Optimization                             ⬜
+ 
+System-design enrichment:
+ 
+Observability                                 ⬜
+Logging vs Monitoring                         ⬜
+Tracing                                       ⬜
+Health Detection                              ⬜
+Failure Diagnosis                             ⬜
+Distributed-System Debugging                  ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+==================================================
+PHASE 7 — DEPLOYMENT / CI-CD
+==================================================
+ 
+23. CLOUDFORMATION
+ 
+Infrastructure as Code                        ⬜
+Templates                                     ⬜
+Parameters                                    ⬜
+Resources                                     ⬜
+Outputs                                       ⬜
+Stack Updates                                 ⬜
+Change / Deployment Concepts                  ⬜
+Rollback                                      ⬜
+ 
+24. AWS SAM
+ 
+SAM Purpose                                   ⬜
+Lambda Packaging                              ⬜
+Local Development / Testing Awareness         ⬜
+Integration with CloudFormation               ⬜
+ 
+25. AWS CDK
+ 
+CDK Purpose                                   ⬜
+Constructs                                    ⬜
+Stacks                                        ⬜
+Synth / CloudFormation Relationship           ⬜
+Deployment Flow                               ⬜
+ 
+26. CODEBUILD
+ 
+Build Projects                                ⬜
+Buildspec                                     ⬜
+Artifacts                                     ⬜
+Testing                                       ⬜
+ 
+27. CODEDEPLOY
+ 
+Deployment Groups                             ⬜
+Deployment Strategies                         ⬜
+Rollback                                      ⬜
+Blue/Green                                    ⬜
+Canary                                        ⬜
+Rolling                                       ⬜
+ 
+28. CODEPIPELINE
+ 
+Pipeline Stages                               ⬜
+Source                                        ⬜
+Build                                         ⬜
+Deploy                                        ⬜
+Automation                                    ⬜
+CI/CD                                         ⬜
+ 
+29. APPCONFIG
+ 
+Application Configuration                     ⬜
+Environment-Specific Configuration            ⬜
+Runtime Configuration Awareness               ⬜
+Safe Configuration Changes                    ⬜
+ 
+30. CODEARTIFACT
+ 
+Package Repository                            ⬜
+Dependency Management                         ⬜
+Artifact Retrieval                            ⬜
+ 
+31. AMPLIFY
+ 
+Developer Use Case                            ⬜
+Application Deployment Awareness              ⬜
+ 
+32. DEPLOYMENT & TESTING SKILLS
+ 
+Dependency Management                         ⬜
+Package / Directory Structure                 ⬜
+Resource Requirements                         ⬜
+Environment-Specific Configuration             ⬜
+Integration Testing                            ⬜
+Mocking External APIs                          ⬜
+Event-Driven Application Testing               ⬜
+Lambda Test Events                             ⬜
+Multiple Environments                          ⬜
+Lambda Aliases                                ⬜
+Container Image Tags                           ⬜
+Infrastructure as Code                         ⬜
+Deployment Environments                        ⬜
+API Gateway Stages                             ⬜
+API Gateway Custom Domains                     ⬜
+Rollbacks                                      ⬜
+Version / Release Management                   ⬜
+Branches / Labels                              ⬜
+Blue/Green Deployment                          ⬜
+Canary Deployment                              ⬜
+Rolling Deployment                             ⬜
+Automated Deployment Testing                   ⬜
+ 
+System-design enrichment:
+ 
+Immutable Artifacts                            ⬜
+Environment Isolation                          ⬜
+Rollback Safety                                ⬜
+Blast Radius                                  ⬜
+Progressive Delivery                           ⬜
+Deployment Automation                          ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+==================================================
+PHASE 8 — NETWORKING & CONTENT DELIVERY
+==================================================
+ 
+33. VPC — DEVELOPER LEVEL
+ 
+VPC Basics                                    ⬜
+Public vs Private Subnets                     ⬜
+Security Groups                               ⬜
+Network ACLs                                  ⬜
+Internet Gateway                              ⬜
+NAT Gateway                                   ⬜
+Route Tables                                  ⬜
+DNS Basics                                    ⬜
+VPC Endpoints                                 ⬜
+Lambda Private Resource Access                ⬜
+ 
+Do NOT study deep network architecture.
+ 
+34. ROUTE 53
+ 
+DNS Concepts                                  ⬜
+Developer-Level Routing                       ⬜
+ 
+35. ELASTIC LOAD BALANCING
+ 
+Load Balancer Purpose                          ⬜
+High-Level Load Balancing                      ⬜
+Application Integration                        ⬜
+ 
+36. CLOUDFRONT
+ 
+Origins                                       ⬜
+Behaviors                                     ⬜
+Caching                                       ⬜
+Invalidations                                 ⬜
+Signed URLs                                   ⬜
+Signed Cookies                                ⬜
+Request Headers                               ⬜
+Cache Optimization                            ⬜
+ 
+System-design enrichment:
+ 
+Edge Caching                                  ⬜
+Latency                                       ⬜
+Origin Protection                             ⬜
+Cache Consistency                             ⬜
+Availability                                  ⬜
+Global Traffic                                ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+
+==================================================
+PHASE 9 — SUPPORTING / AWARENESS SERVICES
+==================================================
+ 
+These services are tracked because they may appear in the current
+DVA-C02 service scope or technologies/concepts.
+ 
+Do NOT spend equal time on every service.
+ 
+Amazon Athena                                 ⬜
+Amazon Kinesis                                ⬜
+Amazon OpenSearch Service                     ⬜
+AWS WAF                                       ⬜
+AWS Systems Manager                           ⬜
+AWS CloudShell                                ⬜
+AWS CodeArtifact                              ⬜
+AWS Amplify                                   ⬜
+Amazon Q Developer                            ⬜
+AWS AppSync                                   ⬜
+ 
+Amazon Q Developer is explicitly exam-relevant.
+ 
+Understand:
+ 
+- What it is
+- Developer use cases
+- Development assistance
+- Test generation
+- Troubleshooting assistance
+- Optimization assistance
+- Exam-relevant usage
+ 
+Do NOT turn this into a generic AI engineering course.
+ 
+==================================================
+OFFICIAL DVA-C02 DOMAIN TRACKING
+==================================================
+ 
+DOMAIN 1 — DEVELOPMENT WITH AWS SERVICES
+Weight: 32%
+ 
+Architectural/application patterns               ⬜
+Application development with AWS services        ⬜
+AWS APIs / SDKs                                  ⬜
+Event-driven applications                        ⬜
+Messaging                                        ⬜
+Streaming data                                  ⬜
+Resilient application behavior                   ⬜
+Retry logic                                      ⬜
+Idempotency                                      ⬜
+Circuit breakers                                 ⬜
+Third-party integration resilience               ⬜
+Data-store selection                             ⬜
+DynamoDB access patterns                         ⬜
+Query vs Scan                                   ⬜
+Consistency                                      ⬜
+Caching                                          ⬜
+API transformations / validation                 ⬜
+Lambda development                               ⬜
+Testing                                          ⬜
+Amazon Q Developer                               ⬜
+ 
+STATUS:
+🟨 IN PROGRESS
+ 
+DOMAIN 2 — SECURITY
+Weight: 26%
+ 
+Authentication                                  ⬜
+Authorization                                   ⬜
+IAM principals                                  ⬜
+IAM policies                                    ⬜
+Resource policies                               ⬜
+Policy evaluation                               ⬜
+Explicit deny                                   ⬜
+STS                                             ⬜
+Temporary credentials                           ⬜
+AssumeRole                                      ⬜
+Federated access                                ⬜
+Bearer tokens                                   ⬜
+Programmatic access                             ⬜
+Application-level authorization                 ⬜
+Fine-grained authorization                      ⬜
+Cross-service authentication                    ⬜
+Encryption at rest                              ⬜
+Encryption in transit                           ⬜
+Client-side encryption                          ⬜
+Server-side encryption                          ⬜
+KMS                                             ⬜
+Key rotation                                    ⬜
+Certificate management                          ⬜
+Secrets management                              ⬜
+Sensitive data handling                          ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+DOMAIN 3 — DEPLOYMENT
+Weight: 24%
+ 
+Dependency management                           ⬜
+Packaging                                       ⬜
+Environment configuration                       ⬜
+AppConfig                                       ⬜
+Integration testing                             ⬜
+Mocking                                         ⬜
+Event-driven testing                            ⬜
+Lambda test events                              ⬜
+Multiple environments                            ⬜
+Deployment artifacts                             ⬜
+Lambda aliases                                  ⬜
+Container image tags                             ⬜
+IaC                                             ⬜
+CloudFormation                                  ⬜
+SAM                                             ⬜
+CDK                                             ⬜
+CodeBuild                                       ⬜
+CodeDeploy                                      ⬜
+CodePipeline                                    ⬜
+Rollback                                        ⬜
+Blue/green                                      ⬜
+Canary                                          ⬜
+Rolling                                         ⬜
+Automated deployment testing                    ⬜
+Version / release management                    ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+
+DOMAIN 4 — TROUBLESHOOTING & OPTIMIZATION
+Weight: 18%
+ 
+Debugging defects                               ⬜
+CloudWatch Logs                                 ⬜
+CloudWatch Metrics                              ⬜
+Log querying                                    ⬜
+Structured logging                              ⬜
+Embedded Metric Format                          ⬜
+Dashboards / Insights                           ⬜
+X-Ray                                           ⬜
+Trace annotations                               ⬜
+CloudTrail                                      ⬜
+Service integration debugging                  ⬜
+Deployment failure debugging                   ⬜
+Health checks                                   ⬜
+Concurrency                                     ⬜
+Performance profiling                           ⬜
+Memory / compute optimization                   ⬜
+Caching                                         ⬜
+Header-based caching                            ⬜
+SNS filtering                                   ⬜
+Resource optimization                           ⬜
+Cost optimization                               ⬜
+ 
+STATUS:
+⬜ NOT STARTED
+ 
+==================================================
+SYSTEM DESIGN FOUNDATION
+==================================================
+ 
+This is NOT a separate certification syllabus.
+ 
+It tracks engineering thinking developed naturally through AWS lessons.
+ 
+SCALING
+ 
+Vertical vs Horizontal                         🟦 VALIDATED
+Stateless Instances                            🟦 VALIDATED
+Auto Scaling                                   ⬜
+Lambda Concurrency                             ⬜
+DynamoDB Partitioning                          ⬜
+ 
+AVAILABILITY
+ 
+Redundancy                                     🟦 VALIDATED
+Failover                                       🟦 VALIDATED
+Multi-AZ                                       🟦 VALIDATED
+Replication                                    🟦 VALIDATED
+Health Checks                                  ⬜
+Failure Domains                                🟦 VALIDATED
+ 
+RESILIENCE
+ 
+Retries                                        ⬜
+Idempotency                                    ⬜
+DLQs                                           ⬜
+Circuit Breakers                               ⬜
+Timeouts                                       ⬜
+Backoff                                        ⬜
+Graceful Degradation                           ⬜
+ 
+COUPLING
+ 
+Synchronous Calls                              ⬜
+Asynchronous Calls                             ⬜
+SQS                                            ⬜
+SNS                                            ⬜
+EventBridge                                    ⬜
+Step Functions                                 ⬜
+Choreography                                   ⬜
+Orchestration                                  ⬜
+ 
+DATA
+ 
+Relational vs NoSQL                            ⬜
+Access-Pattern Data Modeling                   ⬜
+Consistency                                    🟨
+Partitioning                                   ⬜
+Caching                                        ⬜
+Specialized Data Stores                        ⬜
+ 
+PERFORMANCE
+ 
+Caching                                        ⬜
+Concurrency                                    ⬜
+Memory / CPU                                   ⬜
+Database Access Patterns                       ⬜
+CloudFront                                     ⬜
+Connection Management                           ⬜
+ 
+SECURITY
+ 
+Authentication                                ⬜
+Authorization                                 ⬜
+IAM                                            ⬜
+Tokens                                         ⬜
+Encryption                                     ⬜
+Secrets                                        ⬜
+Tenant Isolation                               ⬜
+ 
+DEPLOYMENT
+ 
+CI/CD                                          ⬜
+Immutable Artifacts                            ⬜
+Canary                                         ⬜
+Blue/Green                                     ⬜
+Rolling                                        ⬜
+Rollback                                       ⬜
+Environment Isolation                          ⬜
+ 
+OBSERVABILITY
+ 
+Logs                                           ⬜
+Metrics                                        ⬜
+Traces                                         ⬜
+Health Checks                                  ⬜
+Alerts                                         ⬜
+ 
+==================================================
+OUT-OF-SCOPE / LOW-PRIORITY CONTROL
+==================================================
+ 
+OFFICIAL OUT-OF-SCOPE ITEMS:
+ 
+Do not spend certification preparation time on services explicitly listed
+as out of scope by the current AWS DVA-C02 guide.
+ 
+LOW-PRIORITY / AWARENESS ITEMS:
+ 
+Services that may be relevant to the broader AWS ecosystem but are not
+central to the current study plan should receive awareness-level coverage
+only unless the official exam guide indicates otherwise.
+ 
+Examples:
+ 
+- Deep EC2 administration
+- Deep VPC architecture
+- Kubernetes administration
+- Detailed server administration
+- Full architecture design exercises
+- Advanced database administration
+- Unrelated AWS services
+ 
+The goal is certification readiness, not becoming an AWS administrator.
+ 
+==================================================
+PRACTICE & MOCK EXAMS
+==================================================
+ 
+Mock #1:
+⬜ NOT TAKEN
+ 
+Mock #2:
+⬜ NOT TAKEN
+ 
+Mock #3:
+⬜ NOT TAKEN
+ 
+Mock analysis must record:
+ 
+- Score
+- Percentage
+- Time
+- Domain performance
+- Mistake categories
+- Recurring weaknesses
+- Knowledge gaps
+- Reasoning gaps
+- Timing issues
+- Recommended repair
+- Readiness interpretation
+ 
+A single mock score must never be treated as proof of passing readiness.
+
+==================================================
+WRONG-ANSWER TRACKING
+==================================================
+ 
+Important mistakes should be recorded in:
+ 
+AWS_DVA_Wrong_Answers.txt
+ 
+Do not duplicate every question in the Master Tracker.
+ 
+The Master Tracker should contain only recurring or strategically important
+weakness patterns.
+ 
+A mistake should ideally be:
+ 
+1. Identified
+2. Understood
+3. Recorded
+4. Repaired
+5. Retested
+ 
+==================================================
+LESSON / ROADMAP STATE
+==================================================
+ 
+Lesson 1:
+✅ COMPLETE — 94%
+ 
+Lesson 2:
+✅ COMPLETE — 96%
+ 
+Lesson 3:
+✅ COMPLETE — 97%
+ 
+Lesson 4:
+✅ COMPLETE — 98%
+ 
+Lesson 5:
+🟨 READY TO START
+ 
+==================================================
+EXACT NEXT LESSON
+==================================================
+ 
+Lesson 5 — IAM Foundations
+ 
+Focus:
+ 
+- Authentication vs Authorization
+- IAM Users
+- IAM Groups
+- IAM Roles
+- Human Identities
+- Workload Identities
+- Why IAM Roles Exist
+- Long-Term Credentials
+- Temporary Credentials
+- Least Privilege
+ 
+System Design Lens:
+ 
+- Trust Boundaries
+- Credential Exposure
+- Service-to-Service Authentication
+- Authorization Boundaries
+ 
+IMPORTANT:
+ 
+Do not reteach Lessons 1–4.
+ 
+Begin Lesson 5 directly.
+ 
+==================================================
+STUDY TIMELINE
+==================================================
+ 
+Target exam:
+September 3, 2026
+ 
+Voucher expiration:
+September 9, 2026
+ 
+Target theory completion:
+Approximately August 23–24
+ 
+Then transition into:
+ 
+- Mixed exam questions
+- Timed practice
+- Mock examination
+- Weak-area repair
+- Final revision
+ 
+Do not delay question practice until every minor awareness topic is complete.
+ 
+As soon as sufficient core coverage exists, introduce mixed questions.
+ 
+Final days should emphasize:
+ 
+- Weak-area repair
+- Scenario reasoning
+- Service comparisons
+- Wrong-answer review
+- Timed practice
+- Mock exams
+- Final revision
+ 
+Avoid major new topics immediately before the exam unless they represent
+a significant exam gap.
+ 
+==================================================
+READINESS RULES
+==================================================
+ 
+Lesson Confidence:
+ 
+Measures understanding of the current lesson.
+ 
+Topic Readiness:
+ 
+Measures demonstrated understanding of a topic.
+ 
+Domain Readiness:
+ 
+Measures demonstrated DVA-C02 readiness for an official exam domain.
+ 
+Overall Exam Readiness:
+ 
+Must consider:
+ 
+- Official skill coverage
+- Scenario performance
+- Mock performance
+- Weak areas
+- Repeated misconceptions
+- Ability to distinguish similar services
+- Ability to reason under exam conditions
+- Timing
+ 
+Do NOT declare exam readiness based only on:
+ 
+- completing lessons
+- reading documentation
+- saying "I understand"
+- one good mock exam
+ 
+==================================================
+MASTER TRACKER UPDATE PROTOCOL
+==================================================
+ 
+After every completed lesson:
+ 
+1. Update lesson status.
+2. Update lesson confidence.
+3. Update only sub-topics actually demonstrated.
+4. Update official domain readiness.
+5. Update system-design enrichment where appropriate.
+6. Add new weak areas.
+7. Add new misconceptions.
+8. Preserve historical misconceptions.
+9. Update exact next lesson.
+10. Preserve historical lesson completion.
+11. Do not rewrite the Lesson Archive into this file.
+12. Do not mark a concept complete merely because it was mentioned.
+ 
+After every meaningful mock:
+ 
+1. Record mock state.
+2. Record meaningful weaknesses.
+3. Update readiness evidence.
+4. Update recurring mistake patterns.
+5. Update exact repair priorities.
+ 
+==================================================
+TRACKER INTEGRITY CHECK
+==================================================
+ 
+Before saving a meaningful update verify:
+ 
+[ ] No completed lesson disappeared.
+[ ] No demonstrated concept was accidentally reset.
+[ ] No future topic became complete without evidence.
+[ ] Official DVA-C02 coverage remains intact.
+[ ] System-design enrichment remains separate from official scope.
+[ ] Confidence is evidence-based.
+[ ] Weak areas are specific.
+[ ] Misconceptions are preserved.
+[ ] Exact next lesson is unambiguous.
+[ ] Exam date is correct.
+[ ] Voucher expiration is correct.
+[ ] Mock history is preserved.
+[ ] No duplicate course state was created.
+ 
+==================================================
+CURRENT COURSE POSITION
+==================================================
+ 
+Phase:
+Foundations → entering Security
+ 
+Completed:
+Lessons 1–4
+ 
+Current:
+Lesson 5 — IAM Foundations
+ 
+Known strengths:
+ 
+- Cloud fundamentals
+- AWS global infrastructure
+- Availability
+- Fault tolerance
+- Scalability
+- Elasticity
+- Failure isolation
+- Redundancy
+- Failover
+- Stateful/stateless thinking
+- Replication basics
+- Shared responsibility
+ 
+Known weaknesses:
+ 
+- IAM policy evaluation
+- Resource-based policies
+- Temporary credentials
+- Cross-account access
+- Authorization models
+- Federated authentication
+ 
+Next action:
+ 
+START LESSON 5 — IAM FOUNDATIONS.
+ 
+==================================================
+END OF MASTER TRACKER
+==================================================
