@@ -253,6 +253,13 @@ STATUS: ✅ COMPLETE
 Confidence: 98%
  
 Shared Responsibility Model
+🟦 Authentication vs Authorization
+🟦 IAM default deny
+🟦 Explicit Deny overrides Allow
+🟦 Source code is not an IAM principal
+🟦 Lambda execution role as workload identity
+🟦 Basic motivation for temporary credentials
+🟦 Least-privilege reasoning
  
 DO NOT restart Lessons 1–4.
  
@@ -314,6 +321,12 @@ Historical misconceptions already corrected:
 6. Encryption automatically provides authorization.
  
 7. Multiple EC2 instances automatically means Multi-AZ.
+
+8. Source code that calls an AWS API directly possesses the IAM permission
+   required for that API operation.
+
+9. Long-lived access keys supplied directly to Lambda are the preferred
+   workload-identity design.
  
 Do not delete historical misconceptions.
  
@@ -336,6 +349,20 @@ Current known weak areas:
 🟨 Authorization models
  
 🟨 Federated authentication
+
+🟨 IAM User lifecycle
+
+🟨 IAM Groups
+
+🟨 IAM Role trust policies
+
+🟨 STS and AssumeRole mechanics
+
+🟨 Human vs workload identities
+
+🟨 Detailed least-privilege policy design
+
+🟨 CloudTrail identity/session traceability
  
 These should be addressed during IAM and related security lessons.
  
@@ -389,24 +416,24 @@ PHASE 2 — SECURITY
  
 2. IAM, AUTHENTICATION & AUTHORIZATION
  
-Authentication                                ⬜
-Authorization                                 ⬜
+Authentication                                🟦
+Authorization                                 🟦
 IAM Users                                     ⬜
 IAM Groups                                    ⬜
-IAM Roles                                     ⬜
+IAM Roles                                     🟨
 Human Identities                              ⬜
-Workload Identities                           ⬜
+Workload Identities                           🟨
 IAM Policies                                  ⬜
-Identity-Based Policies                       ⬜
+Identity-Based Policies                       🟦
 Resource-Based Policies                       ⬜
-Policy Evaluation                             ⬜
-Explicit Deny                                 ⬜
-Allow vs Deny                                 ⬜
-Least Privilege                               ⬜
+Policy Evaluation                             🟨
+Explicit Deny                                 🟦
+Allow vs Deny                                 🟦
+Least Privilege                               🟨
 STS                                           ⬜
-Temporary Credentials                         ⬜
+Temporary Credentials                         🟨
 AssumeRole                                    ⬜
-Programmatic Access                           ⬜
+Programmatic Access                           🟦
 Federated Access                              ⬜
 Bearer Tokens                                 ⬜
 Cognito                                       ⬜
@@ -420,10 +447,10 @@ Trust Boundaries                              ⬜
 Service-to-Service Authentication             ⬜
 Authorization Boundaries                      ⬜
 Tenant Isolation                              ⬜
-Credential Exposure                           ⬜
+Credential Exposure                           🟦
  
 STATUS:
-⬜ NOT STARTED
+🟨 IN PROGRESS
  
 3. ENCRYPTION & SENSITIVE DATA
  
@@ -1107,19 +1134,19 @@ STATUS:
 DOMAIN 2 — SECURITY
 Weight: 26%
  
-Authentication                                  ⬜
-Authorization                                   ⬜
-IAM principals                                  ⬜
-IAM policies                                    ⬜
+Authentication                                  🟦
+Authorization                                   🟦
+IAM principals                                  🟦
+IAM policies                                    🟨
 Resource policies                               ⬜
-Policy evaluation                               ⬜
-Explicit deny                                   ⬜
+Policy evaluation                               🟨
+Explicit deny                                   🟦
 STS                                             ⬜
-Temporary credentials                           ⬜
+Temporary credentials                           🟨
 AssumeRole                                      ⬜
 Federated access                                ⬜
 Bearer tokens                                   ⬜
-Programmatic access                             ⬜
+Programmatic access                             🟦
 Application-level authorization                 ⬜
 Fine-grained authorization                      ⬜
 Cross-service authentication                    ⬜
@@ -1134,7 +1161,7 @@ Secrets management                              ⬜
 Sensitive data handling                          ⬜
  
 STATUS:
-⬜ NOT STARTED
+🟨 BUILDING
  
 DOMAIN 3 — DEPLOYMENT
 Weight: 24%
@@ -1382,27 +1409,27 @@ Lesson 4:
 ✅ COMPLETE — 98%
  
 Lesson 5:
-🟨 READY TO START
+🟨 IN PROGRESS
+Confidence: 45%
  
 ==================================================
 EXACT NEXT LESSON
 ==================================================
  
-Lesson 5 — IAM Foundations
+Lesson 5 — IAM Foundations: IAM Users, IAM Groups, Human Identities & Enterprise Federation
  
 Focus:
- 
-- Authentication vs Authorization
+
 - IAM Users
 - IAM Groups
-- IAM Roles
 - Human Identities
+- Enterprise Federation
+- Federated Access
+- IAM Roles
 - Workload Identities
-- Why IAM Roles Exist
-- Long-Term Credentials
+- STS
+- AssumeRole
 - Temporary Credentials
-- Least Privilege
- 
 System Design Lens:
  
 - Trust Boundaries
@@ -1414,7 +1441,7 @@ IMPORTANT:
  
 Do not reteach Lessons 1–4.
  
-Begin Lesson 5 directly.
+Continue Lesson 5 from the demonstrated IAM foundations.
  
 ==================================================
 STUDY TIMELINE
@@ -1564,6 +1591,10 @@ Known strengths:
 - Stateful/stateless thinking
 - Replication basics
 - Shared responsibility
+- Authentication vs authorization
+- IAM default-deny reasoning
+- Lambda workload identity / execution role reasoning
+- Credential-management and least-privilege reasoning
  
 Known weaknesses:
  
@@ -1576,7 +1607,7 @@ Known weaknesses:
  
 Next action:
  
-START LESSON 5 — IAM FOUNDATIONS.
+CONTINUE LESSON 5 — IAM USERS, GROUPS, HUMAN IDENTITIES & ENTERPRISE FEDERATION.
  
 ==================================================
 END OF MASTER TRACKER
