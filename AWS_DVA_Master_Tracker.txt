@@ -299,6 +299,24 @@ The following concepts have already been demonstrated:
 ✅ Scalability
 ✅ Elasticity
 ✅ Shared Responsibility Model
+✅ Authentication vs authorization
+✅ IAM default-deny reasoning
+✅ Explicit Deny overrides Allow
+✅ Source code is not an IAM principal
+✅ IAM users
+✅ IAM groups as permission-management collections
+✅ Human identity foundations
+✅ Workload identity foundations
+✅ IAM roles and assumed-role sessions
+✅ Role trust policies vs permission policies
+✅ Lambda execution-role trust and permissions
+✅ Identity-based policy foundations
+✅ Temporary credential fundamentals
+✅ Credential-exposure risks
+✅ Enterprise federation and IAM Identity Center foundations
+✅ Federated users receive temporary sessions
+✅ Multiple AWS accounts as security and isolation boundaries
+✅ Cross-account role-assumption foundations
  
 These should receive validation rather than full reteaching.
  
@@ -327,6 +345,15 @@ Historical misconceptions already corrected:
 
 9. Long-lived access keys supplied directly to Lambda are the preferred
    workload-identity design.
+
+10. The target role belongs in the caller role's trust policy when the
+   caller wants to assume the target role.
+
+11. Corporate access groups displayed through the AWS portal are AWS IAM
+   groups.
+
+12. Disabling a federated employee immediately invalidates every existing
+   AWS temporary session.
  
 Do not delete historical misconceptions.
  
@@ -352,13 +379,13 @@ Current known weak areas:
 
 🟨 IAM User lifecycle
 
-🟨 IAM Groups
-
-🟨 IAM Role trust policies
-
 🟨 STS and AssumeRole mechanics
 
-🟨 Human vs workload identities
+🟨 Session duration, expiration and revocation
+
+🟨 Role chaining
+
+🟨 IAM Identity Center assignment flow
 
 🟨 Detailed least-privilege policy design
 
@@ -418,11 +445,11 @@ PHASE 2 — SECURITY
  
 Authentication                                🟦
 Authorization                                 🟦
-IAM Users                                     ⬜
-IAM Groups                                    ⬜
-IAM Roles                                     🟨
-Human Identities                              ⬜
-Workload Identities                           🟨
+IAM Users                                     🟦
+IAM Groups                                    🟦
+IAM Roles                                     🟦
+Human Identities                              🟦
+Workload Identities                           🟦
 IAM Policies                                  ⬜
 Identity-Based Policies                       🟦
 Resource-Based Policies                       ⬜
@@ -430,22 +457,22 @@ Policy Evaluation                             🟨
 Explicit Deny                                 🟦
 Allow vs Deny                                 🟦
 Least Privilege                               🟨
-STS                                           ⬜
-Temporary Credentials                         🟨
-AssumeRole                                    ⬜
+STS                                           🟨
+Temporary Credentials                         🟦
+AssumeRole                                    🟨
 Programmatic Access                           🟦
-Federated Access                              ⬜
+Federated Access                              🟨
 Bearer Tokens                                 ⬜
 Cognito                                       ⬜
 Application-Level Authorization                ⬜
 Fine-Grained Authorization                    ⬜
-Cross-Service Authentication                  ⬜
+Cross-Service Authentication                  🟨
  
 System-design enrichment:
  
-Trust Boundaries                              ⬜
-Service-to-Service Authentication             ⬜
-Authorization Boundaries                      ⬜
+Trust Boundaries                              🟦
+Service-to-Service Authentication             🟨
+Authorization Boundaries                      🟨
 Tenant Isolation                              ⬜
 Credential Exposure                           🟦
  
@@ -1141,15 +1168,15 @@ IAM policies                                    🟨
 Resource policies                               ⬜
 Policy evaluation                               🟨
 Explicit deny                                   🟦
-STS                                             ⬜
-Temporary credentials                           🟨
-AssumeRole                                      ⬜
-Federated access                                ⬜
+STS                                             🟨
+Temporary credentials                           🟦
+AssumeRole                                      🟨
+Federated access                                🟨
 Bearer tokens                                   ⬜
 Programmatic access                             🟦
 Application-level authorization                 ⬜
 Fine-grained authorization                      ⬜
-Cross-service authentication                    ⬜
+Cross-service authentication                    🟨
 Encryption at rest                              ⬜
 Encryption in transit                           ⬜
 Client-side encryption                          ⬜
@@ -1410,26 +1437,23 @@ Lesson 4:
  
 Lesson 5:
 🟨 IN PROGRESS
-Confidence: 45%
+Confidence: 72%
  
 ==================================================
 EXACT NEXT LESSON
 ==================================================
  
-Lesson 5 — IAM Foundations: IAM Users, IAM Groups, Human Identities & Enterprise Federation
+Lesson 5 — IAM Foundations: STS, AssumeRole, Session Lifecycle & Federation Validation
  
 Focus:
 
-- IAM Users
-- IAM Groups
-- Human Identities
-- Enterprise Federation
-- Federated Access
-- IAM Roles
-- Workload Identities
 - STS
-- AssumeRole
-- Temporary Credentials
+- sts:AssumeRole mechanics
+- Session duration, expiration and revocation
+- Role chaining
+- Cross-account access validation
+- Enterprise federation and IAM Identity Center consolidation
+- CloudTrail identity and assumed-role session traceability
 System Design Lens:
  
 - Trust Boundaries
@@ -1595,19 +1619,31 @@ Known strengths:
 - IAM default-deny reasoning
 - Lambda workload identity / execution role reasoning
 - Credential-management and least-privilege reasoning
+- IAM users and groups
+- Human and workload identity foundations
+- IAM roles, trust policies and permission policies
+- Temporary credential fundamentals
+- Enterprise federation and IAM Identity Center foundations
+- Cross-account role-assumption foundations
  
 Known weaknesses:
  
+- STS and AssumeRole mechanics
 - IAM policy evaluation
 - Resource-based policies
 - Temporary credentials
+- Session duration, expiration and revocation
+- Role chaining
 - Cross-account access
 - Authorization models
 - Federated authentication
+- IAM Identity Center assignment flow
+- Detailed least-privilege policy design
+- CloudTrail identity/session traceability
  
 Next action:
  
-CONTINUE LESSON 5 — IAM USERS, GROUPS, HUMAN IDENTITIES & ENTERPRISE FEDERATION.
+CONTINUE LESSON 5 — STS, ASSUMEROLE, SESSION LIFECYCLE & FEDERATION VALIDATION.
  
 ==================================================
 END OF MASTER TRACKER
