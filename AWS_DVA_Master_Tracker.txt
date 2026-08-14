@@ -315,8 +315,16 @@ The following concepts have already been demonstrated:
 ✅ Credential-exposure risks
 ✅ Enterprise federation and IAM Identity Center foundations
 ✅ Federated users receive temporary sessions
-✅ Multiple AWS accounts as security and isolation boundaries
+✅ AWS accounts as resource, security, billing and isolation boundaries
 ✅ Cross-account role-assumption foundations
+✅ AWS Organizations multi-account governance foundations
+✅ AWS account IDs and root-user boundaries
+✅ AWS Organizations management-account governance boundary
+✅ IAM Identity Center permission sets and account assignments
+✅ IAM Identity Center role provisioning foundations
+✅ Corporate identity-provider groups vs AWS IAM groups
+✅ IAM group non-identity semantics
+✅ IAM user credential modes and long-term access-key behavior
  
 These should receive validation rather than full reteaching.
  
@@ -365,31 +373,25 @@ CURRENT WEAK AREAS
  
 Current known weak areas:
  
-🟨 IAM policy evaluation
+🟨 Complete IAM policy evaluation
  
-🟨 Resource-based policies
+🟨 General resource-based policies
  
-🟨 Temporary credentials
+🟨 Permissions boundaries
  
-🟨 Cross-account access
+🟨 Service Control Policies
  
-🟨 Authorization models
+🟨 Session policies
  
-🟨 Federated authentication
+🟨 Same-account versus cross-account policy evaluation
 
-🟨 IAM User lifecycle
-
-🟨 STS and AssumeRole mechanics
-
-🟨 Session duration, expiration and revocation
+🟨 Session revocation details
 
 🟨 Role chaining
 
-🟨 IAM Identity Center assignment flow
+🟨 Detailed least-privilege policy construction
 
-🟨 Detailed least-privilege policy design
-
-🟨 CloudTrail identity/session traceability
+🟨 CloudTrail assumed-role session traceability
  
 These should be addressed during IAM and related security lessons.
  
@@ -450,18 +452,18 @@ IAM Groups                                    🟦
 IAM Roles                                     🟦
 Human Identities                              🟦
 Workload Identities                           🟦
-IAM Policies                                  ⬜
+IAM Policies                                  🟨
 Identity-Based Policies                       🟦
 Resource-Based Policies                       ⬜
 Policy Evaluation                             🟨
 Explicit Deny                                 🟦
 Allow vs Deny                                 🟦
 Least Privilege                               🟨
-STS                                           🟨
+STS                                           🟦
 Temporary Credentials                         🟦
-AssumeRole                                    🟨
+AssumeRole                                    🟦
 Programmatic Access                           🟦
-Federated Access                              🟨
+Federated Access                              🟦
 Bearer Tokens                                 ⬜
 Cognito                                       ⬜
 Application-Level Authorization                ⬜
@@ -1168,10 +1170,10 @@ IAM policies                                    🟨
 Resource policies                               ⬜
 Policy evaluation                               🟨
 Explicit deny                                   🟦
-STS                                             🟨
+STS                                             🟦
 Temporary credentials                           🟦
-AssumeRole                                      🟨
-Federated access                                🟨
+AssumeRole                                      🟦
+Federated access                                🟦
 Bearer tokens                                   ⬜
 Programmatic access                             🟦
 Application-level authorization                 ⬜
@@ -1437,23 +1439,20 @@ Lesson 4:
  
 Lesson 5:
 🟨 IN PROGRESS
-Confidence: 72%
+Confidence: 82%
  
 ==================================================
 EXACT NEXT LESSON
 ==================================================
  
-Lesson 5 — IAM Foundations: STS, AssumeRole, Session Lifecycle & Federation Validation
+Lesson 5 — IAM Foundations: Session Revocation, Role Chaining & CloudTrail Validation
  
 Focus:
 
-- STS
-- sts:AssumeRole mechanics
-- Session duration, expiration and revocation
+- Session revocation details at DVA-C02 depth
 - Role chaining
-- Cross-account access validation
-- Enterprise federation and IAM Identity Center consolidation
-- CloudTrail identity and assumed-role session traceability
+- CloudTrail assumed-role session traceability
+- One concise mixed validation scenario
 System Design Lens:
  
 - Trust Boundaries
@@ -1622,28 +1621,27 @@ Known strengths:
 - IAM users and groups
 - Human and workload identity foundations
 - IAM roles, trust policies and permission policies
-- Temporary credential fundamentals
-- Enterprise federation and IAM Identity Center foundations
+- AWS STS and temporary credential fundamentals
+- AssumeRole caller permission and target trust reasoning
+- Enterprise federation and IAM Identity Center permission-set foundations
 - Cross-account role-assumption foundations
  
 Known weaknesses:
  
-- STS and AssumeRole mechanics
-- IAM policy evaluation
-- Resource-based policies
-- Temporary credentials
-- Session duration, expiration and revocation
+- Session revocation details
 - Role chaining
-- Cross-account access
-- Authorization models
-- Federated authentication
-- IAM Identity Center assignment flow
-- Detailed least-privilege policy design
-- CloudTrail identity/session traceability
+- CloudTrail assumed-role session traceability
+- General resource-based policies
+- Complete IAM policy evaluation
+- Permissions boundaries
+- Service Control Policies
+- Session policies
+- Same-account versus cross-account policy evaluation
+- Detailed least-privilege policy construction
  
 Next action:
  
-CONTINUE LESSON 5 — STS, ASSUMEROLE, SESSION LIFECYCLE & FEDERATION VALIDATION.
+CONTINUE LESSON 5 — SESSION REVOCATION, ROLE CHAINING & CLOUDTRAIL SESSION TRACEABILITY VALIDATION.
  
 ==================================================
 END OF MASTER TRACKER
