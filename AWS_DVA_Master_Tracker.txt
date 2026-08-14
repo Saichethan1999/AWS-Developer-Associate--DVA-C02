@@ -260,8 +260,18 @@ Shared Responsibility Model
 🟦 Lambda execution role as workload identity
 🟦 Basic motivation for temporary credentials
 🟦 Least-privilege reasoning
+
+
+Lesson 5
+STATUS: ✅ COMPLETE
+Confidence: 95%
+
+IAM Foundations: Session Revocation, Role Chaining & CloudTrail Validation
+🟦 Session revocation behavior
+🟦 Role chaining and one-hour chained-session limit
+🟦 Source identity and assumed-role traceability
  
-DO NOT restart Lessons 1–4.
+DO NOT restart Lessons 1–5.
  
 Previously demonstrated concepts should be treated as known unless
 new evidence reveals a gap.
@@ -325,6 +335,15 @@ The following concepts have already been demonstrated:
 ✅ Corporate identity-provider groups vs AWS IAM groups
 ✅ IAM group non-identity semantics
 ✅ IAM user credential modes and long-term access-key behavior
+✅ Existing-session behavior after IdP disablement
+✅ Standard role-session revocation behavior
+✅ Role-wide session revocation blast radius
+✅ Role chaining and one-hour chained-session limit
+✅ Independent authorization for each role-assumption hop
+✅ Independent credentials and expiration for chained-role sessions
+✅ IAM role names vs role session names
+✅ Source identity propagation through role chaining
+✅ CloudTrail assumed-role session traceability
  
 These should receive validation rather than full reteaching.
  
@@ -362,6 +381,17 @@ Historical misconceptions already corrected:
 
 12. Disabling a federated employee immediately invalidates every existing
    AWS temporary session.
+
+13. Revoked credentials must be physically deleted or terminated.
+
+14. An excessive role-chaining duration request is silently shortened to
+   one hour.
+
+15. A successfully issued Role B session expires when its source Role A
+   session expires.
+
+16. Original developer permissions directly grant or modify the target
+   EngineeringRole.
  
 Do not delete historical misconceptions.
  
@@ -381,17 +411,17 @@ Current known weak areas:
  
 🟨 Service Control Policies
  
-🟨 Session policies
+🟨 Detailed session-policy behavior
+
+🟨 Session tags and transitive-tag authorization
  
 🟨 Same-account versus cross-account policy evaluation
 
-🟨 Session revocation details
-
-🟨 Role chaining
+🟨 Targeted individual-session revocation designs
 
 🟨 Detailed least-privilege policy construction
 
-🟨 CloudTrail assumed-role session traceability
+🟨 Detailed CloudTrail event analysis
  
 These should be addressed during IAM and related security lessons.
  
@@ -462,6 +492,13 @@ Least Privilege                               🟨
 STS                                           🟦
 Temporary Credentials                         🟦
 AssumeRole                                    🟦
+Session Revocation                            🟦
+Role Chaining                                 🟦
+Role Session Names                            🟦
+Source Identity                               🟦
+Session Tags                                  ⬜
+Transitive Session Tags                       ⬜
+ABAC / Principal Tags                         ⬜
 Programmatic Access                           🟦
 Federated Access                              🟦
 Bearer Tokens                                 ⬜
@@ -473,8 +510,8 @@ Cross-Service Authentication                  🟨
 System-design enrichment:
  
 Trust Boundaries                              🟦
-Service-to-Service Authentication             🟨
-Authorization Boundaries                      🟨
+Service-to-Service Authentication             🟦
+Authorization Boundaries                      🟦
 Tenant Isolation                              ⬜
 Credential Exposure                           🟦
  
@@ -898,6 +935,8 @@ Distributed Debugging                         ⬜
  
 API Activity                                  ⬜
 Auditing                                      ⬜
+Assumed-Role Session Traceability              🟦
+Detailed Event-Field Analysis                  ⬜
 Troubleshooting Relationship                  ⬜
 Security Relationship                         ⬜
  
@@ -1236,7 +1275,7 @@ Embedded Metric Format                          ⬜
 Dashboards / Insights                           ⬜
 X-Ray                                           ⬜
 Trace annotations                               ⬜
-CloudTrail                                      ⬜
+CloudTrail                                      🟨
 Service integration debugging                  ⬜
 Deployment failure debugging                   ⬜
 Health checks                                   ⬜
@@ -1438,33 +1477,31 @@ Lesson 4:
 ✅ COMPLETE — 98%
  
 Lesson 5:
-🟨 IN PROGRESS
-Confidence: 82%
+✅ COMPLETE
+Confidence: 95%
  
 ==================================================
 EXACT NEXT LESSON
 ==================================================
  
-Lesson 5 — IAM Foundations: Session Revocation, Role Chaining & CloudTrail Validation
+Lesson 6 — Complete IAM Policy Evaluation: Identity Policies, Resource Policies, Permissions Boundaries, SCPs and Session Policies
  
 Focus:
 
-- Session revocation details at DVA-C02 depth
-- Role chaining
-- CloudTrail assumed-role session traceability
-- One concise mixed validation scenario
+- Identity and resource policy interaction
+- Permissions boundaries and Service Control Policies
+- Session-policy restrictions
+- Same-account versus cross-account policy evaluation
 System Design Lens:
  
-- Trust Boundaries
-- Credential Exposure
-- Service-to-Service Authentication
 - Authorization Boundaries
+- Trust Boundaries
  
 IMPORTANT:
  
-Do not reteach Lessons 1–4.
+Do not reteach Lessons 1–5.
  
-Continue Lesson 5 from the demonstrated IAM foundations.
+Continue Lesson 6 from the validated IAM session foundations.
  
 ==================================================
 STUDY TIMELINE
@@ -1592,13 +1629,13 @@ CURRENT COURSE POSITION
 ==================================================
  
 Phase:
-Foundations → entering Security
+Foundations → Security
  
 Completed:
-Lessons 1–4
+Lessons 1–5
  
 Current:
-Lesson 5 — IAM Foundations
+Lesson 6 — Complete IAM Policy Evaluation
  
 Known strengths:
  
@@ -1625,23 +1662,28 @@ Known strengths:
 - AssumeRole caller permission and target trust reasoning
 - Enterprise federation and IAM Identity Center permission-set foundations
 - Cross-account role-assumption foundations
+- Session revocation and revocation blast radius
+- Role chaining and one-hour chained-session limit
+- Independent per-hop authorization
+- Role session names vs source identity
+- CloudTrail assumed-role session traceability
  
 Known weaknesses:
  
-- Session revocation details
-- Role chaining
-- CloudTrail assumed-role session traceability
 - General resource-based policies
 - Complete IAM policy evaluation
 - Permissions boundaries
 - Service Control Policies
-- Session policies
+- Detailed session-policy behavior
+- Session tags and transitive-tag authorization
 - Same-account versus cross-account policy evaluation
 - Detailed least-privilege policy construction
+- Targeted individual-session revocation designs
+- Detailed CloudTrail event analysis
  
 Next action:
  
-CONTINUE LESSON 5 — SESSION REVOCATION, ROLE CHAINING & CLOUDTRAIL SESSION TRACEABILITY VALIDATION.
+BEGIN LESSON 6 — COMPLETE IAM POLICY EVALUATION: IDENTITY POLICIES, RESOURCE POLICIES, PERMISSIONS BOUNDARIES, SCPS & SESSION POLICIES.
  
 ==================================================
 END OF MASTER TRACKER
