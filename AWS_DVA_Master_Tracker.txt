@@ -270,8 +270,18 @@ IAM Foundations: Session Revocation, Role Chaining & CloudTrail Validation
 🟦 Session revocation behavior
 🟦 Role chaining and one-hour chained-session limit
 🟦 Source identity and assumed-role traceability
+
+
+Lesson 6
+STATUS: ✅ COMPLETE
+Confidence: 96%
+
+Complete IAM Policy Evaluation
+🟦 Core IAM policy evaluation
+🟦 Resource-policy principals, service principals and conditions
+🟦 Confused deputy protection and mixed-policy authorization
  
-DO NOT restart Lessons 1–5.
+DO NOT restart Lessons 1–6.
  
 Previously demonstrated concepts should be treated as known unless
 new evidence reveals a gap.
@@ -360,6 +370,20 @@ The following concepts have already been demonstrated:
 ✅ Target-role permissions after cross-account AssumeRole
 ✅ IAM role ARN versus assumed-role session ARN
 ✅ Exact assumed-role session ARN matching
+✅ Resource-policy Principal variations
+✅ AWS account principals
+✅ Account-level trust versus specific-role trust
+✅ AWS service principals in S3 and EventBridge integrations
+✅ Service principal versus source resource ARN
+✅ Lambda resource-based invocation policy versus execution-role policy
+✅ EventBridge target configuration versus Lambda invocation authorization
+✅ Policy condition matching
+✅ Failed Allow conditions produce no Allow
+✅ Confused deputy protection
+✅ aws:SourceArn and aws:SourceAccount
+✅ SourceArn and SourceAccount conjunction
+✅ Least-privilege resource-policy construction
+✅ Comprehensive mixed IAM policy evaluation
  
 These should receive validation rather than full reteaching.
  
@@ -426,6 +450,28 @@ Historical misconceptions already corrected:
 
 23. A same-account resource-policy grant to a role ARN fails only when the
    role identity policy lacks an Allow.
+
+24. arn:aws:iam::<account-id>:root in Principal means only the human AWS
+   account root user.
+
+25. Trusting an AWS account automatically allows every identity in that
+   account.
+
+26. A particular S3 bucket ARN may be used directly as Principal when S3
+   invokes Lambda.
+
+27. An EventBridge rule ARN may be used directly as Principal when
+   EventBridge invokes Lambda.
+
+28. A failed condition in an Allow statement becomes an explicit Deny.
+
+29. A Lambda policy broadly allowing EventBridge causes every EventBridge
+   event to invoke the Lambda.
+
+30. If SourceAccount matches, a different source resource in the same
+   account may be allowed when SourceArn requires one exact resource.
+
+31. Cross-account authorization operates as a literal handshake.
  
 Do not delete historical misconceptions.
  
@@ -437,23 +483,13 @@ CURRENT WEAK AREAS
  
 Current known weak areas:
  
-🟨 Resource-policy Principal variations
- 
-🟨 Independent mixed policy-evaluation validation
- 
-🟨 Resource-policy account-principal semantics
- 
-🟨 AWS service-principal authorization
- 
-🟨 Policy Condition operators and request-context matching
+🟨 Broader IAM Condition operators and service-specific condition-key support
 
-🟨 Confused deputy prevention
- 
-🟨 SourceArn versus SourceAccount
+🟨 Detailed request-context internals
 
 🟨 Session tags and ABAC
 
-🟨 Practical least-privilege JSON policy construction
+🟨 JSON syntax accuracy and exact AWS action names
 
 🟨 Targeted individual-session revocation designs
 
@@ -520,12 +556,12 @@ Human Identities                              🟦
 Workload Identities                           🟦
 IAM Policies                                  🟨
 Identity-Based Policies                       ✅
-Resource-Based Policies                       🟨
-Policy Evaluation                             🟨
+Resource-Based Policies                       ✅
+Policy Evaluation                             ✅
 Explicit Deny                                 🟦
 Allow vs Deny                                 🟦
 Implicit Deny                                  🟦
-Least Privilege                               🟨
+Least Privilege                               🟦
 STS                                           🟦
 Temporary Credentials                         🟦
 AssumeRole                                    🟦
@@ -539,15 +575,15 @@ Service Control Policies                      ✅ — FUNDAMENTALS
 Same-Account Policy Evaluation                ✅ — FUNDAMENTALS
 Cross-Account Policy Evaluation               ✅ — FUNDAMENTALS
 Role ARN vs Assumed-Role Session ARN          ✅
-Resource-Policy Principal Variations          🟨
-AWS Account Principals                        ⬜
-AWS Service Principals                        ⬜
-Policy Conditions                             ⬜
-Confused Deputy Protection                    ⬜
-aws:SourceArn                                 ⬜
-aws:SourceAccount                             ⬜
-Detailed Least-Privilege Policy Construction  ⬜
-Final Mixed IAM Evaluation                    ⬜
+Resource-Policy Principal Variations          ✅
+AWS Account Principals                        ✅
+AWS Service Principals                        ✅
+Policy Conditions                             ✅
+Confused Deputy Protection                    ✅
+aws:SourceArn                                 ✅
+aws:SourceAccount                             ✅
+Detailed Least-Privilege Policy Construction  ✅
+Final Mixed IAM Evaluation                    ✅
 Session Tags                                  ⬜
 Transitive Session Tags                       ⬜
 ABAC / Principal Tags                         ⬜
@@ -1258,8 +1294,8 @@ Authentication                                  🟦
 Authorization                                   🟦
 IAM principals                                  🟦
 IAM policies                                    🟨
-Resource policies                               🟨
-Policy evaluation                               🟨
+Resource policies                               🟦
+Policy evaluation                               🟦
 Explicit deny                                   🟦
 STS                                             🟦
 Temporary credentials                           🟦
@@ -1410,8 +1446,8 @@ Connection Management                           ⬜
 SECURITY
  
 Authentication                                ⬜
-Authorization                                 ⬜
-IAM                                            ⬜
+Authorization                                 🟦 VALIDATED
+IAM                                            🟦 VALIDATED
 Tokens                                         ⬜
 Encryption                                     ⬜
 Secrets                                        ⬜
@@ -1533,24 +1569,22 @@ Lesson 5:
 Confidence: 95%
 
 Lesson 6:
-🟨 IN PROGRESS
-Confidence: 93%
+✅ COMPLETE
+Confidence: 96%
  
 ==================================================
 EXACT NEXT LESSON
 ==================================================
  
-Lesson 6, Part 7 — AWS Account Principals in Resource-Based Policies
+Lesson 7, Part 1 — Why Amazon Cognito Exists and Cognito User Pool Fundamentals
  
 Focus:
 
-- Meaning of an AWS account Principal
-- Meaning of arn:aws:iam::<account-id>:root inside a Principal element
-- Why that Principal does not always mean only the AWS account root user
-- Delegating authority to another AWS account
-- Difference between trusting an account and directly naming a particular IAM role
-- Security implications of broad account-level trust
-- One targeted validation scenario
+- The application-authentication problem Cognito solves
+- Cognito user pools
+- User pool sign-up and sign-in fundamentals
+- JWT fundamentals at DVA-C02 depth
+- One concise Cognito validation scenario
 System Design Lens:
  
 - Authorization Boundaries
@@ -1558,9 +1592,9 @@ System Design Lens:
  
 IMPORTANT:
  
-Do not reteach Lessons 1–5.
+Do not reteach Lessons 1–6.
  
-Continue Lesson 6 from the validated IAM session foundations.
+Begin Lesson 7 from the validated IAM policy-evaluation foundations.
  
 ==================================================
 STUDY TIMELINE
@@ -1691,16 +1725,16 @@ Phase:
 Phase 2 — Security
  
 Completed:
-Lessons 1–5
+Lessons 1–6
  
 Current:
-Lesson 6 — Complete IAM Policy Evaluation
+Lesson 7, Part 1 — Why Amazon Cognito Exists and Cognito User Pool Fundamentals
 
 Current subtopic:
-Resource-Policy Principal Variations
+Cognito User Pool Fundamentals
 
 Exact next lesson:
-Lesson 6, Part 7 — AWS Account Principals in Resource-Based Policies
+Lesson 7, Part 1 — Why Amazon Cognito Exists and Cognito User Pool Fundamentals
  
 Known strengths:
  
@@ -1739,24 +1773,28 @@ Known strengths:
 - Same-account policy-evaluation fundamentals
 - Cross-account policy-evaluation fundamentals
 - IAM role ARN versus assumed-role session ARN
+- Resource-policy Principal variations
+- AWS account principals and account-level trust
+- AWS service principals and source resource restrictions
+- Lambda resource-based invocation policy versus execution-role policy
+- EventBridge target configuration versus Lambda invocation authorization
+- Policy conditions, SourceArn and SourceAccount
+- Confused deputy protection
+- Least-privilege resource-policy construction
+- Comprehensive mixed IAM policy evaluation
  
 Known weaknesses:
  
-- Resource-policy Principal variations
-- Resource-policy account-principal semantics
-- AWS service-principal authorization
-- Policy Condition operators and request-context matching
-- Confused deputy prevention
-- SourceArn versus SourceAccount
+- Broader IAM Condition operators and service-specific condition-key support
+- Detailed request-context internals
 - Session tags and ABAC
-- Practical least-privilege JSON policy construction
-- Independent mixed policy-evaluation validation
+- JSON syntax accuracy and exact AWS action names
 - Targeted individual-session revocation designs
 - Detailed CloudTrail event analysis
  
 Next action:
  
-BEGIN LESSON 6, PART 7 — AWS ACCOUNT PRINCIPALS IN RESOURCE-BASED POLICIES.
+BEGIN LESSON 7, PART 1 — WHY AMAZON COGNITO EXISTS AND COGNITO USER POOL FUNDAMENTALS.
  
 ==================================================
 AGREED SECURITY LEARNING ORDER
