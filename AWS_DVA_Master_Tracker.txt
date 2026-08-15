@@ -344,6 +344,22 @@ The following concepts have already been demonstrated:
 ✅ IAM role names vs role session names
 ✅ Source identity propagation through role chaining
 ✅ CloudTrail assumed-role session traceability
+✅ Identity-policy Allow union
+✅ Implicit deny versus explicit deny
+✅ Permissions-boundary maximum-permissions intersection
+✅ One permissions boundary per IAM user or role
+✅ Session-policy restriction of individual STS sessions
+✅ Session policies do not modify persistent role permissions
+✅ SCP guardrails and non-granting behavior
+✅ SCP evaluation along the organization path
+✅ AWS Organizations management-account SCP exception
+✅ Resource-based policies and the Principal element
+✅ IAM role trust policies as resource-based policies
+✅ Same-account identity-policy and resource-policy union
+✅ Cross-account dual authorization
+✅ Target-role permissions after cross-account AssumeRole
+✅ IAM role ARN versus assumed-role session ARN
+✅ Exact assumed-role session ARN matching
  
 These should receive validation rather than full reteaching.
  
@@ -392,6 +408,24 @@ Historical misconceptions already corrected:
 
 16. Original developer permissions directly grant or modify the target
    EngineeringRole.
+
+17. Multiple ordinary identity-policy Allows are intersected.
+
+18. An implicit deny in one identity policy overrides an Allow in another
+   identity policy.
+
+19. All permissions-boundary policies attached to a role are unioned.
+
+20. A permissions boundary grants permissions independently.
+
+21. SCPs restrict management-account IAM users and roles in the same way
+   as member-account principals.
+
+22. Least privilege is the authorization rule that denies a request when
+   no Allow exists.
+
+23. A same-account resource-policy grant to a role ARN fails only when the
+   role identity policy lacks an Allow.
  
 Do not delete historical misconceptions.
  
@@ -403,23 +437,25 @@ CURRENT WEAK AREAS
  
 Current known weak areas:
  
-🟨 Complete IAM policy evaluation
+🟨 Resource-policy Principal variations
  
-🟨 General resource-based policies
+🟨 Independent mixed policy-evaluation validation
  
-🟨 Permissions boundaries
+🟨 Resource-policy account-principal semantics
  
-🟨 Service Control Policies
+🟨 AWS service-principal authorization
  
-🟨 Detailed session-policy behavior
+🟨 Policy Condition operators and request-context matching
 
-🟨 Session tags and transitive-tag authorization
+🟨 Confused deputy prevention
  
-🟨 Same-account versus cross-account policy evaluation
+🟨 SourceArn versus SourceAccount
+
+🟨 Session tags and ABAC
+
+🟨 Practical least-privilege JSON policy construction
 
 🟨 Targeted individual-session revocation designs
-
-🟨 Detailed least-privilege policy construction
 
 🟨 Detailed CloudTrail event analysis
  
@@ -483,19 +519,35 @@ IAM Roles                                     🟦
 Human Identities                              🟦
 Workload Identities                           🟦
 IAM Policies                                  🟨
-Identity-Based Policies                       🟦
-Resource-Based Policies                       ⬜
+Identity-Based Policies                       ✅
+Resource-Based Policies                       🟨
 Policy Evaluation                             🟨
 Explicit Deny                                 🟦
 Allow vs Deny                                 🟦
+Implicit Deny                                  🟦
 Least Privilege                               🟨
 STS                                           🟦
 Temporary Credentials                         🟦
 AssumeRole                                    🟦
-Session Revocation                            🟦
-Role Chaining                                 🟦
+Session Revocation                            ✅
+Role Chaining                                 ✅
 Role Session Names                            🟦
 Source Identity                               🟦
+Permissions Boundaries                        ✅
+Session Policies                              ✅
+Service Control Policies                      ✅ — FUNDAMENTALS
+Same-Account Policy Evaluation                ✅ — FUNDAMENTALS
+Cross-Account Policy Evaluation               ✅ — FUNDAMENTALS
+Role ARN vs Assumed-Role Session ARN          ✅
+Resource-Policy Principal Variations          🟨
+AWS Account Principals                        ⬜
+AWS Service Principals                        ⬜
+Policy Conditions                             ⬜
+Confused Deputy Protection                    ⬜
+aws:SourceArn                                 ⬜
+aws:SourceAccount                             ⬜
+Detailed Least-Privilege Policy Construction  ⬜
+Final Mixed IAM Evaluation                    ⬜
 Session Tags                                  ⬜
 Transitive Session Tags                       ⬜
 ABAC / Principal Tags                         ⬜
@@ -935,7 +987,7 @@ Distributed Debugging                         ⬜
  
 API Activity                                  ⬜
 Auditing                                      ⬜
-Assumed-Role Session Traceability              🟦
+Assumed-Role Session Traceability              ✅
 Detailed Event-Field Analysis                  ⬜
 Troubleshooting Relationship                  ⬜
 Security Relationship                         ⬜
@@ -1206,7 +1258,7 @@ Authentication                                  🟦
 Authorization                                   🟦
 IAM principals                                  🟦
 IAM policies                                    🟨
-Resource policies                               ⬜
+Resource policies                               🟨
 Policy evaluation                               🟨
 Explicit deny                                   🟦
 STS                                             🟦
@@ -1479,19 +1531,26 @@ Lesson 4:
 Lesson 5:
 ✅ COMPLETE
 Confidence: 95%
+
+Lesson 6:
+🟨 IN PROGRESS
+Confidence: 93%
  
 ==================================================
 EXACT NEXT LESSON
 ==================================================
  
-Lesson 6 — Complete IAM Policy Evaluation: Identity Policies, Resource Policies, Permissions Boundaries, SCPs and Session Policies
+Lesson 6, Part 7 — AWS Account Principals in Resource-Based Policies
  
 Focus:
 
-- Identity and resource policy interaction
-- Permissions boundaries and Service Control Policies
-- Session-policy restrictions
-- Same-account versus cross-account policy evaluation
+- Meaning of an AWS account Principal
+- Meaning of arn:aws:iam::<account-id>:root inside a Principal element
+- Why that Principal does not always mean only the AWS account root user
+- Delegating authority to another AWS account
+- Difference between trusting an account and directly naming a particular IAM role
+- Security implications of broad account-level trust
+- One targeted validation scenario
 System Design Lens:
  
 - Authorization Boundaries
@@ -1629,13 +1688,19 @@ CURRENT COURSE POSITION
 ==================================================
  
 Phase:
-Foundations → Security
+Phase 2 — Security
  
 Completed:
 Lessons 1–5
  
 Current:
 Lesson 6 — Complete IAM Policy Evaluation
+
+Current subtopic:
+Resource-Policy Principal Variations
+
+Exact next lesson:
+Lesson 6, Part 7 — AWS Account Principals in Resource-Based Policies
  
 Known strengths:
  
@@ -1667,24 +1732,103 @@ Known strengths:
 - Independent per-hop authorization
 - Role session names vs source identity
 - CloudTrail assumed-role session traceability
+- Identity-policy Allow union
+- Permissions-boundary fundamentals
+- Session-policy fundamentals
+- Service Control Policy fundamentals
+- Same-account policy-evaluation fundamentals
+- Cross-account policy-evaluation fundamentals
+- IAM role ARN versus assumed-role session ARN
  
 Known weaknesses:
  
-- General resource-based policies
-- Complete IAM policy evaluation
-- Permissions boundaries
-- Service Control Policies
-- Detailed session-policy behavior
-- Session tags and transitive-tag authorization
-- Same-account versus cross-account policy evaluation
-- Detailed least-privilege policy construction
+- Resource-policy Principal variations
+- Resource-policy account-principal semantics
+- AWS service-principal authorization
+- Policy Condition operators and request-context matching
+- Confused deputy prevention
+- SourceArn versus SourceAccount
+- Session tags and ABAC
+- Practical least-privilege JSON policy construction
+- Independent mixed policy-evaluation validation
 - Targeted individual-session revocation designs
 - Detailed CloudTrail event analysis
  
 Next action:
  
-BEGIN LESSON 6 — COMPLETE IAM POLICY EVALUATION: IDENTITY POLICIES, RESOURCE POLICIES, PERMISSIONS BOUNDARIES, SCPS & SESSION POLICIES.
+BEGIN LESSON 6, PART 7 — AWS ACCOUNT PRINCIPALS IN RESOURCE-BASED POLICIES.
  
+==================================================
+AGREED SECURITY LEARNING ORDER
+==================================================
+
+SECTION 1 — COMPLETE CORE IAM POLICY EVALUATION:
+1. Resource-policy Principal variations.
+2. AWS account principals.
+3. AWS service principals.
+4. Policy conditions.
+5. Confused deputy problem.
+6. aws:SourceArn.
+7. aws:SourceAccount.
+8. Final mixed policy-evaluation scenario.
+9. Practical least-privilege policy construction.
+
+SECTION 2 — COGNITO:
+1. Cognito user pools.
+2. Cognito identity pools.
+3. User pools versus identity pools.
+4. Sign-up and sign-in.
+5. JWT fundamentals.
+6. ID tokens.
+7. Access tokens.
+8. Refresh tokens.
+9. API Gateway Cognito authorizers.
+10. Federation.
+11. Temporary AWS credentials through identity pools.
+12. Authenticated and unauthenticated identities.
+13. Cognito Lambda triggers at appropriate DVA-C02 depth.
+
+SECTION 3 — BEARER TOKENS AND APPLICATION AUTHORIZATION:
+1. What a bearer token means.
+2. Why possession of a bearer token is sufficient to use it.
+3. Token validation.
+4. Signature.
+5. Issuer.
+6. Audience.
+7. Claims.
+8. Expiration.
+9. Authentication versus token-based authorization.
+10. API Gateway authorization.
+11. Application-level authorization.
+12. Fine-grained authorization.
+13. Where IAM authorization ends and application authorization begins.
+
+SECTION 4 — CROSS-SERVICE AUTHENTICATION:
+1. AWS service principals.
+2. Lambda resource-based policies.
+3. S3 invoking Lambda.
+4. API Gateway invoking Lambda.
+5. EventBridge invoking Lambda.
+6. SNS delivering messages to SQS.
+7. Trust policies versus execution-role permissions.
+8. Confused deputy protection.
+9. aws:SourceArn and aws:SourceAccount.
+
+SECTION 5 — SESSION TAGS AND ABAC:
+1. Session tags.
+2. aws:PrincipalTag.
+3. Resource tags.
+4. Tag-based policy conditions.
+5. Transitive session tags.
+6. RBAC versus ABAC.
+7. One practical authorization scenario.
+
+Reinforcement rule:
+Concepts such as service principals, confused deputy protection,
+SourceArn and SourceAccount may be reinforced through real service
+integrations, but reinforcement does not replace first demonstrating the
+concept.
+
 ==================================================
 END OF MASTER TRACKER
 ==================================================
