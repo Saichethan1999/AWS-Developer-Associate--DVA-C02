@@ -1,257 +1,283 @@
-AWS DVA-C02 — DAILY STUDY PLAN
+AWS DVA-C02 — UPDATED DAILY STUDY PLAN
+Created/Updated: August 16, 2026 at 06:57 IST
 Target Exam: September 3, 2026
 Voucher Expiry: September 9, 2026
 
-==================================================
-DAILY TEMPLATE
-==================================================
+PLAN STATUS
+This is the latest consolidated Daily Study Plan.
+The Master Tracker remains the SINGLE SOURCE OF TRUTH for syllabus scope,
+topic status, demonstrated understanding, confidence, weak areas, and
+exact next lesson.
+This file is the execution schedule.
+Do not artificially extend a topic just because it is difficult.
+Do not skip official DVA-C02 coverage merely to stay on schedule.
+Previously demonstrated concepts should be validated rather than re-taught.
 
-Target: 2–3 focused hours.
-
+DAILY STUDY TEMPLATE
+Target: 2–3 focused hours on normal study days.
 BLOCK 1 — LEARN (60–90 min)
-- Continue the next topic from the Master Tracker.
-- First principles: WHY before WHAT.
+- Continue the next topic in canonical Master Tracker order.
+- WHY before WHAT.
 - Build the service mental model.
 - Connect to production engineering.
-- Add the System Design Lens naturally.
-
+- Add system-design reasoning naturally.
 BLOCK 2 — ACTIVE REASONING (30–45 min)
-- Answer scenario questions.
+- Scenario questions.
 - Explain reasoning in your own words.
 - Compare similar services.
-- Think through failure, scaling, security, and trade-offs.
-- Never look at answers first.
-
+- Think through failure, scaling, security and trade-offs.
+- Do not look at answers first.
 BLOCK 3 — EXAM PRACTICE / REVISION (30–45 min)
-Early phase: 5–10 scenario questions.
-Middle phase: topic-specific + mixed questions.
-Exam phase: timed sets, mocks, weak-area repair.
-
+- Topic-specific questions while learning.
+- Mixed questions as coverage expands.
+- Timed sets during the exam-preparation phase.
 OPTIONAL (15–30 min)
 - Previous-day recall
 - Service comparison
 - Decision tree
 - Small hands-on experiment
 
-Every day must contain:
-1. New learning
-2. Retrieval/reasoning
-3. Scenario/exam practice
+AUG 14 — IAM COMPLETION
+Finish:
+- STS remaining concepts / validation
+- AssumeRole mechanics
+- Role chaining
+- Session revocation
+- CloudTrail identity/session traceability
+- Resource-based policies
+- IAM policy evaluation
+- Permissions boundaries
+- SCPs
+- Session policies
+- Same-account vs cross-account policy evaluation
+- Detailed least-privilege policy design
+- Bearer tokens
+- Cognito
+- Application-level authorization
+- Fine-grained authorization
+- Cross-service authentication
+- Human vs workload identities / enterprise federation validation
+Target: IAM / Authentication / Authorization sufficiently covered to move forward.
 
-==================================================
-AUG 11–23 — FIRST-PASS THEORY
-==================================================
+AUG 15 — ENCRYPTION & SENSITIVE DATA
+- KMS
+- Encryption at rest / in transit
+- Server-side vs client-side encryption
+- Key rotation
+- Cross-account encryption
+- Certificate management / AWS Private CA
+- Secrets Manager
+- Systems Manager Parameter Store
+- Sensitive environment variables
+- Sensitive data handling
+- Data masking / sanitization
+Practice: security scenarios and service comparisons.
 
-AUG 11 — IAM FOUNDATIONS
-Authentication vs authorization; users; groups; roles; human vs workload
-identities; long-term vs temporary credentials; least privilege.
-System design: trust boundaries and credential exposure.
-Practice: 5–10 IAM scenarios.
+AUG 16 — AWS SERVICE APIs / SDKs / CLI
+- AWS Service APIs
+- AWS SDKs
+- AWS CLI
+- AWS CloudShell
+- Authentication / authorization
+- Request / response handling
+- API error handling
+- Retries
+- Backoff
+- Timeouts
+- Idempotency
+- Throttling
+- Partial-failure handling
+System-design: network failures, dependency failures, retry storms, backpressure.
+Practice: API / SDK behavior scenarios and a short hands-on experiment if useful.
 
-AUG 12 — IAM DEEP DIVE + STS
-Policies; identity/resource policies; policy evaluation; explicit deny; STS;
-AssumeRole; temporary credentials; federation; programmatic access;
-cross-account access.
-System design: authorization boundaries and workload identity.
-Practice: 10–15 IAM questions.
+AUG 17 — LAMBDA CORE
+- Execution model
+- Invocation models
+- Synchronous / asynchronous invocation
+- Event source mappings / event sources
+- Environment variables / parameters
+- Memory / timeout / runtime / handler
+- Layers / extensions
+- Versions / aliases
+System-design: statelessness, horizontal scaling, event-driven execution.
+Practice: Lambda invocation and configuration scenarios.
 
-AUG 13 — KMS + SECRETS + COGNITO
-KMS; encryption; key rotation; cross-account encryption; Secrets Manager;
-Parameter Store; Cognito; bearer tokens; application authorization.
-System design: security boundaries, secret distribution, tenant isolation.
-Practice: security scenarios and comparisons.
+AUG 18 — LAMBDA ADVANCED
+- Concurrency
+- Reserved / provisioned concurrency
+- Retry behavior
+- Destinations / DLQs
+- Permissions
+- VPC / private resource access
+- Testing / test events
+- AWS service integrations
+- Performance tuning
+- Idempotency
+- Downstream protection
+- Failure isolation
+- Retry storms
+- Cold-start trade-offs
+Practice: Lambda failure/retry/concurrency scenarios and hands-on where useful.
 
-AUG 14 — LAMBDA CORE
-Execution/invocation models; sync vs async; event sources; runtime; handler;
-memory; timeout; environment variables; layers; versions; aliases.
-System design: statelessness and horizontal scaling.
-Practice: Lambda scenarios.
+AUG 19 — API GATEWAY
+- API concepts
+- REST APIs / HTTP APIs
+- Lambda integration
+- Request/response transformations
+- Validation
+- Authentication / authorization
+- Throttling
+- Caching
+- Stages / development endpoints
+- Custom domains
+- Deployment
+- Error handling / troubleshooting
+System-design: API boundaries, rate limiting, authentication, versioning, coupling, failure handling.
+Practice: API Gateway scenarios and API Gateway vs ALB where relevant.
 
-AUG 15 — LAMBDA ADVANCED
-Concurrency; reserved/provisioned concurrency; retries; destinations; DLQs;
-permissions; VPC access; testing; performance; idempotency; real-time
-processing.
-System design: downstream protection, retry storms, failure isolation.
-Practice: 10–15 Lambda questions.
+AUG 20 — MESSAGING & EVENT-DRIVEN ARCHITECTURE
+SQS: Standard/FIFO, visibility timeout, long polling, DLQ, redrive, retries, ordering, at-least-once delivery, Lambda integration.
+SNS: topics, publishers, subscribers, fanout, filtering, subscription filter policies.
+EventBridge: event buses, rules, event patterns, targets, scheduling.
+Step Functions: state machines, Task, Choice, Parallel, Retry, Catch, error handling, orchestration.
+Practice: SQS vs SNS vs EventBridge vs Step Functions; queue vs pub/sub; choreography vs orchestration; retry/failure-isolation scenarios.
 
-AUG 16 — API GATEWAY + SDK/API BEHAVIOR
-Integrations; transformations; validation; auth; throttling; caching; stages;
-custom domains; errors; SDK calls; retries; backoff; timeouts; idempotency.
-System design: API boundaries, rate limiting, dependency failures.
-Practice: API/SDK scenarios.
+AUG 21 — STREAMING + API / GRAPHQL
+Kinesis: streaming vs queue semantics, producers/consumers, ordering/partition concepts, real-time processing.
+AppSync: GraphQL awareness, fundamentals, AppSync vs API Gateway.
+Practice: Kinesis scenarios and AppSync/API Gateway comparisons.
 
-AUG 17 — DYNAMODB CORE
-Tables; partition/sort keys; access patterns; high-cardinality keys; Query vs
-Scan; GSI/LSI; strong vs eventual consistency.
-System design: access-pattern modeling, partitioning, consistency.
-Practice: DynamoDB scenarios.
+AUG 22 — DYNAMODB
+- Tables
+- Partition keys / high-cardinality keys
+- Sort keys / access patterns
+- Query vs Scan
+- GSIs / LSIs
+- Strong vs eventual consistency
+- Capacity modes / provisioned / on-demand
+- Conditional writes / transactions
+- TTL / Streams
+- Serialization / deserialization
+- Caching / DAX
+- Hot partitions / throttling
+- Optimization / best practices
+System-design: access-pattern modeling, partitioning, scalability, consistency, caching, NoSQL vs relational.
+Practice: DynamoDB scenarios and access-pattern design.
 
-AUG 18 — DYNAMODB ADVANCED + S3
-DynamoDB capacity; conditional writes; transactions; TTL; Streams; DAX; hot
-partitions; throttling; caching; lifecycle. S3 buckets/objects/versioning/
-lifecycle/storage classes/encryption/policies/presigned URLs/events/replication.
-System design: caching, event processing, object storage.
-Practice: DynamoDB + S3 questions.
+AUG 23 — S3
+- Buckets / objects
+- Versioning
+- Lifecycle rules / storage classes
+- Static website hosting
+- Bucket policies / access control
+- Pre-signed URLs
+- Encryption
+- Event notifications
+- Replication
+- Performance / data lifecycle
+Practice: S3 scenarios, S3 vs DynamoDB, security/access-control scenarios.
 
-AUG 19 — SQS + SNS
-Standard/FIFO; visibility timeout; long polling; DLQ; retries; ordering;
-at-least-once delivery; Lambda integration; SNS topics/subscribers/fanout/
-filtering.
-System design: queues vs pub/sub, loose coupling, backpressure.
-Practice: 10–15 messaging questions.
+AUG 24 — DATA STORES + COMPUTE
+- RDS / Aurora
+- ElastiCache
+- EC2 developer concepts
+- EBS / EFS
+- ECS / Fargate / ECR
+- EKS awareness
+- Elastic Beanstalk
+Focus on developer use cases, integration, scaling, persistence, caching and service selection.
+Do NOT deep-dive server administration or Kubernetes administration.
 
-AUG 20 — EVENTBRIDGE + STEP FUNCTIONS
-Event buses/rules/patterns/targets/scheduling; state machines; Task/Choice/
-Parallel/Retry/Catch; orchestration; choreography; fanout.
-System design: event-driven architecture and choreography vs orchestration.
-Practice: EventBridge vs SNS vs SQS and Step Functions scenarios.
+AUG 25 — OBSERVABILITY + TROUBLESHOOTING / OPTIMIZATION
+CloudWatch: logs, metrics, alarms, dashboards, Logs Insights, structured logging, custom metrics, EMF.
+X-Ray: tracing, service maps, annotations, distributed debugging.
+CloudTrail: API activity, auditing, troubleshooting/security relationship.
+Troubleshooting: permission failures, integration failures, throttling, retries, timeouts, concurrency, bottlenecks, profiling, memory/compute optimization, caching, resource/cost optimization.
+Practice: troubleshooting scenarios and CloudWatch vs CloudTrail vs X-Ray.
 
-AUG 21 — OBSERVABILITY + TROUBLESHOOTING
-CloudWatch logs/metrics/alarms/dashboards/Insights/structured logging/custom
-metrics/EMF; X-Ray traces/service maps/annotations; CloudTrail; health checks;
-readiness; debugging.
-System design: observability and distributed-system debugging.
-Practice: troubleshooting scenarios.
+AUG 26 — DEPLOYMENT + NETWORKING + SUPPORTING SERVICES
+Deployment/CI-CD:
+- CloudFormation
+- SAM
+- CDK
+- CodeBuild
+- CodeDeploy
+- CodePipeline
+- AppConfig
+- CodeArtifact
+- Artifacts / environments / aliases
+- Rollbacks / blue-green / canary / rolling
+- Integration testing / mocking / event-driven testing
+Networking:
+- VPC / public-private subnets
+- Security groups / NACLs
+- Internet Gateway / NAT Gateway
+- Route tables / DNS / VPC endpoints
+- Lambda private resource access
+- Route 53 / ELB / CloudFront / WAF
+Supporting awareness:
+- Athena
+- OpenSearch
+- Systems Manager
+- CloudShell
+- Amplify
+- Amazon Q Developer
+Do not deep-dive awareness-level services.
+END-OF-DAY TARGET: first-pass coverage of the Master Tracker in canonical order.
 
-AUG 22 — DEPLOYMENT / CI-CD
-CloudFormation; SAM; CDK; CodeBuild; CodeDeploy; CodePipeline; AppConfig;
-CodeArtifact; artifacts; environments; aliases; rollbacks; blue/green;
-canary; rolling; integration testing; mocking; event-driven testing.
-System design: deployment safety, blast radius, progressive delivery.
-Practice: deployment scenarios.
-
-AUG 23 — SUPPORTING SERVICES + FULL COVERAGE CHECK
-EC2; EBS; EFS; ECS; Fargate; ECR; EKS awareness; Elastic Beanstalk; VPC
-developer concepts; Route 53; ELB; CloudFront; WAF; AppSync; Kinesis; Athena;
-OpenSearch; Systems Manager; Amplify; CloudShell; Amazon Q Developer.
-
-Do not deep-dive every supporting service. Learn the problem, use case, and
-exam-relevant behavior.
-
-END-OF-DAY TARGET:
-Every major DVA-C02 domain has been covered once.
-
-==================================================
-AUG 24 — DIAGNOSTIC MOCK #1
-==================================================
-
-Take a full timed mock under exam conditions.
-
-Categorize every mistake:
-A — Didn't know concept
+AUG 27 — MOCK #1 / DIAGNOSTIC
+Full timed mock under exam conditions.
+Categorize mistakes:
+A — Did not know concept
 B — Knew concept, misunderstood scenario
 C — Misread requirement
 D — Technical/detail gap
 E — Careless mistake
-
-Group by:
-- Development
-- Security
-- Deployment
-- Troubleshooting/Optimization
-
-Update the Master Tracker.
-
+Group by Development, Security, Deployment, Troubleshooting/Optimization.
 Purpose: diagnosis, not proving readiness.
+Update Master Tracker from evidence.
 
-==================================================
-AUG 25–26 — WEAK-AREA REPAIR
-==================================================
-
+AUG 28 — WEAK-AREA REPAIR
+Use Mock #1 evidence.
+- 60–90 min targeted repair
+- 30–45 min targeted questions
+- 30–45 min mixed questions
+- 15 min wrong-answer notebook
+Prioritize actual weaknesses, especially IAM, Lambda, DynamoDB, messaging, deployment and troubleshooting.
 Do NOT restart the course.
 
-Use Mock #1 evidence.
-
-Daily:
-60–90 min: repair biggest weakness
-30–45 min: targeted questions
-30–45 min: mixed questions
-15 min: wrong-answer notebook
-
-Prioritize evidence-based weaknesses, especially IAM, Lambda, DynamoDB,
-messaging, deployment, and troubleshooting.
-
-==================================================
-AUG 27 — MOCK #2
-==================================================
-
-Full timed mock.
-
-Analyze:
-- recurring mistakes
-- improved areas
-- domain weaknesses
-- timing problems
-- conceptual vs detail errors
-
-Update readiness.
-
-==================================================
-AUG 28–29 — TARGETED REPAIR + EXAM PATTERNS
-==================================================
-
-No broad syllabus progression.
-
-Focus on:
-- wrong-answer notebook
-- service comparisons
-- decision trees
-- exam traps
-- weak domains
-- frequently confused concepts
-
+AUG 29 — TARGETED REPAIR + EXAM PATTERNS
+Focus on wrong-answer notebook, service comparisons, decision trees, exam traps, weak domains and frequently confused concepts.
 High-value comparisons:
-SQS vs SNS vs EventBridge
-API Gateway vs ALB
-Lambda vs ECS/Fargate
-DynamoDB vs RDS
-Secrets Manager vs Parameter Store
-CloudWatch vs CloudTrail vs X-Ray
-Identity-based vs resource-based policy
-Strong vs eventual consistency
-Query vs Scan
-Reserved vs provisioned Lambda concurrency
-Blue/green vs canary vs rolling
-Choreography vs orchestration
+- SQS vs SNS vs EventBridge
+- API Gateway vs ALB
+- Lambda vs ECS/Fargate
+- DynamoDB vs RDS
+- Secrets Manager vs Parameter Store
+- CloudWatch vs CloudTrail vs X-Ray
+- Identity-based vs resource-based policy
+- Strong vs eventual consistency
+- Query vs Scan
+- Reserved vs provisioned Lambda concurrency
+- Blue/green vs canary vs rolling
+- Choreography vs orchestration
+Use timed questions.
 
-Use timed questions daily.
+AUG 30 — MOCK #2 / READINESS CHECK
+Take a second full timed mock.
+Evaluate domain strengths/weaknesses, recurring mistakes, timing, knowledge gaps and confidence under pressure.
+If strong: continue toward Sep 3.
+If borderline: use Aug 31–Sep 2 for targeted repair.
+If weak: do not take the exam merely because Sep 3 was the original target; use the voucher buffer if necessary.
 
-==================================================
-AUG 30 — MOCK #3 / READINESS TEST
-==================================================
-
-Take the third full timed mock.
-
-Evaluate:
-- domain strengths/weaknesses
-- recurring mistakes
-- timing
-- knowledge gaps
-- confidence under pressure
-
-If strong: proceed toward Sep 3.
-If borderline: use Sep 1–3 for targeted repair and consider delaying.
-If weak: do not take the exam just because Sep 3 was the original target.
-Use the voucher buffer.
-
-==================================================
 AUG 31 — FINAL TARGETED REVISION
-==================================================
-
 No major new topics.
-
 Review only evidence-based weaknesses:
-IAM; Lambda; DynamoDB; messaging; deployment; troubleshooting; security;
-wrong-answer notebook.
-
+IAM; Lambda; DynamoDB; messaging; deployment; troubleshooting; security; wrong-answer notebook.
 Use active recall, not passive rereading.
 
-==================================================
 SEP 1 — FINAL EXAM PREPARATION
-==================================================
-
 60–120 minutes.
-
 Review:
 - comparison tables
 - decision trees
@@ -263,79 +289,41 @@ Review:
 - messaging semantics
 - deployment strategies
 - observability
-
 No large new topic.
 
-==================================================
 SEP 2 — LIGHT REVISION / BUFFER
-==================================================
-
 60–90 minutes maximum.
+Review only wrong-answer notebook, difficult comparisons, high-value mental models and a few confidence-building questions.
+No full mock. No major new lesson. Prioritize sleep.
 
-Review only:
-- wrong-answer notebook
-- difficult comparisons
-- high-value mental models
-- a few confidence-building questions
-
-No full mock.
-No major new lesson.
-Prioritize sleep.
-
-==================================================
 SEP 3 — EXAM DAY
-==================================================
-
 Light review only.
-
 During the exam:
 - Read the requirement carefully.
 - Identify what is actually being asked.
-- Watch for clues such as MOST appropriate, LEAST operational overhead,
-  MOST secure, cost-effective, high availability, minimal changes,
-  asynchronous, ordered, durable, least privilege.
+- Watch for MOST appropriate, LEAST operational overhead, MOST secure, cost-effective, high availability, minimal changes, asynchronous, ordered, durable and least privilege.
 - Eliminate distractors.
 - Do not get stuck on one question.
 - Flag and return to uncertain questions.
 
-==================================================
 SEP 4–9 — SAFETY BUFFER
-==================================================
-
 Not part of the normal plan.
+Use only if mock performance is not strong, major weaknesses remain, Sep 3 would be unnecessarily risky, or unexpected schedule issues occur.
+If ready, take the exam according to evidence. Do not delay merely because the voucher allows it.
 
-Use only if:
-- mock performance is not strong
-- major weaknesses remain
-- Sep 3 would be unnecessarily risky
-- unexpected schedule issues occur
-
-If ready, take the exam earlier. Do not delay merely because the voucher
-allows it.
-
-==================================================
 MASTER TRACKER RULE
-==================================================
-
 The Master Tracker is the source of truth for course state.
-
-The Lesson Archive contains detailed teaching history.
-
 After every lesson:
-- update completion
-- update confidence
-- update demonstrated skills
-- update domain readiness
-- update system-design readiness
-- add misconceptions/weak areas
-- set exact next lesson
-
+- Update completion
+- Update confidence
+- Update demonstrated skills
+- Update domain readiness
+- Update system-design readiness
+- Add misconceptions/weak areas
+- Set exact next lesson
 Do not mark a topic complete merely because it was mentioned.
 
-==================================================
 DAILY NON-NEGOTIABLES
-==================================================
-
 [ ] New concept learned
 [ ] Previous concept recalled
 [ ] Scenario questions answered
@@ -343,18 +331,13 @@ DAILY NON-NEGOTIABLES
 [ ] Misconceptions recorded
 [ ] Master Tracker updated when needed
 
-FINAL OBJECTIVE:
-
+FINAL OBJECTIVE
 Do not memorize "SQS = queue."
-
-Be able to reason:
-"I need asynchronous processing, decoupling, buffering, retries, failure
-isolation and scalable consumers. SQS is a candidate; now I must reason about
-visibility timeout, DLQ, idempotency, ordering and delivery semantics."
+Be able to reason about why SQS is appropriate and then distinguish visibility timeout, DLQ, idempotency, ordering and delivery semantics.
 
 DVA-C02 comes first.
 System-design thinking is embedded throughout.
 Do not sacrifice official exam coverage for interesting side topics.
 Do not sacrifice understanding for speed.
 
-END OF DAILY STUDY PLAN
+END OF UPDATED DAILY STUDY PLAN
