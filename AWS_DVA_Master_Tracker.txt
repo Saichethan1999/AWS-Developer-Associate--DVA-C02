@@ -281,7 +281,7 @@ Complete IAM Policy Evaluation
 🟦 Resource-policy principals, service principals and conditions
 🟦 Confused deputy protection and mixed-policy authorization
  
-DO NOT restart Lessons 1–6.
+DO NOT restart Lessons 1–7.
  
 Previously demonstrated concepts should be treated as known unless
 new evidence reveals a gap.
@@ -384,6 +384,31 @@ The following concepts have already been demonstrated:
 ✅ SourceArn and SourceAccount conjunction
 ✅ Least-privilege resource-policy construction
 ✅ Comprehensive mixed IAM policy evaluation
+✅ Application users versus IAM users
+✅ Cognito User Pools as application-user directories
+✅ Authentication identity versus application business data
+✅ Cognito user lifecycle: sign-up, confirmation and sign-in
+✅ UNCONFIRMED, CONFIRMED and disabled Cognito user states
+✅ Cognito app client purpose
+✅ App client IDs versus app client secrets
+✅ Public client versus trusted backend secret handling
+✅ Cognito ID, access and refresh token purposes
+✅ Cognito sub stable user identifier
+✅ JWT structure and Base64URL decoding
+✅ JWT decoding versus validation
+✅ Cognito private-key signing and public-key verification
+✅ Cognito JWKS and key-ID purpose
+✅ JWT validation beyond signature
+✅ Token validation versus application business authorization
+✅ API Gateway Cognito User Pool authorizer fundamentals
+✅ User Pool federation
+✅ User Pool versus Identity Pool
+✅ Identity Pool temporary AWS credentials through IAM roles and STS
+✅ Authenticated versus unauthenticated Identity Pool identities
+✅ Guest role versus authenticated-user role
+✅ Cognito Lambda trigger selection
+✅ User Pool versus Identity Pool architecture selection
+✅ Cognito authentication boundary versus application authorization boundary
  
 These should receive validation rather than full reteaching.
  
@@ -472,6 +497,24 @@ Historical misconceptions already corrected:
    account may be allowed when SourceArn requires one exact resource.
 
 31. Cross-account authorization operates as a literal handshake.
+
+32. An app client ID may be a secret that securely proves an application's
+   identity.
+
+33. A trusted backend may safely hardcode its app-client secret in source
+   code.
+
+34. The backend verifies a JWT by comparing it with another stored token.
+
+35. JWT header and payload decoding requires a key or secret.
+
+36. An IAM role may have a resource-based policy attached to it instead of
+   a trust policy.
+
+37. An Identity Pool user directly assumes the Identity Pool.
+
+38. Pre sign-up runs merely because the user clicked a frontend Sign up
+   button.
  
 Do not delete historical misconceptions.
  
@@ -494,6 +537,24 @@ Current known weak areas:
 🟨 Targeted individual-session revocation designs
 
 🟨 Detailed CloudTrail event analysis
+
+🟨 OAuth 2.0 and OpenID Connect flows
+
+🟨 Bearer-token possession and theft behavior
+
+🟨 Detailed token-validation implementation in application code
+
+🟨 Cognito Hosted UI and managed login behavior
+
+🟨 Detailed Identity Pool role-mapping rules
+
+🟨 Detailed Cognito sign-out, token revocation and global sign-out
+
+🟨 Detailed custom authentication trigger contracts
+
+🟨 API Gateway authorizer behavior by API type and configuration
+
+🟨 Asymmetric cryptography reinforcement
  
 These should be addressed during IAM and related security lessons.
  
@@ -590,7 +651,13 @@ ABAC / Principal Tags                         ⬜
 Programmatic Access                           🟦
 Federated Access                              🟦
 Bearer Tokens                                 ⬜
-Cognito                                       ⬜
+Cognito                                       🟨
+Cognito User Pools                            ✅
+Cognito Identity Pools                        ✅
+Cognito Federation                            ✅
+Cognito Tokens                                ✅
+API Gateway Cognito Authorizers               ✅
+Cognito Lambda Triggers                       ✅
 Application-Level Authorization                ⬜
 Fine-Grained Authorization                    ⬜
 Cross-Service Authentication                  🟨
@@ -1445,7 +1512,7 @@ Connection Management                           ⬜
  
 SECURITY
  
-Authentication                                ⬜
+Authentication                                🟦 VALIDATED
 Authorization                                 🟦 VALIDATED
 IAM                                            🟦 VALIDATED
 Tokens                                         ⬜
@@ -1571,20 +1638,24 @@ Confidence: 95%
 Lesson 6:
 ✅ COMPLETE
 Confidence: 96%
+
+Lesson 7:
+✅ COMPLETE
+Confidence: 96%
  
 ==================================================
 EXACT NEXT LESSON
 ==================================================
  
-Lesson 7, Part 1 — Why Amazon Cognito Exists and Cognito User Pool Fundamentals
+Lesson 8, Part 1 — Bearer Tokens and Application Authorization
  
 Focus:
 
-- The application-authentication problem Cognito solves
-- Cognito user pools
-- User pool sign-up and sign-in fundamentals
-- JWT fundamentals at DVA-C02 depth
-- One concise Cognito validation scenario
+- What a bearer token means
+- Token possession and theft risk
+- Token validation versus token-based authorization
+- Application-level and fine-grained authorization boundaries
+- One concise bearer-token validation scenario
 System Design Lens:
  
 - Authorization Boundaries
@@ -1592,9 +1663,9 @@ System Design Lens:
  
 IMPORTANT:
  
-Do not reteach Lessons 1–6.
+Do not reteach Lessons 1–7.
  
-Begin Lesson 7 from the validated IAM policy-evaluation foundations.
+Begin Lesson 8 from the validated Cognito and JWT foundations.
  
 ==================================================
 STUDY TIMELINE
@@ -1725,16 +1796,16 @@ Phase:
 Phase 2 — Security
  
 Completed:
-Lessons 1–6
+Lessons 1–7
  
 Current:
-Lesson 7, Part 1 — Why Amazon Cognito Exists and Cognito User Pool Fundamentals
+Lesson 8, Part 1 — Bearer Tokens and Application Authorization
 
 Current subtopic:
-Cognito User Pool Fundamentals
+Bearer Tokens and Application Authorization
 
 Exact next lesson:
-Lesson 7, Part 1 — Why Amazon Cognito Exists and Cognito User Pool Fundamentals
+Lesson 8, Part 1 — Bearer Tokens and Application Authorization
  
 Known strengths:
  
@@ -1782,6 +1853,18 @@ Known strengths:
 - Confused deputy protection
 - Least-privilege resource-policy construction
 - Comprehensive mixed IAM policy evaluation
+- Application users versus IAM users
+- Cognito User Pools and user lifecycle
+- Cognito app clients and public-client secret handling
+- Cognito ID, access and refresh token purposes
+- JWT decoding, signing and validation fundamentals
+- API Gateway Cognito authorizer versus backend business authorization
+- User Pool federation
+- User Pool versus Identity Pool
+- Identity Pool temporary credentials through IAM roles and STS
+- Authenticated and unauthenticated Identity Pool identities
+- Guest versus authenticated-user roles
+- Cognito Lambda trigger selection
  
 Known weaknesses:
  
@@ -1791,10 +1874,19 @@ Known weaknesses:
 - JSON syntax accuracy and exact AWS action names
 - Targeted individual-session revocation designs
 - Detailed CloudTrail event analysis
+- OAuth 2.0 and OpenID Connect flows
+- Bearer-token possession and theft behavior
+- Detailed token-validation implementation in application code
+- Cognito Hosted UI and managed login behavior
+- Detailed Identity Pool role-mapping rules
+- Detailed Cognito sign-out, token revocation and global sign-out
+- Detailed custom authentication trigger contracts
+- API Gateway authorizer behavior by API type and configuration
+- Asymmetric cryptography reinforcement
  
 Next action:
  
-BEGIN LESSON 7, PART 1 — WHY AMAZON COGNITO EXISTS AND COGNITO USER POOL FUNDAMENTALS.
+BEGIN LESSON 8, PART 1 — BEARER TOKENS AND APPLICATION AUTHORIZATION.
  
 ==================================================
 AGREED SECURITY LEARNING ORDER
