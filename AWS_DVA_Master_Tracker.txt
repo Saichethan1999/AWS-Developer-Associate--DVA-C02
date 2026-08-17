@@ -300,7 +300,17 @@ Bearer Tokens and Application Authorization
 🟦 Validation versus operation, resource and fine-grained authorization
 🟦 API Gateway, application and IAM authorization boundaries
  
-DO NOT restart Lessons 1–7 or Lesson 8 Part 1.
+Lesson 8 Part 2
+STATUS: ✅ COMPLETE
+Confidence: 94%
+
+Cross-Service Authentication, OAuth/OIDC, API Gateway Authorizers,
+Token Revocation & Global Sign-Out, Session Tags & ABAC
+🟦 Cross-service authentication fundamentals
+🟦 OAuth/OIDC and API Gateway authorizer fundamentals
+🟦 Session tags and ABAC fundamentals
+
+DO NOT restart Lessons 1–8.
  
 Previously demonstrated concepts should be treated as known unless
 new evidence reveals a gap.
@@ -437,6 +447,27 @@ The following concepts have already been demonstrated:
 ✅ Token exposure and access-versus-refresh token risk
 ✅ HTTPS does not eliminate token exposure risk
 ✅ End-to-end Cognito to API Gateway to Lambda to IAM to DynamoDB authorization reasoning
+✅ URL and path-parameter identity is untrusted input
+✅ Ownership-based authorization
+✅ Token exposure through URLs and logging
+✅ HTTPS protects tokens in transit but not from logs, history or storage
+✅ Access-token expiration reduces attack blast radius
+✅ OAuth authorization mental model
+✅ OIDC identity mental model
+✅ Authorization Code Flow awareness
+✅ Cognito Hosted UI purpose
+✅ JWT authorizers and Lambda authorizers
+✅ API Gateway authorizer caching high-level behavior
+✅ S3-to-Lambda authorization model
+✅ EventBridge-to-Lambda authorization model
+✅ API Gateway-to-Lambda authorization model
+✅ Trust policy versus execution role versus resource policy
+✅ Service-to-service authentication mental model
+✅ Session tags and transitive session tags
+✅ aws:PrincipalTag and aws:ResourceTag
+✅ ABAC fundamentals
+✅ RBAC versus ABAC
+✅ Tag-based authorization reasoning
  
 These should receive validation rather than full reteaching.
  
@@ -550,6 +581,18 @@ Historical misconceptions already corrected:
    Correct mental model: Token validation determines whether claims are
    trustworthy. Authorization determines whether those trusted claims
    permit an action.
+
+40. A valid token means the caller is authorized to access the requested
+   resource.
+
+41. API Gateway authorization success implies business authorization
+   success.
+
+42. IAM permissions determine whether an application user may access
+   application business data.
+
+43. JWT signature validation proves that the presenter is the original
+   user.
  
 Do not delete historical misconceptions.
  
@@ -565,23 +608,23 @@ Current known weak areas:
 
 🟨 Detailed request-context internals
 
-🟨 Session tags and ABAC
+🟨 ABAC scenario reasoning
 
-🟨 JSON syntax accuracy and exact AWS action names
+🟨 JSON syntax accuracy of complex IAM policies and exact AWS action names
 
 🟨 Targeted individual-session revocation designs
 
 🟨 Detailed CloudTrail event analysis
 
-🟨 OAuth 2.0 and OpenID Connect flows
+🟨 Deep OAuth 2.0 and OIDC protocol mechanics and scenario reinforcement
 
 🟨 Detailed token-validation implementation in application code
 
-🟨 Cognito Hosted UI and managed login behavior
+🟨 Detailed Cognito Hosted UI and managed login behavior
 
 🟨 Detailed Identity Pool role-mapping rules
 
-🟨 Detailed Cognito sign-out, token revocation and global sign-out
+🟨 Detailed Cognito token revocation and global sign-out behavior
 
 🟨 Detailed custom authentication trigger contracts
 
@@ -678,9 +721,9 @@ aws:SourceArn                                 ✅
 aws:SourceAccount                             ✅
 Detailed Least-Privilege Policy Construction  ✅
 Final Mixed IAM Evaluation                    ✅
-Session Tags                                  ⬜
-Transitive Session Tags                       ⬜
-ABAC / Principal Tags                         ⬜
+Session Tags                                  ✅
+Transitive Session Tags                       ✅
+ABAC / Principal Tags                         ✅ — FUNDAMENTALS
 Programmatic Access                           🟦
 Federated Access                              🟦
 Bearer Tokens                                 ✅
@@ -693,7 +736,7 @@ API Gateway Cognito Authorizers               ✅
 Cognito Lambda Triggers                       ✅
 Application-Level Authorization                ✅
 Fine-Grained Authorization                    ✅
-Cross-Service Authentication                  🟨
+Cross-Service Authentication                  ✅ — FUNDAMENTALS
  
 System-design enrichment:
  
@@ -813,8 +856,8 @@ Lambda Integration                            ⬜
 Request Transformations                       ⬜
 Response Transformations                      ⬜
 Validation                                    ⬜
-Authentication                                ⬜
-Authorization                                 ⬜
+Authentication                                ✅
+Authorization                                 ✅
 Throttling                                    ⬜
 Caching                                       ⬜
 Stages                                        ⬜
@@ -826,7 +869,7 @@ Troubleshooting                               ⬜
  
 System-design enrichment:
  
-API Boundaries                                ⬜
+API Boundaries                                🟦 VALIDATED
 Rate Limiting                                 ⬜
 Authentication                                ⬜
 Versioning                                    ⬜
@@ -1405,7 +1448,7 @@ Bearer tokens                                   🟦
 Programmatic access                             🟦
 Application-level authorization                 🟦
 Fine-grained authorization                      🟦
-Cross-service authentication                    🟨
+Cross-service authentication                    🟦
 Encryption at rest                              ⬜
 Encryption in transit                           ⬜
 Client-side encryption                          ⬜
@@ -1684,20 +1727,17 @@ Confidence: 93%
 EXACT NEXT LESSON
 ==================================================
  
-Lesson 8 Part 2 - Cross-Service Authentication
+Lesson 9 - Encryption & Sensitive Data: KMS
  
 Focus:
 
-- AWS service principals
-- Lambda resource-based policies
-- S3 invoking Lambda
-- API Gateway invoking Lambda
-- EventBridge invoking Lambda
-- SNS delivering messages to SQS
-- Trust policies versus execution-role permissions
-- Confused deputy protection
-- aws:SourceArn and aws:SourceAccount
-- One concise cross-service authentication scenario
+- KMS purpose and key concepts
+- Encryption at rest
+- Encryption in transit
+- Server-side encryption
+- Client-side encryption
+- Key rotation
+- One concise KMS validation scenario
 System Design Lens:
  
 - Authorization Boundaries
@@ -1705,9 +1745,9 @@ System Design Lens:
  
 IMPORTANT:
  
-Do not reteach Lessons 1–7 or Lesson 8 Part 1.
+Do not reteach Lessons 1–8.
  
-Begin Lesson 8 Part 2 from the validated Cognito, JWT and application-authorization foundations.
+Begin Lesson 9 from the validated security foundations.
  
 ==================================================
 STUDY TIMELINE
@@ -1838,16 +1878,16 @@ Phase:
 Phase 2 — Security
  
 Completed:
-Lessons 1–7 and Lesson 8 Part 1
+Lessons 1–8
  
 Current:
-Lesson 8 Part 2 - Cross-Service Authentication
+Lesson 9 - Encryption & Sensitive Data: KMS
 
 Current subtopic:
-Cross-Service Authentication
+Encryption & Sensitive Data: KMS
 
 Exact next lesson:
-Lesson 8 Part 2 - Cross-Service Authentication
+Lesson 9 - Encryption & Sensitive Data: KMS
  
 Known strengths:
  
@@ -1915,99 +1955,39 @@ Known strengths:
 - API Gateway, application and IAM authorization boundaries
 - Token exposure and access-versus-refresh token risk
 - End-to-end Cognito to API Gateway to Lambda to IAM to DynamoDB authorization reasoning
+- URL and path-parameter identity is untrusted input
+- Ownership-based authorization
+- OAuth authorization and OIDC identity mental models
+- Authorization Code Flow awareness
+- Cognito Hosted UI purpose
+- JWT and Lambda authorizer fundamentals
+- API Gateway authorizer caching high-level behavior
+- Cross-service authentication fundamentals
+- Service-to-service authentication boundaries
+- Session tags, transitive session tags and tag-based authorization
+- ABAC fundamentals and RBAC versus ABAC
  
 Known weaknesses:
  
 - Broader IAM Condition operators and service-specific condition-key support
 - Detailed request-context internals
-- Session tags and ABAC
-- JSON syntax accuracy and exact AWS action names
+- ABAC scenario reasoning
+- JSON syntax accuracy of complex IAM policies and exact AWS action names
 - Targeted individual-session revocation designs
 - Detailed CloudTrail event analysis
-- OAuth 2.0 and OpenID Connect flows
+- Deep OAuth 2.0 and OIDC protocol mechanics and scenario reinforcement
 - Detailed token-validation implementation in application code
-- Cognito Hosted UI and managed login behavior
+- Detailed Cognito Hosted UI and managed login behavior
 - Detailed Identity Pool role-mapping rules
-- Detailed Cognito sign-out, token revocation and global sign-out
+- Detailed Cognito token revocation and global sign-out behavior
 - Detailed custom authentication trigger contracts
-- Detailed API Gateway authorizer implementation nuances and caching
+- Detailed API Gateway authorizer behavior and cache configuration
 - Asymmetric cryptography reinforcement
  
 Next action:
  
-BEGIN LESSON 8 PART 2 — CROSS-SERVICE AUTHENTICATION.
+BEGIN LESSON 9 — ENCRYPTION & SENSITIVE DATA: KMS.
  
-==================================================
-AGREED SECURITY LEARNING ORDER
-==================================================
-
-SECTION 1 — COMPLETE CORE IAM POLICY EVALUATION:
-1. Resource-policy Principal variations.
-2. AWS account principals.
-3. AWS service principals.
-4. Policy conditions.
-5. Confused deputy problem.
-6. aws:SourceArn.
-7. aws:SourceAccount.
-8. Final mixed policy-evaluation scenario.
-9. Practical least-privilege policy construction.
-
-SECTION 2 — COGNITO:
-1. Cognito user pools.
-2. Cognito identity pools.
-3. User pools versus identity pools.
-4. Sign-up and sign-in.
-5. JWT fundamentals.
-6. ID tokens.
-7. Access tokens.
-8. Refresh tokens.
-9. API Gateway Cognito authorizers.
-10. Federation.
-11. Temporary AWS credentials through identity pools.
-12. Authenticated and unauthenticated identities.
-13. Cognito Lambda triggers at appropriate DVA-C02 depth.
-
-SECTION 3 — BEARER TOKENS AND APPLICATION AUTHORIZATION:
-1. What a bearer token means.
-2. Why possession of a bearer token is sufficient to use it.
-3. Token validation.
-4. Signature.
-5. Issuer.
-6. Audience.
-7. Claims.
-8. Expiration.
-9. Authentication versus token-based authorization.
-10. API Gateway authorization.
-11. Application-level authorization.
-12. Fine-grained authorization.
-13. Where IAM authorization ends and application authorization begins.
-
-SECTION 4 — CROSS-SERVICE AUTHENTICATION:
-1. AWS service principals.
-2. Lambda resource-based policies.
-3. S3 invoking Lambda.
-4. API Gateway invoking Lambda.
-5. EventBridge invoking Lambda.
-6. SNS delivering messages to SQS.
-7. Trust policies versus execution-role permissions.
-8. Confused deputy protection.
-9. aws:SourceArn and aws:SourceAccount.
-
-SECTION 5 — SESSION TAGS AND ABAC:
-1. Session tags.
-2. aws:PrincipalTag.
-3. Resource tags.
-4. Tag-based policy conditions.
-5. Transitive session tags.
-6. RBAC versus ABAC.
-7. One practical authorization scenario.
-
-Reinforcement rule:
-Concepts such as service principals, confused deputy protection,
-SourceArn and SourceAccount may be reinforced through real service
-integrations, but reinforcement does not replace first demonstrating the
-concept.
-
 ==================================================
 END OF MASTER TRACKER
 ==================================================
