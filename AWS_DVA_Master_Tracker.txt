@@ -280,8 +280,27 @@ Complete IAM Policy Evaluation
 🟦 Core IAM policy evaluation
 🟦 Resource-policy principals, service principals and conditions
 🟦 Confused deputy protection and mixed-policy authorization
+
+
+Lesson 7
+STATUS: ✅ COMPLETE
+Confidence: 96%
+
+Cognito Foundations
+🟦 User Pool and Identity Pool fundamentals
+🟦 JWT and authorizer fundamentals
+
+
+Lesson 8 Part 1
+STATUS: ✅ COMPLETE
+Confidence: 93%
+
+Bearer Tokens and Application Authorization
+🟦 Bearer-token possession and replay reasoning
+🟦 Validation versus operation, resource and fine-grained authorization
+🟦 API Gateway, application and IAM authorization boundaries
  
-DO NOT restart Lessons 1–7.
+DO NOT restart Lessons 1–7 or Lesson 8 Part 1.
  
 Previously demonstrated concepts should be treated as known unless
 new evidence reveals a gap.
@@ -409,6 +428,15 @@ The following concepts have already been demonstrated:
 ✅ Cognito Lambda trigger selection
 ✅ User Pool versus Identity Pool architecture selection
 ✅ Cognito authentication boundary versus application authorization boundary
+✅ Bearer-token possession and replay reasoning
+✅ Operation-level authorization via scopes
+✅ Resource-level and fine-grained authorization
+✅ Trusted token claims versus client-controlled input
+✅ Role, group and contextual authorization reasoning
+✅ API Gateway, application and IAM authorization boundaries
+✅ Token exposure and access-versus-refresh token risk
+✅ HTTPS does not eliminate token exposure risk
+✅ End-to-end Cognito to API Gateway to Lambda to IAM to DynamoDB authorization reasoning
  
 These should receive validation rather than full reteaching.
  
@@ -515,6 +543,13 @@ Historical misconceptions already corrected:
 
 38. Pre sign-up runs merely because the user clicked a frontend Sign up
    button.
+
+39. Operation-level authorization and token validation are effectively the
+   same thing.
+
+   Correct mental model: Token validation determines whether claims are
+   trustworthy. Authorization determines whether those trusted claims
+   permit an action.
  
 Do not delete historical misconceptions.
  
@@ -540,8 +575,6 @@ Current known weak areas:
 
 🟨 OAuth 2.0 and OpenID Connect flows
 
-🟨 Bearer-token possession and theft behavior
-
 🟨 Detailed token-validation implementation in application code
 
 🟨 Cognito Hosted UI and managed login behavior
@@ -552,7 +585,7 @@ Current known weak areas:
 
 🟨 Detailed custom authentication trigger contracts
 
-🟨 API Gateway authorizer behavior by API type and configuration
+🟨 Detailed API Gateway authorizer implementation nuances and caching
 
 🟨 Asymmetric cryptography reinforcement
  
@@ -650,7 +683,7 @@ Transitive Session Tags                       ⬜
 ABAC / Principal Tags                         ⬜
 Programmatic Access                           🟦
 Federated Access                              🟦
-Bearer Tokens                                 ⬜
+Bearer Tokens                                 ✅
 Cognito                                       🟨
 Cognito User Pools                            ✅
 Cognito Identity Pools                        ✅
@@ -658,8 +691,8 @@ Cognito Federation                            ✅
 Cognito Tokens                                ✅
 API Gateway Cognito Authorizers               ✅
 Cognito Lambda Triggers                       ✅
-Application-Level Authorization                ⬜
-Fine-Grained Authorization                    ⬜
+Application-Level Authorization                ✅
+Fine-Grained Authorization                    ✅
 Cross-Service Authentication                  🟨
  
 System-design enrichment:
@@ -1368,10 +1401,10 @@ STS                                             🟦
 Temporary credentials                           🟦
 AssumeRole                                      🟦
 Federated access                                🟦
-Bearer tokens                                   ⬜
+Bearer tokens                                   🟦
 Programmatic access                             🟦
-Application-level authorization                 ⬜
-Fine-grained authorization                      ⬜
+Application-level authorization                 🟦
+Fine-grained authorization                      🟦
 Cross-service authentication                    🟨
 Encryption at rest                              ⬜
 Encryption in transit                           ⬜
@@ -1515,7 +1548,7 @@ SECURITY
 Authentication                                🟦 VALIDATED
 Authorization                                 🟦 VALIDATED
 IAM                                            🟦 VALIDATED
-Tokens                                         ⬜
+Tokens                                         🟦 VALIDATED
 Encryption                                     ⬜
 Secrets                                        ⬜
 Tenant Isolation                               ⬜
@@ -1642,20 +1675,29 @@ Confidence: 96%
 Lesson 7:
 ✅ COMPLETE
 Confidence: 96%
+
+Lesson 8 Part 1:
+✅ COMPLETE
+Confidence: 93%
  
 ==================================================
 EXACT NEXT LESSON
 ==================================================
  
-Lesson 8, Part 1 — Bearer Tokens and Application Authorization
+Lesson 8 Part 2 - Cross-Service Authentication
  
 Focus:
 
-- What a bearer token means
-- Token possession and theft risk
-- Token validation versus token-based authorization
-- Application-level and fine-grained authorization boundaries
-- One concise bearer-token validation scenario
+- AWS service principals
+- Lambda resource-based policies
+- S3 invoking Lambda
+- API Gateway invoking Lambda
+- EventBridge invoking Lambda
+- SNS delivering messages to SQS
+- Trust policies versus execution-role permissions
+- Confused deputy protection
+- aws:SourceArn and aws:SourceAccount
+- One concise cross-service authentication scenario
 System Design Lens:
  
 - Authorization Boundaries
@@ -1663,9 +1705,9 @@ System Design Lens:
  
 IMPORTANT:
  
-Do not reteach Lessons 1–7.
+Do not reteach Lessons 1–7 or Lesson 8 Part 1.
  
-Begin Lesson 8 from the validated Cognito and JWT foundations.
+Begin Lesson 8 Part 2 from the validated Cognito, JWT and application-authorization foundations.
  
 ==================================================
 STUDY TIMELINE
@@ -1796,16 +1838,16 @@ Phase:
 Phase 2 — Security
  
 Completed:
-Lessons 1–7
+Lessons 1–7 and Lesson 8 Part 1
  
 Current:
-Lesson 8, Part 1 — Bearer Tokens and Application Authorization
+Lesson 8 Part 2 - Cross-Service Authentication
 
 Current subtopic:
-Bearer Tokens and Application Authorization
+Cross-Service Authentication
 
 Exact next lesson:
-Lesson 8, Part 1 — Bearer Tokens and Application Authorization
+Lesson 8 Part 2 - Cross-Service Authentication
  
 Known strengths:
  
@@ -1865,6 +1907,14 @@ Known strengths:
 - Authenticated and unauthenticated Identity Pool identities
 - Guest versus authenticated-user roles
 - Cognito Lambda trigger selection
+- Bearer-token possession and replay reasoning
+- Operation-level authorization via scopes
+- Resource-level and fine-grained authorization
+- Trusted token claims versus client-controlled input
+- Role, group and contextual authorization reasoning
+- API Gateway, application and IAM authorization boundaries
+- Token exposure and access-versus-refresh token risk
+- End-to-end Cognito to API Gateway to Lambda to IAM to DynamoDB authorization reasoning
  
 Known weaknesses:
  
@@ -1875,18 +1925,17 @@ Known weaknesses:
 - Targeted individual-session revocation designs
 - Detailed CloudTrail event analysis
 - OAuth 2.0 and OpenID Connect flows
-- Bearer-token possession and theft behavior
 - Detailed token-validation implementation in application code
 - Cognito Hosted UI and managed login behavior
 - Detailed Identity Pool role-mapping rules
 - Detailed Cognito sign-out, token revocation and global sign-out
 - Detailed custom authentication trigger contracts
-- API Gateway authorizer behavior by API type and configuration
+- Detailed API Gateway authorizer implementation nuances and caching
 - Asymmetric cryptography reinforcement
  
 Next action:
  
-BEGIN LESSON 8, PART 1 — BEARER TOKENS AND APPLICATION AUTHORIZATION.
+BEGIN LESSON 8 PART 2 — CROSS-SERVICE AUTHENTICATION.
  
 ==================================================
 AGREED SECURITY LEARNING ORDER
