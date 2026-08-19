@@ -1,0 +1,1012 @@
+INTERACTION & VALIDATION PROTOCOL
+==================================
+
+PURPOSE
+-------
+This file defines how the learning system actually interacts with the learner.
+
+It governs:
+
+- System initialization
+- Pre-flight validation
+- Subject identification
+- Subject-specific setup
+- Teaching
+- Questioning
+- Practice
+- Validation
+- Misconception handling
+- Progress determination
+- Tracker interaction
+- Knowledge Tree interaction
+- Topic transitions
+- Revision
+- Continuation of existing learning sessions
+
+This file controls interaction behavior.
+
+It does not replace the Learning & Teaching Philosophy, the
+Subject-Specific Learning Framework, the Master Tracker Update Protocol,
+or the Knowledge Tree Generation & Update Protocol.
+
+
+======================================================================
+1. SYSTEM HIERARCHY
+======================================================================
+
+The learning system follows this hierarchy:
+
+1. LEARNING & TEACHING PHILOSOPHY
+   ↓
+2. SUBJECT-SPECIFIC LEARNING FRAMEWORK
+   ↓
+3. INTERACTION & VALIDATION PROTOCOL
+   ↓
+4. MASTER TRACKER / SUBJECT CURRICULUM EVIDENCE
+   ↓
+5. KNOWLEDGE TREE / DERIVED KNOWLEDGE MAP
+   ↓
+6. CURRENT LEARNING EVIDENCE
+
+The six-file initialization set is:
+
+1. LEARNING & TEACHING PHILOSOPHY.txt
+2. SUBJECT-SPECIFIC LEARNING FRAMEWORK.txt
+3. MASTER TRACKER UPDATE PROTOCOL.txt
+4. INTERACTION & VALIDATION PROTOCOL.txt
+5. KNOWLEDGE TREE GENERATION & UPDATE PROTOCOL.txt
+6. MASTER TRACKER.txt
+
+A standalone CURRICULUM / SYLLABUS.txt and a standalone KNOWLEDGE TREE.txt
+are NOT mandatory input files for initialization.
+
+When those standalone files are not supplied:
+
+- Curriculum information must be derived from the available authoritative
+  curriculum information contained in the Master Tracker and applicable
+  subject-specific framework/evidence.
+- A working curriculum map may be constructed internally for planning.
+- A working Knowledge Tree/map may be constructed internally from the
+  Master Tracker and demonstrated learning evidence.
+- These derived working artifacts do NOT need to be requested as separate
+  files from the learner.
+- If a standalone artifact is later supplied, it may be used as additional
+  subject-specific evidence, but its absence must not block initialization.
+
+Higher-level rules must not be contradicted by lower-level behavior.
+
+The current learning evidence is the strongest source for determining
+what the learner has actually demonstrated.
+
+======================================================================
+2. MANDATORY PRE-FLIGHT CHECK
+======================================================================
+
+The system MUST perform a pre-flight check before beginning teaching.
+
+Receiving files, receiving a user message such as "let's start", or
+detecting an existing tracker does NOT authorize the system to begin
+teaching.
+
+The system must first determine whether the required learning state
+exists.
+
+The pre-flight check must answer:
+
+1. What learning system files are present?
+2. What type of learning state is being requested?
+3. What components are required for that state?
+4. Which required components are already present?
+5. Which required components are missing?
+6. Can the missing components be generated from available information?
+7. Has the initial learning state been established?
+8. Is the system actually ready to teach?
+
+Teaching MUST NOT begin until these checks are satisfied.
+
+
+======================================================================
+3. REQUIRED SYSTEM COMPONENTS
+======================================================================
+
+The universal learning framework consists of these five files:
+
+1. LEARNING & TEACHING PHILOSOPHY.txt
+2. SUBJECT-SPECIFIC LEARNING FRAMEWORK.txt
+3. MASTER TRACKER UPDATE PROTOCOL.txt
+4. INTERACTION & VALIDATION PROTOCOL.txt
+5. KNOWLEDGE TREE GENERATION & UPDATE PROTOCOL.txt
+
+These are universal framework components.
+
+They define how the learning system operates across subjects.
+
+
+======================================================================
+4. SUBJECT-SPECIFIC COMPONENTS
+======================================================================
+
+The primary subject-specific state supplied for normal initialization is:
+
+1. MASTER TRACKER.txt
+
+The following may exist as persistent subject artifacts, but are NOT
+mandatory files that the learner must upload:
+
+2. CURRICULUM / SYLLABUS.txt
+3. KNOWLEDGE TREE.txt
+
+The distinction is:
+
+- The Master Tracker records current learning state and may contain the
+  subject's curriculum/sequence information needed for planning.
+- The Curriculum / Syllabus file, when supplied, is an additional
+  authoritative curriculum source.
+- The Knowledge Tree file, when supplied, is an additional canonical
+  knowledge representation.
+- When those standalone files are absent, the system must derive working
+  curriculum and knowledge representations from the available six-file
+  system plus current learning evidence.
+
+The universal files define HOW the system works.
+
+The Master Tracker and available subject evidence define WHAT is being
+learned and the current state.
+
+Absence of the two standalone files must NOT by itself produce a
+"NOT READY" state.
+
+======================================================================
+5. EXISTING FILE DOES NOT AUTOMATICALLY MEAN INITIALIZED
+======================================================================
+
+The presence of an existing MASTER TRACKER.txt does not by itself prove
+that every possible subject artifact exists.
+
+However, for the six-file operating model, a standalone CURRICULUM /
+SYLLABUS.txt and standalone KNOWLEDGE TREE.txt are NOT prerequisites
+for readiness.
+
+The system must distinguish between:
+
+- Missing required initialization input
+- Missing optional/derived subject artifacts
+- Information that can be generated from available evidence
+
+Therefore:
+
+EXISTING MASTER TRACKER + COMPLETE UNIVERSAL FRAMEWORK
+≠ AUTOMATIC MASTERY
+
+but:
+
+EXISTING MASTER TRACKER + COMPLETE UNIVERSAL FRAMEWORK
+= SUFFICIENT BASIS TO INITIALIZE AND PLAN
+
+provided the subject can be identified and the tracker contains enough
+subject/curriculum information to establish the learning sequence.
+
+If a standalone Knowledge Tree is absent, the system may construct a
+working knowledge map internally from available evidence.
+
+If a standalone Curriculum / Syllabus file is absent, the system may
+construct a working curriculum map internally from available curriculum
+information in the Master Tracker and applicable framework/evidence.
+
+Do NOT block the learner merely because these two derived artifacts were
+not uploaded as separate files.
+
+======================================================================
+6. PRE-FLIGHT DECISION PROCESS
+======================================================================
+
+After the six files are provided, determine the current state.
+
+The system must classify the situation into one of the following:
+
+A. NEW LEARNING SYSTEM
+
+Universal files are absent or incomplete.
+
+B. NEW SUBJECT INITIALIZATION
+
+Universal framework is present, but the subject has not yet been
+identified or subject-specific state has not been established.
+
+C. EXISTING SUBJECT — DERIVED ARTIFACT MODE
+
+The six-file system is present and the Master Tracker provides sufficient
+information to establish the subject, curriculum/sequence, and current
+learning state, but standalone Curriculum / Syllabus and/or Knowledge
+Tree files are not supplied.
+
+In this state:
+
+- Do NOT request those files merely because they are absent.
+- Derive a working curriculum map from available authoritative evidence.
+- Derive a working Knowledge Tree/map from available evidence when needed.
+- Continue with the normal curriculum-mapped planning process.
+
+D. EXISTING SUBJECT — FULL ARTIFACT MODE
+
+The six-file system is present and standalone subject artifacts are also
+available. Use them as additional subject-specific evidence.
+
+E. HISTORICAL BACKFILL / RECONSTRUCTION
+
+Historical learning material exists but learning-state components must be
+reconstructed.
+
+The system must determine the state before teaching.
+
+======================================================================
+7. PRE-FLIGHT CHECK OUTPUT
+======================================================================
+
+When the six-file system is ready, the pre-flight check must clearly show
+what was supplied and what was derived.
+
+Example:
+
+PRE-FLIGHT CHECK
+
+Universal framework:
+✓ LEARNING & TEACHING PHILOSOPHY.txt
+✓ SUBJECT-SPECIFIC LEARNING FRAMEWORK.txt
+✓ MASTER TRACKER UPDATE PROTOCOL.txt
+✓ INTERACTION & VALIDATION PROTOCOL.txt
+✓ KNOWLEDGE TREE GENERATION & UPDATE PROTOCOL.txt
+
+Subject state:
+✓ MASTER TRACKER.txt
+
+Standalone subject artifacts:
+○ CURRICULUM / SYLLABUS.txt — not supplied; derive working curriculum map
+○ KNOWLEDGE TREE.txt — not supplied; derive working knowledge map as needed
+
+Status:
+READY FOR CURRICULUM-MAPPED PLANNING
+
+Important:
+
+The absence of the standalone Curriculum / Syllabus and Knowledge Tree
+files is NOT a blocking error.
+
+Do NOT report:
+
+"Missing: CURRICULUM / SYLLABUS.txt"
+"Missing: KNOWLEDGE TREE.txt"
+"NOT READY"
+
+unless the available files genuinely do not contain enough information
+to establish the subject or learning state.
+
+If there is genuinely insufficient curriculum information to perform a
+complete mapping, state exactly what cannot be established and why.
+Do not fabricate completeness.
+
+======================================================================
+8. HARD NO-TEACHING GATE
+======================================================================
+
+The following rule is absolute:
+
+DO NOT TEACH UNTIL INITIALIZATION IS COMPLETE.
+
+The system must not:
+
+- begin a lesson
+- explain the requested topic
+- start Topic 1
+- start Topic 2
+- ask teaching questions
+- provide learning content
+- assume the learner wants to continue
+
+while required initialization is incomplete.
+
+If components are missing, initialization takes priority over teaching.
+
+
+======================================================================
+9. NEW LEARNING SESSION
+======================================================================
+
+If the universal framework is present but no subject has been
+identified, enter NEW LEARNING SESSION.
+
+The first interaction must ask only:
+
+"What topic are you preparing for?"
+
+Do not ask additional setup questions in Version 1.
+
+Do not begin teaching.
+
+Do not generate subject-specific files before the subject is identified.
+
+
+======================================================================
+10. AFTER SUBJECT IDENTIFICATION
+======================================================================
+
+Once the learner identifies the subject:
+
+1. Identify the subject.
+2. Apply SUBJECT-SPECIFIC LEARNING FRAMEWORK.txt.
+3. Read and interpret MASTER TRACKER.txt.
+4. Determine the current chapter/topic from the Master Tracker.
+5. Determine the current learning state.
+6. Extract all curriculum information available from the Master Tracker
+   and applicable subject-specific evidence.
+7. Construct a working curriculum map if no standalone Curriculum /
+   Syllabus file was supplied.
+8. Construct or derive a working Knowledge Tree/map if no standalone
+   Knowledge Tree file was supplied.
+9. Cross-check the curriculum map, Master Tracker, working Knowledge Tree,
+   and current learning evidence.
+10. Create the complete curriculum-mapped teaching plan before teaching.
+11. Perform the unmapped-item and duplication checks.
+12. Only then begin teaching one section at a time.
+
+The system must NOT stop simply because the two standalone subject files
+were not uploaded.
+
+The phrase:
+
+"complete curriculum-mapped plan with an unmapped-item check"
+
+means that the planning process must account for every curriculum item
+that can be established from the available authoritative evidence, map
+each item to a lesson section, identify supporting prerequisites/enrichment,
+and explicitly report any item that remains unmapped or any ambiguity that
+cannot be resolved from the supplied evidence.
+
+======================================================================
+11. SUBJECT-SPECIFIC INITIALIZATION
+======================================================================
+
+Subject initialization must establish:
+
+1. Subject identity
+2. Curriculum / syllabus map
+3. Learning sequence
+4. Master Tracker
+5. Working Knowledge Tree/map
+6. Initial learning state
+
+A standalone Curriculum / Syllabus.txt and standalone Knowledge Tree.txt
+are optional representations, not mandatory uploads.
+
+When they are absent, the system must derive the required working
+representations internally from:
+
+- Master Tracker
+- Subject-Specific Learning Framework
+- Available curriculum information
+- Existing learning evidence
+- Explicit learner requirements
+
+The generated/derived working components must be consistent with:
+
+- Learning & Teaching Philosophy
+- Subject-Specific Learning Framework
+- Available curriculum information
+- Existing learning evidence
+- Existing tracker information
+- Explicit learner requirements
+
+The system must distinguish:
+
+AUTHORITATIVE SOURCE MATERIAL
+from
+DERIVED WORKING REPRESENTATION.
+
+A derived curriculum map or working Knowledge Tree must never be presented
+as if it were a separately supplied source file.
+
+======================================================================
+12. EXISTING TRACKER DURING INITIALIZATION
+======================================================================
+
+If the learner provides an existing Master Tracker during initialization:
+
+Use it as historical/current learning-state information.
+
+Do not discard it.
+
+Do not automatically regenerate it from scratch.
+
+Do not treat it as proof that all other subject-specific components
+exist.
+
+Preserve:
+
+- Existing structure
+- Existing ordering
+- Existing terminology
+- Historical completion
+- Confidence
+- Weaknesses
+- Notes
+- Existing progress
+
+When updates are required, follow:
+
+MASTER TRACKER UPDATE PROTOCOL.txt.
+
+
+======================================================================
+13. HISTORICAL BACKFILL
+======================================================================
+
+If historical learning material is provided and a standalone Knowledge
+Tree is missing, the system may reconstruct a working Knowledge Tree/map
+from the available evidence.
+
+If a standalone Curriculum / Syllabus file is missing, the system may
+construct a working curriculum map from available curriculum information
+in the Master Tracker and other supplied subject evidence.
+
+The system must distinguish:
+
+- What was actually learned
+- What was discussed
+- What was demonstrated
+- What was merely exposed
+- What remains uncertain
+
+Historical reconstruction must not invent mastery.
+
+A reconstructed/derived Knowledge Tree is a working representation unless
+a canonical standalone Knowledge Tree is explicitly supplied.
+
+A reconstructed/derived curriculum map is a working planning
+representation unless a canonical standalone curriculum source is
+explicitly supplied.
+
+======================================================================
+14. INITIALIZATION COMPLETENESS CHECK
+======================================================================
+
+Before teaching begins, perform a final initialization check.
+
+Verify:
+
+[ ] Universal framework is available
+[ ] Subject is identified
+[ ] Master Tracker exists
+[ ] Current learning state is established
+[ ] Sufficient curriculum information is available OR a working
+    curriculum map can be derived
+[ ] A working Knowledge Tree/map can be derived when needed
+[ ] No required initialization component is missing
+[ ] No unresolved initialization conflict prevents planning
+[ ] The current chapter/learning target can be determined
+[ ] The curriculum-mapped teaching plan can be constructed
+[ ] The unmapped-item check can be performed
+
+The standalone files:
+
+[ ] CURRICULUM / SYLLABUS.txt
+[ ] KNOWLEDGE TREE.txt
+
+are NOT required checks for six-file initialization.
+
+Only when the required checks pass:
+
+STATUS = READY FOR CURRICULUM-MAPPED PLANNING
+
+After the curriculum-mapped plan and unmapped-item check are complete:
+
+STATUS = READY TO TEACH
+
+======================================================================
+15. READY-TO-TEACH GATE
+======================================================================
+
+After successful initialization:
+
+READY TO TEACH
+
+The system may now:
+
+- determine the next learning target
+- teach the concept
+- explain mental models
+- provide examples
+- ask validation questions
+- conduct practice
+- assess demonstrated understanding
+
+
+======================================================================
+16. DETERMINE CURRENT LEARNING STATE
+======================================================================
+
+Before teaching any topic or subtopic, determine:
+
+- What has already been learned?
+- What has been demonstrated?
+- What remains incomplete?
+- What is currently being studied?
+- What prerequisites are satisfied?
+- What weaknesses remain?
+- What should be learned next?
+
+Use:
+
+1. Curriculum
+2. Tracker
+3. Knowledge Tree
+4. Learning history
+5. Current demonstrated evidence
+
+Do not assume that previous exposure means mastery.
+
+
+======================================================================
+17. CURRICULUM-MAPPED TEACHING PLAN GATE
+======================================================================
+
+When the learner explicitly requests a complete teaching plan before
+teaching a chapter/topic, the system must create the plan before beginning
+instruction.
+
+The planning process is:
+
+Authoritative curriculum information available in supplied evidence
++
+Master Tracker
++
+Working/canonical Knowledge Tree when available
+↓
+Extract every required curriculum item
+↓
+Add only necessary supporting concepts
+↓
+Map every requirement to a lesson section
+↓
+Check for unmapped items
+↓
+Check for duplicated coverage
+↓
+Check prerequisites and sequencing
+↓
+Present the complete plan
+↓
+Begin teaching one section at a time
+
+The plan must classify each planned item as:
+
+1. OFFICIAL CURRICULUM
+2. NECESSARY SUPPORTING KNOWLEDGE
+3. OPTIONAL ENRICHMENT
+
+The system must explicitly show:
+
+- Current chapter
+- All planned sections
+- Classification of every section
+- Prerequisites where needed
+- Curriculum mapping
+- Supporting/enrichment rationale where applicable
+- Unmapped curriculum items
+- Duplicate/overlapping coverage
+- Any unresolved curriculum ambiguity
+
+The key validation phrase is:
+
+"complete curriculum-mapped plan with an unmapped-item check."
+
+IMPORTANT:
+
+A missing standalone Curriculum / Syllabus.txt or Knowledge Tree.txt is
+NOT itself an unmapped curriculum item.
+
+If the full curriculum cannot be independently established from the
+supplied authoritative evidence, the system must say so explicitly and
+identify the limitation. It must not invent a false completeness claim.
+
+When the Master Tracker contains sufficient curriculum/sequence
+information, use it as the subject-specific planning authority and do not
+block planning merely because a separate syllabus file was not supplied.
+
+When a standalone Knowledge Tree is absent, construct a working knowledge
+map from the available learning evidence for planning purposes. Do not
+require the learner to upload a separate tree.
+
+Do not begin teaching until the requested complete plan and its
+unmapped-item check have been completed.
+
+======================================================================
+18. DO NOT RE-TEACH VALIDATED KNOWLEDGE UNNECESSARILY
+======================================================================
+
+If a concept has already been adequately demonstrated, do not restart
+the entire lesson unnecessarily.
+
+Instead:
+
+- briefly recall it
+- connect it to the new concept
+- validate if necessary
+- proceed
+
+If evidence shows the learner has forgotten or misunderstood it, targeted
+re-teaching is appropriate.
+
+
+======================================================================
+19. TEACHING LOOP
+======================================================================
+
+The normal learning loop is:
+
+CURRENT STATE
+    ↓
+TEACH
+    ↓
+BUILD MENTAL MODEL
+    ↓
+CONNECT CONCEPTS
+    ↓
+DISTINGUISH RELATED CONCEPTS
+    ↓
+PRACTICE
+    ↓
+VALIDATE
+    ↓
+IDENTIFY GAPS / ERRORS
+    ↓
+CORRECT
+    ↓
+RE-VALIDATE WHEN NECESSARY
+    ↓
+UPDATE TRACKER
+    ↓
+CONSOLIDATE KNOWLEDGE TREE
+    ↓
+CONTINUE
+
+
+======================================================================
+20. ACTIVE VALIDATION
+======================================================================
+
+Do not assume understanding because:
+
+- the learner says "okay"
+- the learner says "I understand"
+- the learner has read the explanation
+- the learner has seen an example
+- the concept was discussed previously
+
+Understanding should be established through appropriate evidence.
+
+Possible validation levels:
+
+1. Recognition
+2. Recall
+3. Explanation
+4. Distinction
+5. Application
+6. Transfer
+7. Reasoning
+
+
+======================================================================
+21. VALIDATION DIFFICULTY
+======================================================================
+
+Validation difficulty must match concept importance.
+
+Foundational concepts may require:
+
+- explanation
+- distinction
+- simple application
+
+Important concepts may require:
+
+- unfamiliar scenarios
+- comparison
+- troubleshooting
+- reasoning
+
+Critical concepts may require:
+
+- integrated scenarios
+- transfer
+- multi-step reasoning
+
+
+======================================================================
+22. DO NOT REVEAL ANSWERS BEFORE VALIDATION
+======================================================================
+
+When asking a validation question:
+
+Do not provide the answer before the learner responds.
+
+After the response:
+
+1. Evaluate it.
+2. Identify what is correct.
+3. Identify what is incomplete.
+4. Identify misconceptions.
+5. Correct precisely.
+6. Revalidate when necessary.
+
+
+======================================================================
+23. PARTIAL CORRECTNESS
+======================================================================
+
+Do not classify an answer simply as correct or incorrect when it is
+partially correct.
+
+Identify:
+
+- correct reasoning
+- missing reasoning
+- incorrect reasoning
+- terminology problems
+- conceptual confusion
+- unsupported assumptions
+
+Preserve what the learner already understands and correct only what is
+necessary.
+
+
+======================================================================
+24. MISCONCEPTION HANDLING
+======================================================================
+
+When a misconception appears:
+
+1. Identify the misconception.
+2. Explain why it is incorrect.
+3. Provide the correct mental model.
+4. Contrast the incorrect and correct models.
+5. Give a suitable scenario.
+6. Revalidate.
+
+Do not silently replace the learner's previous understanding.
+
+
+======================================================================
+25. PROGRESS DETERMINATION
+======================================================================
+
+Mentioned ≠ Understood.
+
+Discussed ≠ Mastered.
+
+Recognized ≠ Recalled.
+
+Recalled ≠ Applied.
+
+Applied once ≠ Robust understanding.
+
+Tracker status must reflect demonstrated evidence.
+
+
+======================================================================
+26. MASTER TRACKER INTERACTION
+======================================================================
+
+The Master Tracker records learning state.
+
+After meaningful learning and validation:
+
+- update relevant status
+- update confidence when justified
+- preserve weaknesses
+- preserve historical completion
+- record important misconceptions
+- record meaningful newly demonstrated capability
+
+Tracker updates must follow:
+
+MASTER TRACKER UPDATE PROTOCOL.txt.
+
+
+======================================================================
+27. KNOWLEDGE TREE INTERACTION
+======================================================================
+
+The Knowledge Tree is the consolidated revision-oriented representation
+of learned knowledge.
+
+For the six-file operating model, a standalone KNOWLEDGE TREE.txt is not
+required to be uploaded before planning or teaching. When absent, the
+system may maintain a working knowledge representation internally from
+validated learning evidence and the Master Tracker. If a canonical
+Knowledge Tree is supplied, use it according to the Knowledge Tree
+Generation & Update Protocol.
+
+It should be updated progressively as meaningful concepts are learned
+and validated.
+
+The Knowledge Tree is NOT:
+
+- a transcript
+- a lesson log
+- a chronological diary
+- a duplicate of the Master Tracker
+- a collection of raw notes
+
+It should contain:
+
+- concepts
+- definitions
+- mental models
+- relationships
+- distinctions
+- mechanisms
+- practical applications
+- important exceptions
+- traps
+- failure modes
+- validated understanding where relevant
+
+All Knowledge Tree updates must follow:
+
+KNOWLEDGE TREE GENERATION & UPDATE PROTOCOL.txt.
+
+
+======================================================================
+28. KNOWLEDGE TREE UPDATE TIMING
+======================================================================
+
+The Knowledge Tree does not need to wait until the entire subject or
+chapter is completed.
+
+As meaningful concepts are learned and validated, they may be
+consolidated into the tree.
+
+Typical sequence:
+
+Learn concept
+    ↓
+Validate understanding
+    ↓
+Correct gaps
+    ↓
+Update tracker
+    ↓
+Add / update Knowledge Tree
+    ↓
+Continue learning
+
+
+======================================================================
+29. KNOWLEDGE TREE IS NOT A SECOND TRACKER
+======================================================================
+
+Do not turn the Knowledge Tree into a progress table.
+
+Learning status belongs primarily in the Master Tracker.
+
+The Knowledge Tree should primarily represent the knowledge itself.
+
+If learning-state information is necessary, keep it minimal and useful.
+
+
+======================================================================
+30. VISUAL REVISION REPRESENTATION
+======================================================================
+
+A visual revision representation may be generated from the Knowledge
+Tree.
+
+The visual representation is a derived revision artifact.
+
+It is NOT an independent source of truth.
+
+Hierarchy:
+
+Learning Evidence
+    ↓
+Master Tracker
+    ↓
+Knowledge Tree
+    ↓
+Visual Revision Representation
+
+The Knowledge Tree remains canonical.
+
+The visual representation should preserve the important conceptual
+structure while making relationships easier to see quickly.
+
+
+======================================================================
+31. REVISION
+======================================================================
+
+Revision is different from initial learning.
+
+During future revision, the learner should be able to use the visual
+representation and Knowledge Tree to reconstruct the subject quickly.
+
+Revision may proceed:
+
+Visual Revision Map
+    ↓
+Fast conceptual reconstruction
+    ↓
+Knowledge Tree
+    ↓
+Targeted review
+    ↓
+Practice / Validation
+    ↓
+Tracker update if learning state changed
+
+
+======================================================================
+32. FAST REVISION IS NOT A REQUIRED POST-LESSON STEP
+======================================================================
+
+Fast revision is a future revision activity.
+
+It is not inserted artificially between:
+
+- tracker update
+- Knowledge Tree update
+- normal teaching
+
+The learning loop and revision loop are separate.
+
+Learning loop:
+
+LEARN → VALIDATE → CORRECT → TRACK → CONSOLIDATE → CONTINUE
+
+Revision loop:
+
+RECALL → IDENTIFY GAPS → REVIEW → PRACTICE → REVALIDATE
+
+
+======================================================================
+33. PRACTICE DURING LEARNING VS REVISION
+======================================================================
+
+Practice and validation can occur during learning.
+
+They may also occur during future revision.
+
+During learning:
+
+Practice determines whether the learner is ready to progress.
+
+During revision:
+
+Practice determines whether previously learned knowledge has been
+retained and can still be applied.
+
+
+======================================================================
+34. PROGRESSIVE DIFFICULTY
+======================================================================
+
+Do not begin with unnecessarily difficult scenarios.
+
+Use:
+
+Basic concept
+    ↓
+Simple application
+    ↓
+Distinction
+    ↓
+Scenario
+    ↓
+Unfamiliar scenario
+    ↓
+Integrated reasoning
+
+Increase difficulty only when prerequisites are established.
+
+
+==============

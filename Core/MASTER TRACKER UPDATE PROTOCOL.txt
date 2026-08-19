@@ -1,0 +1,341 @@
+
+============================================================
+MASTER TRACKER UPDATE PROTOCOL
+============================================================
+
+PURPOSE
+============================================================
+
+This protocol defines how the Master Tracker may be updated during
+the learning process.
+
+The Master Tracker is a mutable progress/state record.
+
+It is NOT the syllabus itself.
+
+The Curriculum / Syllabus defines what should be learned.
+
+The Master Tracker records the current state of that learning.
+
+This protocol is topic-independent and must work for any subject.
+
+============================================================
+1. SOURCE OF TRUTH
+============================================================
+
+The authoritative sources for updating the tracker are:
+
+1. The existing Master Tracker
+2. The authoritative Curriculum / Syllabus
+3. The actual learning history
+4. Concepts genuinely demonstrated during interaction
+5. Explicit corrections or decisions made during learning
+
+Do not infer progress merely from the passage of time or from a
+concept being mentioned.
+
+============================================================
+2. PRESERVE THE EXISTING TRACKER
+============================================================
+
+The existing Master Tracker is the canonical historical record.
+
+Preserve:
+
+- Existing structure
+- Topic organization
+- Subtopic organization
+- Ordering
+- Headings
+- Terminology
+- Historical completion
+- Existing notes
+- Existing confidence information
+- Existing demonstrated strengths
+- Existing weaknesses
+
+Do not rewrite unchanged content.
+
+Do not reorganize the tracker for aesthetic reasons.
+
+Do not normalize formatting unless explicitly requested.
+
+============================================================
+3. SURGICAL UPDATE PRINCIPLE
+============================================================
+
+Every update must be MINIMAL and SURGICAL.
+
+Only modify the smallest portion of the tracker necessary to reflect
+the latest learning evidence.
+
+Think:
+
+EXISTING TRACKER
+      +
+MINIMAL NECESSARY CHANGE
+      ↓
+UPDATED TRACKER
+
+Do NOT regenerate the entire tracker from scratch.
+
+============================================================
+4. WHAT MAY BE UPDATED
+============================================================
+
+An update may:
+
+- Change a status
+- Change progress
+- Change confidence
+- Add a newly demonstrated concept
+- Add a newly discovered weakness
+- Add a corrected misconception
+- Add an important distinction
+- Add a necessary learning note
+- Mark a concept complete when completion is actually demonstrated
+- Record a meaningful validation result
+
+Only make a change when there is evidence supporting it.
+
+============================================================
+5. WHAT MUST NOT BE CHANGED
+============================================================
+
+Do not:
+
+- Remove historical completion
+- Remove demonstrated concepts
+- Rewrite unchanged descriptions
+- Rename topics unnecessarily
+- Reorder phases or topics
+- Move concepts between unrelated sections
+- Replace existing wording merely because another wording is cleaner
+- Mark a concept complete merely because it was discussed
+- Downgrade previously established knowledge without evidence
+- Invent progress
+
+============================================================
+6. MENTIONED ≠ UNDERSTOOD
+============================================================
+
+A concept must NOT automatically be marked complete because:
+
+- It was explained
+- It appeared in a lesson
+- I asked about it
+- I repeated the definition
+- I saw an example
+- It was mentioned in conversation
+
+Completion should reflect demonstrated understanding.
+
+Where appropriate, distinguish between:
+
+- Not Started
+- Introduced
+- In Progress
+- Practiced
+- Validated
+- Complete
+
+Use the existing tracker terminology if it already defines a different
+status system.
+
+============================================================
+7. CONFIDENCE UPDATES
+============================================================
+
+Confidence should reflect demonstrated understanding, not exposure.
+
+Increase confidence when evidence shows stronger understanding.
+
+Do not arbitrarily change confidence merely because another lesson
+was completed.
+
+If confidence cannot be meaningfully reassessed, preserve the
+existing value.
+
+============================================================
+8. WEAK AREAS
+============================================================
+
+When a meaningful weakness is discovered:
+
+- Preserve the weakness in the tracker.
+- Place it under the appropriate existing topic.
+- Do not erase it merely because the surrounding topic was completed.
+- Remove or downgrade the weakness only when later evidence genuinely
+  demonstrates improvement.
+
+A weakness is valuable historical information.
+
+============================================================
+9. MISCONCEPTIONS
+============================================================
+
+When a significant misconception is identified:
+
+1. Record it if it is relevant to future learning.
+2. Record the corrected understanding where appropriate.
+3. Preserve the historical significance of the correction.
+4. Do not pretend the misconception never existed if that history is
+   useful for future validation.
+
+============================================================
+10. NEW CONCEPTS DISCOVERED DURING LEARNING
+============================================================
+
+If learning reveals a genuinely important concept that is not
+explicitly represented in the tracker:
+
+- Determine whether it belongs under an existing topic.
+- Add it only when it is genuinely relevant.
+- Do not reorganize the curriculum to accommodate it.
+- Preserve the original syllabus structure whenever possible.
+
+If it is enrichment rather than required curriculum, clearly
+distinguish it from official/core coverage.
+
+============================================================
+11. CURRICULUM INTEGRITY
+============================================================
+
+The Master Tracker must not silently replace or redefine the
+Curriculum / Syllabus.
+
+The tracker may record:
+
+- Progress
+- Completion
+- Confidence
+- Weaknesses
+- Demonstrated concepts
+- Learning notes
+- Enrichment
+
+But the authoritative curriculum remains the Curriculum / Syllabus.
+
+If the tracker and curriculum appear inconsistent:
+
+1. Do not silently rewrite either one.
+2. Identify the discrepancy.
+3. Preserve the existing tracker.
+4. Request or determine the appropriate explicit resolution.
+
+============================================================
+12. HISTORICAL COMPLETION
+============================================================
+
+Once a concept has been genuinely demonstrated and marked complete,
+preserve that completion.
+
+Later lessons should not accidentally reset it to:
+
+- Not Started
+- In Progress
+- Unknown
+
+unless there is explicit evidence that the previous completion was
+incorrect.
+
+============================================================
+13. UPDATE BOUNDARIES
+============================================================
+
+Only update information affected by the latest learning evidence.
+
+For example:
+
+If one subtopic was validated:
+
+CHANGE:
+- That subtopic's relevant status/confidence.
+
+DO NOT CHANGE:
+- Unrelated topics
+- Historical completion
+- Existing notes
+- Ordering
+- Other confidence values
+
+============================================================
+14. FINAL INTEGRITY CHECK
+============================================================
+
+Before producing an updated tracker, verify:
+
+[ ] Existing structure is preserved.
+[ ] Existing ordering is preserved.
+[ ] Historical completion is preserved.
+[ ] Demonstrated concepts are preserved.
+[ ] No unsupported progress was added.
+[ ] No unrelated sections were modified.
+[ ] Weaknesses discovered during learning are captured.
+[ ] Important corrections are captured where appropriate.
+[ ] Curriculum coverage has not been silently removed.
+[ ] No unnecessary wording changes were made.
+[ ] The update is minimal and surgical.
+
+============================================================
+15. GIT-DIFF PRINCIPLE
+============================================================
+
+The Master Tracker must be maintained so that version-control
+differences remain easy to audit.
+
+A normal update should produce a small, understandable diff.
+
+If only one concept changed, the diff should primarily show that
+concept.
+
+Do not rewrite large unchanged sections.
+
+Do not reformat the entire file.
+
+Do not regenerate the tracker simply to produce an equivalent version.
+
+The objective is:
+
+SMALL CHANGE
+    ↓
+CLEAR DIFF
+    ↓
+EASY VERIFICATION
+    ↓
+HIGH TRUST
+
+============================================================
+16. UPDATE OUTPUT
+============================================================
+
+When asked to update the tracker:
+
+1. Use the existing tracker as the baseline.
+2. Identify exactly what changed.
+3. Apply only those changes.
+4. Preserve everything else.
+5. Perform the integrity check.
+6. Return the updated tracker in the same established structure and
+   format.
+
+If useful, separately provide a very short summary of what changed.
+
+Do not replace the tracker with a newly designed format.
+
+============================================================
+CORE PRINCIPLE
+============================================================
+
+The Master Tracker is a living progress record, but its history is
+sacred.
+
+UPDATE WHAT HAS CHANGED.
+
+PRESERVE WHAT HAS NOT.
+
+NEVER REWRITE FOR THE SAKE OF REWRITING.
+
+Every update should be surgical, auditable, evidence-based, and
+minimally disruptive.
+============================================================

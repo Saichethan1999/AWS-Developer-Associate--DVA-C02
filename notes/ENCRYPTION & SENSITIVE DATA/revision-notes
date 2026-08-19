@@ -1,0 +1,86 @@
+SECTION 1 OF 28: WHY ENCRYPTION EXISTS
+
+Core purpose:
+
+Encryption protects the readability and meaning of data if the data is
+obtained without the required cryptographic authority.
+
+Critical definitions:
+
+- Plaintext: Original readable data.
+- Ciphertext: Encrypted, unreadable data.
+- Encryption: Plaintext to ciphertext.
+- Decryption: Ciphertext back to plaintext.
+- Cryptographic key: Material used in cryptographic operations.
+
+Core mental model:
+
+Plaintext
+    |
+    | Encryption
+    v
+Ciphertext
+    |
+    | Authorized decryption
+    v
+Plaintext
+
+Authorization vs encryption:
+
+- Authorization: Can this identity perform this action on this resource?
+- Encryption: Can these bytes be understood without the required key
+  access?
+
+Critical rules:
+
+- Authorization protects resource access.
+- Encryption protects data readability.
+- Resource access is not the same as key usage.
+- Key usage is not the same as resource access.
+- Encryption does not replace authentication, authorization, or secure
+  application handling.
+- Encrypted data can become plaintext when an authorized system uses it.
+- After decryption, every location receiving plaintext must protect it.
+
+Three data states:
+
+- At rest: Stored data.
+- In transit: Data moving between systems.
+- In use: Data currently being processed.
+
+Validated scenario:
+
+S3 encryption works correctly.
+    |
+Lambda legitimately decrypts a customer record.
+    |
+Lambda writes plaintext into CloudWatch Logs.
+    |
+Application handling failed, not S3 encryption.
+
+Dangerous misconceptions:
+
+- Encryption does not guarantee that data cannot be copied.
+- Encryption does not make authorization unnecessary.
+- Storage encryption does not protect plaintext copied into logs.
+- Successful decryption does not prove correct business authorization.
+- Permission to access an encrypted object does not automatically imply
+  permission to use its encryption key.
+- Permission related to a key does not automatically grant access to
+  every resource protected by that key.
+
+Important correction:
+
+Do not always assume an application directly receives a decryption key.
+The exact mechanism depends on server-side versus client-side
+encryption. For now, use the mental model of an authorized decryption
+path.
+
+Exam checklist:
+
+1. What data is sensitive?
+2. Is it at rest, in transit, or in use?
+3. Who can access the resource?
+4. Who can use the key or authorized decryption path?
+5. Where does ciphertext become plaintext?
+6. How is the resulting plaintext handled?

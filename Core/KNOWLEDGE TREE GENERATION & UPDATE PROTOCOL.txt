@@ -1,0 +1,807 @@
+
+============================================================
+KNOWLEDGE TREE GENERATION & UPDATE PROTOCOL
+============================================================
+
+PURPOSE
+============================================================
+
+This protocol defines how the Knowledge Tree is:
+
+- Created
+- Expanded
+- Updated
+- Validated
+- Finalized
+- Preserved over time
+
+The Knowledge Tree is the learner's consolidated, revision-oriented
+representation of knowledge.
+
+It is NOT:
+
+- A transcript of lessons
+- A copy of the syllabus
+- A copy of the Master Tracker
+- A collection of every detail ever discussed
+- A disposable summary that may be rewritten whenever new information
+  appears
+
+The Knowledge Tree must preserve previously established knowledge
+while allowing new knowledge to be added.
+
+This protocol is TOPIC-INDEPENDENT.
+
+============================================================
+1. ROLE OF THE KNOWLEDGE TREE
+============================================================
+
+The Knowledge Tree answers:
+
+"What do I actually need to remember and understand about this topic?"
+
+It should provide a compact representation of:
+
+- Core concepts
+- Relationships
+- Definitions
+- Mental models
+- Important distinctions
+- Important mechanisms
+- Important applications
+- Important trade-offs
+- Important pitfalls
+- Important practical implications
+- Important assessment traps
+
+Only information that provides meaningful long-term value should be
+included.
+
+============================================================
+2. AUTHORITATIVE INPUTS
+============================================================
+
+When generating or expanding a Knowledge Tree, use the following
+sources:
+
+1. Curriculum / Syllabus
+2. Master Tracker
+3. Actual learning history
+4. Demonstrated concepts
+5. Validated understanding
+6. Identified weaknesses and misconceptions
+7. Existing Knowledge Tree
+
+The existing Knowledge Tree is the canonical representation of what
+has already been established.
+
+Do not replace it merely because another representation appears
+cleaner.
+
+============================================================
+3. THREE OPERATING MODES
+============================================================
+
+The universal Knowledge Tree generator must support exactly these
+primary modes:
+
+1. BASE TREE
+2. ADD / UPDATE TREE
+3. FINAL TREE
+
+The user should not need to remember special commands.
+
+When the generator is invoked, it should first ask:
+
+"What topic do you want to work on?"
+
+After the topic is provided, ask:
+
+"Which mode do you want?
+
+1. Base Tree
+2. Add / Update Tree
+3. Final Tree"
+
+Then perform only the selected operation.
+
+============================================================
+4. BASE TREE
+============================================================
+
+BASE TREE creates the initial Knowledge Tree for a topic.
+
+Its purpose is to establish the initial canonical structure.
+
+The Base Tree should:
+
+- Identify the major concepts that need to be learned.
+- Establish a logical hierarchy.
+- Include concise definitions where useful.
+- Create useful conceptual relationships.
+- Provide a strong revision structure.
+- Reflect the authoritative curriculum.
+- Avoid unnecessary detail that has not yet been learned.
+
+The Base Tree is a starting structure, not the final knowledge state.
+
+============================================================
+5. BASE TREE CANONICALIZATION
+============================================================
+
+Once a Base Tree has been established, its existing content becomes
+CANONICAL.
+
+This means:
+
+Existing wording is preserved.
+
+Existing headings are preserved.
+
+Existing hierarchy is preserved.
+
+Existing terminology is preserved.
+
+Existing ordering is preserved.
+
+The tree must not later be rewritten merely because a different
+wording appears preferable.
+
+Example:
+
+AWS Service Principals
+├── What it means
+│   └── IAM principals representing AWS services that can be
+│       authorized to access resources.
+
+If later learning provides additional information, the existing
+definition remains unchanged unless the user explicitly requests
+modification.
+
+New information should be added.
+
+============================================================
+6. ADD / UPDATE TREE
+============================================================
+
+ADD / UPDATE TREE is fundamentally an ADDITIVE operation.
+
+Its primary purpose is:
+
+EXISTING TREE
+      +
+NEWLY LEARNED KNOWLEDGE
+      ↓
+EXPANDED TREE
+
+It is NOT a rewrite operation.
+
+Normal Add / Update operations must:
+
+- Preserve existing content.
+- Preserve existing wording.
+- Preserve existing headings.
+- Preserve existing hierarchy.
+- Preserve existing ordering.
+- Add only genuinely new information.
+
+============================================================
+7. WHAT MAY BE ADDED
+============================================================
+
+New information may include:
+
+- New concepts
+- New sub-concepts
+- Definitions
+- Mental models
+- Important relationships
+- Important distinctions
+- Mechanisms
+- Use cases
+- Trade-offs
+- Edge cases
+- Exam traps
+- Common misconceptions
+- Engineering implications
+- Practical implications
+- Important examples
+- Important failure modes
+
+Add information only when it provides meaningful value.
+
+============================================================
+8. WHAT MUST NEVER HAPPEN DURING NORMAL UPDATES
+============================================================
+
+Do NOT:
+
+- Rename existing headings
+- Reword existing definitions
+- Replace terminology with synonyms
+- Rewrite existing explanations
+- Remove existing branches
+- Remove existing concepts
+- Merge existing branches
+- Split existing branches
+- Reorder existing branches
+- Move existing concepts for aesthetic reasons
+- Compress existing content merely to make it shorter
+- Expand existing content merely to make it look more complete
+- Rewrite the entire tree
+- Normalize formatting unnecessarily
+- Replace an existing explanation with a semantically equivalent one
+
+Even if the new wording appears objectively better, do not replace
+canonical wording without explicit authorization.
+
+============================================================
+9. MISSING INFORMATION
+============================================================
+
+If the existing tree is missing important information:
+
+ADD IT.
+
+Do not rewrite surrounding content just to make the new information
+fit stylistically.
+
+Prefer the smallest appropriate addition.
+
+Example:
+
+Existing:
+
+Authentication
+├── What it means
+│   └── Verifying identity.
+
+New learning reveals an important mechanism.
+
+Correct:
+
+Authentication
+├── What it means
+│   └── Verifying identity.
+├── Authentication Factors
+│   └── ...
+└── Common Mechanisms
+    └── ...
+
+The original content remains untouched.
+
+============================================================
+10. INCORRECT EXISTING INFORMATION
+============================================================
+
+If existing Knowledge Tree content appears incorrect:
+
+DO NOT silently rewrite it.
+
+Instead:
+
+1. Identify the potentially incorrect content.
+2. Explain why it may be incorrect.
+3. Separate the proposed correction from the canonical tree.
+4. Request or obtain explicit authorization before modifying canonical
+   content.
+
+Unless explicitly authorized, preserve the existing canonical content.
+
+============================================================
+11. EXPLICIT MODIFICATION
+============================================================
+
+The user may explicitly request a modification.
+
+Examples:
+
+- "Change this definition."
+- "Rename this heading."
+- "Correct this statement."
+- "Replace this branch with the new wording."
+
+Only then may existing canonical content be modified.
+
+When modifying:
+
+- Change only the requested location.
+- Do not perform unrelated cleanup.
+- Do not rewrite neighboring branches.
+- Preserve everything else exactly.
+
+============================================================
+12. GIT-DIFF PRINCIPLE
+============================================================
+
+Knowledge Tree updates must behave like a clean Git commit.
+
+For normal additive updates:
+
+EXPECTED:
+
++ New branch
++ New child
++ New definition
++ New distinction
+
+NOT EXPECTED:
+
+- Existing branch removed
+- Existing wording replaced
+- Existing heading renamed
+- Existing branch reordered
+
+If no existing content needs modification, the resulting diff should
+contain only additions.
+
+If a proposed update would modify existing canonical content:
+
+STOP.
+
+Do not silently apply the modification.
+
+Identify it separately.
+
+============================================================
+13. FINAL TREE
+============================================================
+
+FINAL TREE is a completeness and consolidation operation.
+
+It is NOT a rewrite.
+
+The Final Tree must:
+
+1. Start from the existing canonical Knowledge Tree.
+2. Cross-check it against the curriculum.
+3. Cross-check it against the Master Tracker.
+4. Cross-check it against actual learning history.
+5. Cross-check it against demonstrated concepts.
+6. Identify genuinely missing important knowledge.
+7. Add the missing knowledge.
+8. Preserve existing canonical content.
+9. Preserve the established hierarchy wherever possible.
+10. Flag questionable content rather than silently rewriting it.
+
+The objective is:
+
+CANONICAL TREE
+      +
+MISSING IMPORTANT KNOWLEDGE
+      ↓
+COMPLETE REVISION TREE
+
+============================================================
+14. FINAL TREE MUST NOT BECOME A SYLLABUS COPY
+============================================================
+
+The Final Tree should represent learned and important knowledge,
+not simply reproduce every syllabus heading.
+
+A syllabus tells the learner:
+
+"What needs to be learned."
+
+The Knowledge Tree tells the learner:
+
+"What should I remember and understand about what I learned?"
+
+Therefore:
+
+Do not automatically add every syllabus item simply because it exists
+in the curriculum.
+
+Do not invent knowledge merely to make every branch look complete.
+
+============================================================
+15. LEARNING EVIDENCE
+============================================================
+
+Do not claim that the learner has learned something solely because it
+appears in:
+
+- The syllabus
+- A textbook
+- A lesson plan
+- An external reference
+
+The Knowledge Tree may contain concepts that need to be learned as
+part of the Base Tree.
+
+However, the system must distinguish between:
+
+NEEDS TO BE LEARNED
+
+and
+
+ACTUALLY LEARNED / VALIDATED
+
+Do not fabricate learning history.
+
+============================================================
+16. COMPACTNESS
+============================================================
+
+The Knowledge Tree should be concise enough to function as a
+revision artifact.
+
+Prefer:
+
+Concept
+├── What it means
+├── How it works
+├── Why it matters
+├── Important distinction
+└── Important trap
+
+over long paragraphs.
+
+Do not force every branch to contain all of these categories.
+
+Use only what is genuinely useful.
+
+============================================================
+17. DEFINITIONS
+============================================================
+
+Where a concept requires a definition, prefer a concise:
+
+"What it means"
+
+entry directly beneath the concept.
+
+Definitions should:
+
+- Be clear
+- Be accurate
+- Be easy to recall
+- Preserve established terminology
+- Avoid unnecessary verbosity
+
+Do not repeatedly redefine a concept in different branches.
+
+============================================================
+18. MENTAL MODELS
+============================================================
+
+Include mental models when they materially improve understanding or
+recall.
+
+A mental model should help answer questions such as:
+
+- What is happening?
+- Why is it happening?
+- What controls it?
+- What changes when something changes?
+- How do related components interact?
+
+Do not create artificial mental models for simple facts.
+
+============================================================
+19. DISTINCTIONS
+============================================================
+
+Important distinctions should be represented explicitly when they
+reduce confusion.
+
+For example:
+
+A
+├── Purpose
+└── Key behavior
+
+B
+├── Purpose
+└── Key behavior
+
+Distinction:
+A ≠ B
+Use A when...
+Use B when...
+
+Do not duplicate large amounts of information merely to create a
+comparison.
+
+============================================================
+20. EXAM / ASSESSMENT TRAPS
+============================================================
+
+Include assessment traps only when they are genuinely important.
+
+Examples may include:
+
+- Commonly confused concepts
+- Similar terminology
+- Conditions that change an answer
+- Important exceptions
+- Common incorrect assumptions
+- Frequently tested distinctions
+
+Do not turn the Knowledge Tree into a question bank.
+
+============================================================
+21. ENGINEERING / PRACTICAL IMPLICATIONS
+============================================================
+
+For technical or practical subjects, include engineering or real-world
+implications when they materially improve understanding.
+
+Examples:
+
+- When to use it
+- When not to use it
+- Operational impact
+- Security implications
+- Performance implications
+- Reliability implications
+- Cost implications
+- Failure behavior
+
+These are examples, not mandatory categories.
+
+============================================================
+22. NO ARTIFICIAL DEPTH
+============================================================
+
+Do not create deep hierarchy merely to make the tree look detailed.
+
+Depth must represent meaningful conceptual relationships.
+
+Prefer:
+
+A
+├── B
+└── C
+
+over:
+
+A
+└── B
+    └── C
+        └── D
+
+when B, C, and D are not actually nested concepts.
+
+============================================================
+23. NO INFORMATION LOSS
+============================================================
+
+When adding new knowledge, existing useful information must remain
+available.
+
+Never simplify the tree by deleting details unless:
+
+- The user explicitly requests deletion, or
+- The user explicitly authorizes a restructuring/modification.
+
+Do not sacrifice historical knowledge for visual cleanliness.
+
+============================================================
+24. DUPLICATE INFORMATION
+============================================================
+
+If newly learned information duplicates an existing concept:
+
+Do not create unnecessary duplicate branches.
+
+Instead:
+
+- Determine whether the information belongs under the existing
+  branch.
+- Add only genuinely new information.
+- Preserve the existing wording.
+
+Do not rewrite the existing branch merely to incorporate the duplicate.
+
+============================================================
+25. CONFLICTING INFORMATION
+============================================================
+
+If two pieces of information conflict:
+
+1. Do not silently choose one.
+2. Identify the conflict.
+3. Determine whether the conflict is due to:
+   - Different contexts
+   - Different versions
+   - Different terminology
+   - Actual contradiction
+   - Incomplete information
+4. Preserve canonical content until the issue is resolved.
+5. Modify only with explicit authorization when necessary.
+
+============================================================
+26. TOPIC BOUNDARY
+============================================================
+
+The Knowledge Tree must remain focused on the requested topic.
+
+If a related concept is necessary to understand the topic:
+
+- Include it briefly.
+- Identify the relationship.
+
+If it is unrelated enrichment:
+
+- Do not automatically add it.
+
+Avoid uncontrolled tree expansion.
+
+============================================================
+27. BASE → ADD → FINAL LIFECYCLE
+============================================================
+
+The intended lifecycle is:
+
+                    BASE TREE
+                       ↓
+              CANONICAL STRUCTURE
+                       ↓
+                LEARNING BEGINS
+                       ↓
+              ADD / UPDATE TREE
+                       ↓
+            NEW KNOWLEDGE ADDED
+                       ↓
+                 MORE LEARNING
+                       ↓
+              ADD / UPDATE TREE
+                       ↓
+                  ...
+                       ↓
+                 FINAL TREE
+                       ↓
+        COMPLETENESS + CONSOLIDATION
+                       ↓
+             FINAL REVISION TREE
+
+The Final Tree does not invalidate the canonical history.
+
+It represents the completed state of the same tree.
+
+============================================================
+28. TREE GENERATION RULE
+============================================================
+
+When generating any tree:
+
+FIRST:
+Understand the requested topic and mode.
+
+SECOND:
+Use the authoritative topic-specific sources.
+
+THIRD:
+Determine what already exists.
+
+FOURTH:
+Determine what is genuinely new.
+
+FIFTH:
+Apply only the permitted operation.
+
+SIXTH:
+Verify preservation of canonical content.
+
+SEVENTH:
+Return the tree.
+
+============================================================
+29. PRESERVATION CHECK
+============================================================
+
+Before returning an Add / Update or Final Tree, verify:
+
+[ ] Existing headings are preserved.
+[ ] Existing wording is preserved.
+[ ] Existing hierarchy is preserved.
+[ ] Existing ordering is preserved.
+[ ] Existing concepts are preserved.
+[ ] No branch was silently deleted.
+[ ] No branch was silently renamed.
+[ ] No definition was silently rewritten.
+[ ] No unnecessary restructuring occurred.
+[ ] Only genuinely new information was added.
+[ ] Any questionable existing information was flagged rather than
+    silently changed.
+[ ] The resulting tree remains revision-friendly.
+
+============================================================
+30. FINAL TREE CHECK
+============================================================
+
+Before declaring a Final Tree complete:
+
+[ ] Curriculum coverage was reviewed.
+[ ] Tracker coverage was reviewed.
+[ ] Learning history was reviewed.
+[ ] Demonstrated concepts were considered.
+[ ] Important validated knowledge is represented.
+[ ] Important distinctions are represented.
+[ ] Important weaknesses/misconceptions are represented where useful.
+[ ] Important practical/assessment implications are represented where
+    useful.
+[ ] Missing important concepts were added.
+[ ] Existing canonical content was preserved.
+[ ] No unsupported knowledge was invented.
+[ ] No silent corrections were made.
+[ ] The tree remains compact enough for revision.
+
+============================================================
+31. UNIVERSAL PORTABILITY
+============================================================
+
+This protocol must remain independent of any particular subject.
+
+Do not embed assumptions about:
+
+- AWS
+- Programming
+- Cloud computing
+- DSA
+- Java
+- React
+- Civil Services
+- Any specific exam
+- Any specific technology
+
+Subject-specific behavior belongs in the:
+
+SUBJECT-SPECIFIC LEARNING FRAMEWORK
+
+not in this protocol.
+
+============================================================
+32. CORE IMMUTABILITY RULE
+============================================================
+
+The Knowledge Tree is:
+
+MUTABLE FOR ADDITIONS.
+
+IMMUTABLE FOR EXISTING CONTENT BY DEFAULT.
+
+This distinction is fundamental.
+
+"Update" does NOT mean:
+
+"Rewrite the tree."
+
+It means:
+
+"Add newly established knowledge to the existing canonical tree."
+
+============================================================
+33. CORE PRINCIPLE
+============================================================
+
+The Knowledge Tree should evolve like a carefully maintained
+knowledge repository.
+
+New knowledge is added.
+
+Established knowledge is preserved.
+
+Corrections require explicit control.
+
+Finalization means completeness evaluation, not rewriting.
+
+Every operation must maximize:
+
+- Accuracy
+- Recall
+- Continuity
+- Auditability
+- Portability
+- Revision value
+
+while minimizing:
+
+- Information loss
+- Redundant rewriting
+- Structural drift
+- Silent changes
+- Unnecessary verbosity
+
+===================================================

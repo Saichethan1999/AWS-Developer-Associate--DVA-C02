@@ -1,0 +1,517 @@
+SECTIONS
+
+1. Why encryption exists
+2. Encryption fundamentals and cryptographic operations
+3. What AWS KMS does
+4. KMS keys and key types
+5. KMS authorization: key policies, IAM policies, and grants
+6. Envelope encryption and data keys
+7. Encryption at rest vs encryption in transit
+8. Server-side encryption vs client-side encryption
+9. Using keys to encrypt and decrypt data
+10. KMS key rotation
+11. Cross-account encryption and key access
+12. Certificates and certificate management
+13. AWS Certificate Manager and AWS Private CA
+14. Generating certificates and SSH keys
+15. AWS Secrets Manager
+16. Systems Manager Parameter Store
+17. Secrets Manager vs Parameter Store
+18. Encrypting sensitive environment variables
+19. Sensitive-data handling and credential-exposure prevention
+20. Data classification: PII, PHI, and other sensitive data
+21. Data sanitization
+22. Data masking
+23. Application-level masking and sanitization
+24. Multi-tenant data-access patterns and tenant isolation
+25. Trust and authorization boundaries in encrypted systems
+26. Common misconceptions and exam traps
+27. Integrated architecture and exam scenarios
+28. Final chapter validation and targeted repair
+
+
+
+SECTION 1 OF 28: WHY ENCRYPTION EXISTS
+
+1. PURPOSE OF ENCRYPTION
+
+Applications store and transfer sensitive information, including:
+
+- Customer information
+- Passwords and API credentials
+- Payment information
+- Medical information
+- Business records
+- Database backups
+- Application configuration
+
+Encryption protects the readability and meaning of this data.
+
+Core question answered by encryption:
+
+"If someone obtains the data, can they understand it?"
+
+Encryption does not primarily prevent someone from obtaining or copying
+the data. It transforms readable data into an unreadable form so that
+obtaining the stored bytes alone is not sufficient to understand them.
+
+
+2. FUNDAMENTAL TERMINOLOGY
+
+Plaintext:
+- The original readable data.
+- Example: A readable customer name or account balance.
+
+Ciphertext:
+- Data transformed into an unreadable encrypted form.
+- Someone who obtains ciphertext should not be able to understand the
+  original information without the required cryptographic authority.
+
+Cryptographic key:
+- Special cryptographic material used as part of an encryption or
+  decryption operation.
+
+Encryption:
+- The process of converting plaintext into ciphertext.
+
+Decryption:
+- The process of converting ciphertext back into plaintext.
+
+Simplified mental model:
+
+Plaintext
+    |
+    | Encrypt using a cryptographic key
+    v
+Ciphertext
+
+Ciphertext
+    |
+    | Authorized decryption
+    v
+Plaintext
+
+Simplified representation:
+
+Encrypt(plaintext, key) = ciphertext
+
+Decrypt(ciphertext, authorized key usage) = plaintext
+
+This is a conceptual model. The exact cryptographic mechanisms were not
+covered in this section.
+
+
+3. WHY AUTHORIZATION ALONE IS NOT ENOUGH
+
+Authorization and encryption protect against different risks.
+
+Authorization asks:
+
+"Is this identity permitted to perform this action on this resource?"
+
+Example:
+
+"May this Lambda execution role call s3:GetObject on this S3 object?"
+
+Encryption asks:
+
+"If someone obtains these bytes, can they understand the information?"
+
+Authorization protects normal access through controlled operations.
+Encryption adds protection when the data is obtained through another path.
+
+Possible exposure paths include:
+
+- A copied backup
+- An exposed snapshot
+- A misplaced downloaded file
+- Improper access to storage
+- Intercepted network traffic
+- An authorized person obtaining raw stored data
+
+Without encryption:
+
+Data is obtained
+    |
+    v
+Data is immediately readable
+
+With encryption:
+
+Ciphertext is obtained
+    |
+    v
+Required key access is unavailable
+    |
+    v
+The original information remains unreadable
+
+
+4. AUTHORIZATION VS ENCRYPTION
+
+Authorization:
+- Decides whether an identity can perform a particular operation on a
+  particular resource.
+- Example: Whether Lambda can retrieve an S3 object.
+
+Encryption:
+- Protects the readability of data.
+- Data is stored or transmitted as ciphertext and must pass through an
+  authorized decryption path before becoming readable.
+
+Critical distinction:
+
+Authorization protects access to the resource.
+
+Encryption protects the meaning and readability of the data.
+
+They are separate security controls and are not interchangeable.
+
+A secure system commonly needs both:
+
+Authorization
+    +
+Encryption
+    +
+Secure application handling
+    +
+Logging and monitoring
+    |
+    v
+Stronger overall protection
+
+Using several independent security controls is called defense in depth.
+
+
+5. ENCRYPTION DOES NOT MAKE DATA PERMANENTLY UNREADABLE
+
+Applications normally need to use the protected information.
+
+Example:
+
+Encrypted customer record
+    |
+    | Authorized decryption
+    v
+Plaintext available to Lambda
+    |
+    | Application processing
+    v
+Result
+
+Encryption protects data before authorized decryption. After decryption,
+the application must protect the resulting plaintext.
+
+Important security question:
+
+"Where is plaintext allowed to exist, and who is allowed to cause
+decryption?"
+
+Encryption changes where readable data becomes available. It does not
+eliminate the need to protect the application, memory, logs, exports,
+caches, errors, or other places that may receive plaintext.
+
+
+6. DATA STATES
+
+Data can exist in three broad states.
+
+Data at rest:
+- Data stored somewhere.
+- Examples:
+  - S3 objects
+  - DynamoDB records
+  - Database records
+  - EBS volumes
+  - Backups
+  - Snapshots
+
+Data in transit:
+- Data moving between systems.
+- Examples:
+  - Browser to API Gateway
+  - Lambda to another API
+  - Application to database
+  - One AWS service to another service
+
+Data in use:
+- Data currently being processed.
+- Examples:
+  - Decrypted information in application memory
+  - A decrypted database record being processed
+  - A secret temporarily loaded by an application
+
+This section established these three states only at a high level.
+Encryption at rest and encryption in transit will be covered in a later
+section.
+
+
+7. RESOURCE ACCESS AND KEY USAGE
+
+An encrypted AWS resource can involve separate authorization concerns.
+
+For an encrypted S3 object, Lambda may need:
+
+1. Permission to retrieve the S3 object.
+2. Permission to follow the required authorized decryption path.
+
+Conceptual distinction:
+
+S3 permission:
+- Can Lambda retrieve the object?
+
+Key permission:
+- Can Lambda use the applicable key through the permitted cryptographic
+  operation?
+
+Critical rules:
+
+Resource access is not the same as key usage.
+
+Key usage is not the same as resource access.
+
+Permission to retrieve an encrypted resource does not always guarantee
+that the caller can obtain usable plaintext.
+
+Permission related to the encryption key does not automatically grant
+access to every resource protected by that key.
+
+The exact KMS permissions and authorization process were intentionally
+not established in this section. The learner correctly identified this
+limit instead of guessing.
+
+A future section will explain permissions such as kms:Decrypt and the
+complete KMS authorization model.
+
+
+8. ENCRYPTION DOES NOT PROVE IDENTITY OR BUSINESS AUTHORIZATION
+
+Encryption does not answer:
+
+- Who is making the request?
+- Is the user authenticated?
+- Does the user own the requested record?
+- Is the requested business operation allowed?
+- May a workload access the AWS resource?
+
+These remain authentication and authorization questions.
+
+Mental model:
+
+Authentication:
+"Who are you?"
+
+Authorization:
+"What are you allowed to do?"
+
+Encryption:
+"Can these bytes be understood without the required key access?"
+
+Successful decryption does not prove that the application made the
+correct business-authorization decision.
+
+
+9. LIMITATIONS OF ENCRYPTION
+
+Encryption cannot independently prevent an authorized application from
+misusing plaintext.
+
+If an application is authorized to decrypt information, encryption does
+not determine whether its business logic is correct.
+
+Encryption does not automatically protect plaintext copied elsewhere.
+
+Example:
+
+Encrypted database value
+    |
+    | Application decrypts it
+    v
+Plaintext
+    |
+    | Application logs it
+    v
+Plaintext in CloudWatch Logs
+
+The original storage encryption can work correctly while the decrypted
+information is exposed in another location.
+
+Encryption also does not independently protect against:
+
+- Plaintext written to logs
+- Plaintext included in errors
+- Plaintext copied into exports
+- Plaintext placed in unprotected caches
+- Credentials hardcoded in source code
+- Excessive permissions to use encryption keys
+- Incorrect application-level authorization
+
+Each new location containing plaintext requires appropriate protection.
+
+
+10. VALIDATED SCENARIO
+
+Scenario:
+
+An application stores encrypted customer records in S3. Lambda is
+authorized to retrieve and decrypt the records. After decryption, Lambda
+accidentally writes a complete customer record into CloudWatch Logs.
+
+Validated reasoning:
+
+- S3 encryption did not fail.
+- The encrypted S3 object was protected correctly.
+- Key authorization did not fail because Lambda was intentionally
+  authorized to follow the decryption path.
+- The record became plaintext after authorized decryption.
+- Lambda then copied the plaintext into CloudWatch Logs.
+- Application handling failed.
+- Once data is copied to another location, that location and the
+  application writing to it must protect the copied data.
+
+Correct responsibility flow:
+
+Encrypted S3 object
+    |
+    | Authorized retrieval and decryption
+    v
+Plaintext available to Lambda
+    |
+    | Incorrect application handling
+    v
+Plaintext written to CloudWatch Logs
+    |
+    v
+Possible data exposure
+
+
+11. CORRECTION ESTABLISHED DURING VALIDATION
+
+Initial high-level wording suggested that an application uses a
+decryption key to decrypt the data.
+
+Refined understanding:
+
+It is not always accurate to say that the application directly receives
+the decryption key and performs decryption itself.
+
+The exact process depends on whether encryption is server-side or
+client-side.
+
+The valid high-level model for this section is:
+
+Access encrypted resource
+    +
+Authorized decryption path
+    |
+    v
+Plaintext becomes available
+    |
+    v
+Application must handle plaintext securely
+
+The exact server-side and client-side mechanisms were not established in
+this section and should not be assumed yet.
+
+
+12. COMMON MISCONCEPTIONS AND CORRECTIONS
+
+Misconception:
+"Encryption prevents data from being stolen."
+
+Correction:
+Data may still be copied or stolen. Encryption aims to keep the obtained
+data unreadable without the required key access.
+
+Misconception:
+"Encrypted data means authorization is unnecessary."
+
+Correction:
+Authorization controls permitted actions. Encryption protects data
+readability. Secure systems commonly need both.
+
+Misconception:
+"If IAM denies normal access, encryption is unnecessary."
+
+Correction:
+IAM protects controlled AWS API access. Encryption adds protection if
+the underlying data is exposed through another path.
+
+Misconception:
+"Encrypted data is never converted back to plaintext."
+
+Correction:
+Applications normally decrypt data before processing it. Plaintext must
+then be protected.
+
+Misconception:
+"Storage encryption protects the data everywhere after decryption."
+
+Correction:
+If an application copies plaintext into logs, errors, caches, or exports,
+those locations need their own protection.
+
+Misconception:
+"Permission to access an encrypted resource automatically means
+permission to use the encryption key."
+
+Correction:
+Resource access and key usage are separate authorization concerns.
+
+Misconception:
+"Permission to use a key automatically grants access to every encrypted
+resource."
+
+Correction:
+Key usage does not itself grant access to the underlying resources.
+
+
+13. EXAM-ORIENTED REASONING
+
+For an encryption scenario, ask:
+
+1. What information is sensitive?
+2. Where is the data?
+3. Is it at rest, in transit, or in use?
+4. Who may access the resource?
+5. Who may use the required encryption key or decryption path?
+6. Where does ciphertext become plaintext?
+7. What happens to the plaintext after decryption?
+
+Important exam separation:
+
+Resource authorization
+    |
+    v
+May the principal access the AWS resource?
+
+Key authorization
+    |
+    v
+May the principal perform the permitted cryptographic operation?
+
+Application handling
+    |
+    v
+Is plaintext handled safely after decryption?
+
+A failure in one layer does not prove that the other layers failed.
+
+
+14. PRACTICAL ENGINEERING RULE
+
+Do not stop after checking:
+
+"Is encryption enabled?"
+
+Also ask:
+
+- What exactly is encrypted?
+- Which key protects it?
+- Who controls access to that key?
+- Who can cause decryption?
+- Where does plaintext appear?
+- Can plaintext leak through logs, errors, caches, or exports?
+
+Encryption is effective only when key access and plaintext handling are
+also controlled.

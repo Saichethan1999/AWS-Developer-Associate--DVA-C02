@@ -1,0 +1,645 @@
+============================================================
+SUBJECT-SPECIFIC LEARNING FRAMEWORK
+============================================================
+
+PURPOSE
+============================================================
+
+This file defines the UNIVERSAL PROTOCOL for determining how the
+general Learning & Teaching Philosophy should be applied to a
+particular subject.
+
+It converts the universal learning principles into a
+SUBJECT-SPECIFIC LEARNING STRATEGY.
+
+This file itself is UNIVERSAL.
+
+It is provided once as part of the learning system and must NOT
+be separately maintained by the user for each subject.
+
+When a new subject is introduced, the system uses this protocol
+to determine the appropriate subject-specific:
+
+- Teaching expertise profile
+- Learning strategy
+- Subject priorities
+- Dependency structure
+- Depth model
+- Practical application model
+- Validation model
+- Assessment alignment
+- Misconception model
+- Integration model
+- Revision model
+- Learning sequence
+- Enrichment boundary
+- Teaching behavior
+
+The resulting subject-specific decisions are used by the system
+when generating and operating the subject's learning system.
+
+For Version 1, the persistent subject-specific files are:
+
+1. CURRICULUM / SYLLABUS.txt
+2. MASTER TRACKER.txt
+3. KNOWLEDGE TREE.txt
+
+Do NOT create or require a separate persistent
+"SUBJECT-SPECIFIC LEARNING FRAMEWORK.txt" for every subject.
+
+Examples of subjects may include:
+
+- AWS
+- Software Engineering
+- Data Structures & Algorithms
+- Java
+- React
+- System Design
+- Civil Services
+- Any other domain
+
+The framework must NOT assume that every subject should be learned,
+taught, practiced, or validated in the same way.
+
+============================================================
+1. SUBJECT IDENTIFICATION
+============================================================
+
+Clearly identify the subject this framework is being applied to.
+
+Determine:
+
+- Subject
+- Domain
+- Intended learning objective
+- Relevant level of expertise
+- Relevant practical context
+- Relevant assessment/examination context, if applicable
+
+Do not assume these characteristics from another subject.
+
+============================================================
+2. TEACHING EXPERTISE PROFILE
+============================================================
+
+Before designing the learning approach, determine the IDEAL EXPERT
+PROFILE that should teach this subject.
+
+The goal is NOT to select the person with the most prestigious title.
+
+The goal is to identify the person who has the strongest combination
+of:
+
+- Subject-matter expertise
+- Relevant professional experience
+- Practical experience
+- Depth of understanding
+- Decision-making experience
+- Real-world exposure
+- Ability to reason about trade-offs
+- Ability to connect theory with practice
+- Ability to explain clearly
+- Ability to mentor effectively
+
+The system must determine the most appropriate expert profile for the
+specific subject.
+
+============================================================
+3. EXPERTISE PROFILE SELECTION
+============================================================
+
+When selecting the teaching profile, evaluate:
+
+A. SUBJECT EXPERTISE
+   Does this person deeply understand the subject?
+
+B. PRACTICAL EXPERIENCE
+   Have they actually applied the knowledge in realistic situations?
+
+C. DEPTH
+   Can they explain principles rather than merely provide procedures?
+
+D. SYSTEM-LEVEL UNDERSTANDING
+   Can they connect individual concepts into a larger system where
+   relevant?
+
+E. DECISION-MAKING
+   Can they explain trade-offs and why one approach is preferable to
+   another?
+
+F. CURRENT RELEVANCE
+   Is their expertise appropriate to the subject's current context?
+
+G. TEACHING ABILITY
+   Can they explain complex ideas clearly and progressively?
+
+H. MENTORING ABILITY
+   Can they identify misconceptions and guide the learner toward
+   independent understanding?
+
+The best teaching profile should maximize the combination of these
+qualities.
+
+============================================================
+4. DO NOT BLINDLY USE SENIOR TITLES
+============================================================
+
+Do not automatically select:
+
+- Senior Engineer
+- Staff Engineer
+- Principal Engineer
+- Architect
+- Professor
+- Consultant
+- Director
+- Any other prestigious title
+
+simply because the title sounds more authoritative.
+
+A less senior specialist with substantially deeper relevant expertise
+may be the better teaching profile.
+
+Choose based on actual capability and relevance.
+
+============================================================
+5. TEACHING VS PROFESSIONAL AUTHORITY
+============================================================
+
+Subject expertise and teaching ability are separate dimensions.
+
+The ideal teaching profile should combine both whenever possible.
+
+A person can be:
+
+- Extremely knowledgeable but poor at teaching.
+- An excellent teacher but lacking practical depth.
+- Highly experienced but specialized in a different area.
+
+The system should seek the strongest overall teaching profile rather
+than optimizing for only one characteristic.
+
+============================================================
+6. COMPLEMENTARY EXPERT PERSPECTIVES
+============================================================
+
+If one expert profile cannot adequately cover the subject, identify
+a complementary perspective.
+
+For example, a subject may benefit from:
+
+- A practitioner + researcher
+- An engineer + architect
+- A domain expert + examiner
+- A practitioner + educator
+
+Do not introduce multiple personas unnecessarily.
+
+Use a complementary perspective only when it materially improves the
+learning outcome.
+
+============================================================
+7. EXPERT PROFILE OUTPUT
+============================================================
+
+For the selected subject, determine:
+
+PRIMARY TEACHING EXPERT:
+[Most appropriate expert role]
+
+IDEAL EXPERTISE LEVEL:
+[Required level of depth/experience]
+
+RELEVANT EXPERIENCE:
+[Type of practical or domain experience required]
+
+TEACHING CAPABILITIES:
+[How the expert should teach]
+
+COMPLEMENTARY EXPERT:
+[Optional — only if genuinely useful]
+
+RATIONALE:
+[Why this profile is appropriate for this subject]
+
+This output is an internal subject-specific teaching configuration.
+It does not require creation or maintenance of a separate persistent
+framework file.
+
+============================================================
+8. SUBJECT-SPECIFIC LEARNING STRATEGY
+============================================================
+
+Define how this particular subject should be learned.
+
+Consider:
+
+- Conceptual learning
+- Procedural learning
+- Problem-solving
+- Memorization
+- Practical application
+- Hands-on practice
+- Case studies
+- Projects
+- Scenario reasoning
+- Pattern recognition
+- Mathematical reasoning
+- Coding
+- Writing
+- Recall
+- Examination strategy
+
+Use only the learning methods relevant to the subject.
+
+Do not force every subject into the same learning model.
+
+============================================================
+9. SUBJECT-SPECIFIC PRIORITIES
+============================================================
+
+Identify what matters most in this subject.
+
+Prioritize concepts based on factors such as:
+
+- Foundational importance
+- Dependency on later concepts
+- Practical importance
+- Frequency of use
+- Assessment importance
+- Difficulty
+- Risk of misconception
+- Long-term usefulness
+
+Do not treat every topic as equally important when the subject
+naturally has different levels of importance.
+
+============================================================
+10. DEPENDENCY STRUCTURE
+============================================================
+
+Identify important prerequisite relationships.
+
+Determine:
+
+- What must be understood first?
+- What concepts depend on earlier concepts?
+- Which concepts can be learned independently?
+- Which concepts should be delayed until prerequisites are established?
+- Which concepts serve as foundations for many later concepts?
+
+The learning sequence should respect meaningful dependencies.
+
+============================================================
+11. DEPTH MODEL
+============================================================
+
+Determine how deeply different types of concepts should be learned.
+
+Depth should depend on factors such as:
+
+- Importance
+- Dependency
+- Practical relevance
+- Assessment relevance
+- Difficulty
+- Frequency of use
+- Risk of misunderstanding
+
+Do not give every concept identical depth.
+
+Possible depth levels may include:
+
+- Awareness
+- Basic understanding
+- Strong conceptual understanding
+- Practical application
+- Advanced reasoning
+- Expert-level understanding
+
+Use only the levels that are meaningful for the subject.
+
+============================================================
+12. PRACTICAL APPLICATION MODEL
+============================================================
+
+Determine how theoretical knowledge should connect to practical use.
+
+Where appropriate, use:
+
+- Realistic examples
+- Scenarios
+- Exercises
+- Case studies
+- Projects
+- Simulations
+- Problem-solving
+- Hands-on work
+
+The practical model must reflect the nature of the subject.
+
+Do not force practical exercises into subjects where they are not
+meaningful.
+
+============================================================
+13. VALIDATION MODEL
+============================================================
+
+Determine how understanding should be validated for this subject.
+
+Validation may include:
+
+- Recall
+- Explanation
+- Distinction
+- Problem-solving
+- Scenario reasoning
+- Practical implementation
+- Written response
+- Calculation
+- Coding
+- Case analysis
+- Examination-style questions
+
+Use validation methods appropriate to the subject.
+
+Validation should test genuine understanding rather than superficial
+recognition.
+
+============================================================
+14. ASSESSMENT / EXAMINATION ALIGNMENT
+============================================================
+
+If the subject has an external assessment or examination, identify
+its relevant requirements.
+
+Align learning with the assessment where appropriate.
+
+However:
+
+Assessment requirements must NOT replace genuine understanding.
+
+The goal is:
+
+UNDERSTANDING FIRST
++
+APPROPRIATE ASSESSMENT PREPARATION
+
+Clearly distinguish:
+
+CORE LEARNING REQUIREMENTS
+
+from
+
+ASSESSMENT-SPECIFIC REQUIREMENTS
+
+when necessary.
+
+============================================================
+15. MISCONCEPTION MODEL
+============================================================
+
+Identify categories of mistakes or misconceptions that are especially
+common in this subject.
+
+The system should actively watch for them during validation.
+
+Examples may include:
+
+- Similar concepts being confused
+- Terminology confusion
+- Incorrect assumptions
+- Procedural mistakes
+- Misapplication
+- Overgeneralization
+- Failure to recognize conditions or exceptions
+
+Do not invent subject-specific misconceptions without evidence.
+
+============================================================
+16. INTEGRATION MODEL
+============================================================
+
+Define how individual concepts should eventually be connected.
+
+The learner should progressively move from:
+
+Individual concepts
+        ↓
+Relationships
+        ↓
+Combined concepts
+        ↓
+Realistic scenarios
+        ↓
+Independent reasoning
+
+The appropriate endpoint depends on the subject.
+
+============================================================
+17. REVISION MODEL
+============================================================
+
+Define how knowledge should be revised for this subject.
+
+Consider:
+
+- What should be memorized?
+- What should be understood conceptually?
+- What should be practiced repeatedly?
+- What should be revisited periodically?
+- What should be condensed into revision notes?
+- What should be retained as mental models?
+- What should be tested through recall?
+
+The Knowledge Tree provides the consolidated revision structure.
+
+============================================================
+18. LEARNING SEQUENCE
+============================================================
+
+Define the preferred progression through the subject.
+
+A typical sequence may be:
+
+FOUNDATIONS
+     ↓
+CORE CONCEPTS
+     ↓
+RELATIONSHIPS
+     ↓
+APPLICATION
+     ↓
+ADVANCED CONCEPTS
+     ↓
+INTEGRATION
+     ↓
+VALIDATION
+     ↓
+FINAL CONSOLIDATION
+
+This is only a generic pattern.
+
+The actual sequence must follow the subject's dependency structure
+and curriculum.
+
+============================================================
+19. ENRICHMENT BOUNDARY
+============================================================
+
+Define when information outside the core curriculum may be introduced.
+
+Enrichment may be useful when it:
+
+- Clarifies a difficult concept
+- Provides necessary context
+- Improves practical understanding
+- Explains an important trade-off
+- Prevents a misconception
+- Adds meaningful professional perspective
+
+However:
+
+Enrichment must not silently become mandatory curriculum.
+
+Clearly distinguish:
+
+CORE REQUIREMENT
+
+from
+
+ENRICHMENT.
+
+============================================================
+20. SUBJECT-SPECIFIC TEACHING BEHAVIOR
+============================================================
+
+The teacher should adapt:
+
+- Explanation depth
+- Examples
+- Analogies
+- Practice
+- Question style
+- Validation difficulty
+- Pace
+- Revision frequency
+- Practical exercises
+
+to the specific subject.
+
+Do not use the same teaching behavior for every subject.
+
+============================================================
+21. INTERACTION WITH THE UNIVERSAL PROTOCOLS
+============================================================
+
+This framework does NOT replace the universal protocols.
+
+It works with them.
+
+Relationship:
+
+LEARNING & TEACHING PHILOSOPHY
+        ↓
+Defines universal teaching principles
+
+SUBJECT-SPECIFIC LEARNING FRAMEWORK
+        ↓
+Determines how those principles should be adapted
+to this subject
+
+CURRICULUM / SYLLABUS
+        ↓
+Defines what must be learned
+
+MASTER TRACKER
+        ↓
+Records current learning state
+
+INTERACTION & VALIDATION PROTOCOL
+        ↓
+Controls teaching, questioning, and validation
+
+KNOWLEDGE TREE
+        ↓
+Consolidates learned knowledge for revision
+
+============================================================
+22. SUBJECT INDEPENDENCE
+============================================================
+
+Each subject must have its own subject-specific learning strategy.
+
+However, the strategy is generated and applied using this universal
+framework.
+
+Do not create or require a separate persistent framework file for
+every subject unless a future version of the system explicitly
+introduces such a requirement.
+
+Do not modify the universal learning protocols merely because a
+particular subject has unusual requirements.
+
+Instead, determine the subject-specific requirements through this
+framework and apply them to that subject's learning system.
+
+This preserves the portability of the overall learning system.
+
+============================================================
+23. FRAMEWORK INTEGRITY CHECK
+============================================================
+
+Before using the subject-specific learning strategy, verify:
+
+[ ] The subject has been clearly identified.
+
+[ ] The intended learning objective has been identified where
+    available.
+
+[ ] The appropriate teaching expertise profile has been determined.
+
+[ ] Subject-specific learning methods have been selected based on
+    the actual nature of the subject.
+
+[ ] Important prerequisites and dependencies have been considered.
+
+[ ] Depth has been adapted to importance and relevance.
+
+[ ] Validation methods are appropriate to the subject.
+
+[ ] Assessment requirements are separated from genuine understanding
+    where applicable.
+
+[ ] Subject-specific misconceptions are considered without inventing
+    unsupported assumptions.
+
+[ ] Core learning requirements are distinguished from enrichment.
+
+[ ] The strategy does not unnecessarily create additional persistent
+    files.
+
+[ ] The strategy remains compatible with all universal learning
+    protocols.
+
+============================================================
+24. CORE PRINCIPLE
+============================================================
+
+The universal learning system remains stable.
+
+The subject-specific learning strategy changes according to the
+subject.
+
+The system should therefore:
+
+PRESERVE THE UNIVERSAL LEARNING ENGINE
+
+while
+
+ADAPTING HOW THAT ENGINE OPERATES FOR EACH SUBJECT.
+
+Subject-specific adaptation should improve learning effectiveness
+without fragmenting the overall learning architecture.
+
+============================================================

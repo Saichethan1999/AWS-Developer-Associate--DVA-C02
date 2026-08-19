@@ -1,0 +1,161 @@
+WHY ENCRYPTION EXISTS
+│
+├── Purpose of Encryption
+│   ├── Protection Goal
+│   │   └── Protects the readability and meaning of data when someone
+│   │       obtains it without the required cryptographic authority.
+│   ├── What It Does Not Guarantee
+│   │   └── Data may still be copied or stolen; encryption aims to keep
+│   │       the obtained data unreadable.
+│   └── Defense in Depth
+│       └── Encryption works alongside authorization, secure application
+│           handling, logging, and monitoring rather than replacing them.
+│
+├── Encryption Terminology
+│   ├── Plaintext
+│   │   └── Original readable data.
+│   ├── Ciphertext
+│   │   └── Data transformed into an encrypted, unreadable form.
+│   ├── Cryptographic Key
+│   │   └── Cryptographic material used as part of encryption or
+│   │       decryption operations.
+│   ├── Encryption
+│   │   └── Converts plaintext into ciphertext.
+│   └── Decryption
+│       └── Converts ciphertext back into plaintext through an authorized
+│           decryption path.
+│
+├── Basic Data Transformation
+│   ├── Encryption Flow
+│   │   └── Plaintext → Encryption → Ciphertext
+│   └── Decryption Flow
+│       └── Ciphertext → Authorized decryption → Plaintext
+│
+├── Authorization and Encryption
+│   ├── Authorization
+│   │   ├── Question Answered
+│   │   │   └── Can this identity perform this action on this resource?
+│   │   └── Example
+│   │       └── Whether a Lambda execution role may retrieve an S3 object.
+│   ├── Encryption
+│   │   ├── Question Answered
+│   │   │   └── Can these bytes be understood without the required key
+│   │   │       access?
+│   │   └── Protection Boundary
+│   │       └── Protects data readability rather than deciding every
+│   │           permitted resource operation.
+│   └── Critical Distinction
+│       ├── Authorization protects access to the resource.
+│       ├── Encryption protects the meaning and readability of the data.
+│       └── Secure systems commonly require both controls.
+│
+├── Resource Access and Key Usage
+│   ├── Resource Permission
+│   │   └── Determines whether the principal may access the encrypted
+│   │       resource, such as retrieving an S3 object.
+│   ├── Key Permission
+│   │   └── Determines whether the principal may use the applicable key
+│   │       through a permitted cryptographic operation.
+│   └── Key Rules
+│       ├── Resource access is not the same as key usage.
+│       ├── Key usage is not the same as resource access.
+│       ├── Access to an encrypted resource does not always guarantee
+│       │   access to usable plaintext.
+│       └── Permission related to a key does not automatically grant
+│           access to every resource protected by that key.
+│
+├── Data States
+│   ├── Data at Rest
+│   │   ├── Definition
+│   │   │   └── Data stored somewhere.
+│   │   └── Examples
+│   │       └── S3 objects, database records, EBS volumes, backups, and
+│   │           snapshots.
+│   ├── Data in Transit
+│   │   ├── Definition
+│   │   │   └── Data moving between systems.
+│   │   └── Examples
+│   │       └── Browser to API Gateway, Lambda to another API, or an
+│   │           application to a database.
+│   └── Data in Use
+│       ├── Definition
+│       │   └── Data currently being processed.
+│       └── Examples
+│           └── Decrypted information in application memory or a secret
+│               temporarily loaded by an application.
+│
+├── Plaintext Exposure Boundary
+│   ├── Authorized Use
+│   │   └── An authorized application may decrypt protected information
+│   │       because it needs plaintext for processing.
+│   ├── Security Question
+│   │   └── Where is plaintext allowed to exist, and who is allowed to
+│   │       cause decryption?
+│   ├── Application Responsibility
+│   │   └── After decryption, the application must protect plaintext in
+│   │       memory, logs, errors, caches, and exports.
+│   └── Key Limitation
+│       └── Encryption does not protect a new plaintext copy merely
+│           because the original source was encrypted.
+│
+├── Validated S3 and Lambda Scenario
+│   ├── Initial State
+│   │   └── Customer records are stored encrypted in S3.
+│   ├── Authorized Processing
+│   │   └── Lambda is authorized to retrieve and decrypt the records.
+│   ├── Exposure
+│   │   └── Lambda writes the decrypted customer record into CloudWatch
+│   │       Logs as plaintext.
+│   ├── Failed Control
+│   │   └── Application handling failed.
+│   └── Controls That Did Not Fail
+│       ├── S3 storage encryption worked correctly.
+│       └── Key authorization worked as intended because Lambda was
+│           authorized to decrypt the data.
+│
+├── Authentication and Business Authorization
+│   ├── Authentication
+│   │   └── Establishes who is making the request.
+│   ├── Authorization
+│   │   └── Establishes what actions the identity may perform.
+│   ├── Encryption
+│   │   └── Controls whether protected bytes can become readable.
+│   └── Important Rule
+│       └── Successful decryption does not prove that the application user
+│           owns the record or that the business operation is authorized.
+│
+├── Corrected Decryption Model
+│   ├── Unsafe Assumption
+│   │   └── Do not always assume that the application directly receives a
+│   │       decryption key and decrypts the data itself.
+│   ├── Reason
+│   │   └── The exact process depends on whether encryption is server-side
+│   │       or client-side.
+│   └── Valid Current Mental Model
+│       └── Encrypted resource access + authorized decryption path →
+│           plaintext becomes available → application must handle it
+│           securely.
+│
+├── Common Misconceptions
+│   ├── Encryption prevents data theft
+│   │   └── Data can still be copied; encryption protects its readability.
+│   ├── Encryption removes the need for authorization
+│   │   └── Authorization and encryption protect different boundaries.
+│   ├── IAM denial makes encryption unnecessary
+│   │   └── Encryption adds protection when data is exposed through
+│   │       another path.
+│   ├── Encrypted data never becomes plaintext
+│   │   └── Applications normally decrypt data before processing it.
+│   ├── Storage encryption protects plaintext logs
+│   │   └── Plaintext copied to logs requires separate protection.
+│   └── Decryption proves correct business access
+│       └── Decryption authority does not validate record ownership or
+│           application-level authorization.
+│
+└── Exam Reasoning
+    ├── Identify the sensitive data.
+    ├── Determine whether it is at rest, in transit, or in use.
+    ├── Identify who can access the resource.
+    ├── Identify who can use the key or decryption path.
+    ├── Locate where ciphertext becomes plaintext.
+    └── Examine how plaintext is handled after decryption.
