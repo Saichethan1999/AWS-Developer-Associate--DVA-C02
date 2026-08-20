@@ -1,0 +1,2159 @@
+# AWS Certified Developer Associate (DVA-C02) - Revision Notes
+
+Source: AWS Certified Developer Slides v45.pdf
+
+These notes condense the complete 907-page slide deck. Repeated slides and hands-on narration are merged, while definitions, decision rules, limits, failure behaviour, security rules, and exam traps are retained.
+
+---
+
+## 1. Getting Started with AWS
+
+*Source: PDF pages 1-20*
+
+**AWS purpose and use cases**
+
+AWS is a cloud provider. It provides servers and services on demand and makes them easier to scale. AWS supports sophisticated, scalable applications. Slide examples include enterprise IT, backup and storage, big-data analytics, website hosting, mobile and social applications, and gaming.
+
+**Global infrastructure**
+
+- **AWS Region:** A cluster of data centers in a geographic area. Region names include `us-east-1` and `eu-west-3`. Most AWS services are Region-scoped.
+- **Availability Zone (AZ):** One or more discrete data centers with redundant power, networking, and connectivity.
+- AZs within a Region are physically separate to isolate failures and disasters, but they are connected through high-bandwidth, ultra-low-latency networking.
+- A Region usually has three AZs; the slides state a minimum of three and a maximum of six.
+- **Point of Presence or Edge Location:** Infrastructure placed closer to end users so content can be delivered with lower latency.
+- The slides report 400+ Points of Presence, including 400+ Edge Locations and 10+ Regional Caches, across 90+ cities in 40+ countries.
+
+**How to choose a Region**
+
+1. **Compliance and data governance:** Data does not leave a Region without explicit permission.
+2. **Customer proximity:** A closer Region generally reduces latency.
+3. **Service availability:** New services and features are not necessarily available in every Region.
+4. **Pricing:** Prices vary by Region and are published on service pricing pages.
+
+A Region should therefore be selected from application requirements, not simply from habit.
+
+**Service scope**
+
+Global services listed in the slides:
+
+- AWS Identity and Access Management (IAM)
+- Amazon Route 53
+- Amazon CloudFront
+- AWS WAF
+
+Region-scoped examples:
+
+- Amazon EC2: Infrastructure as a Service
+- AWS Elastic Beanstalk: Platform as a Service
+- AWS Lambda: Function as a Service
+- Amazon Rekognition: Software as a Service
+
+**Important distinctions and traps**
+
+- A **Region** is not one data center; it contains multiple AZs.
+- An **AZ** may contain one or more data centers.
+- **Edge Locations** reduce delivery latency but are not interchangeable with Regions or AZs.
+- Do not assume every AWS service is Regional or that every Region offers the same services.
+- Region selection questions commonly test compliance, latency, service availability, or price.
+
+**Historical context from the slides**
+
+AWS began internal work in 2002, publicly launched Amazon SQS in 2004, relaunched with SQS, Amazon S3, and Amazon EC2 in 2006, and launched in Europe in 2007. The slides report $90 billion in 2023 annual revenue, 31% market share in Q1 2024, and over one million active users. These are contextual figures rather than architecture decision rules.
+
+---
+
+## 2. AWS Identity and Access Management
+
+*Source: PDF pages 21-38*
+
+**Core identities**
+
+AWS Identity and Access Management (**IAM**) is a global service.
+
+- The **root account** is created by default. It should not be shared or used for normal work.
+- An **IAM user** represents a person in the organization.
+- An **IAM group** contains users only; groups cannot contain other groups.
+- A user does not have to belong to a group.
+- A user can belong to multiple groups.
+- Recommended mapping: one physical person equals one IAM user.
+
+**Permissions and policies**
+
+Users and groups receive permissions through JSON documents called **IAM policies**. Group policies provide permissions to users belonging to those groups, while policies may also be attached directly to a user.
+
+Apply the **principle of least privilege**: grant only the permissions required.
+
+Policy structure:
+
+- `Version`: Policy-language version; the slides say always include `2012-10-17`.
+- `Id`: Optional policy identifier.
+- `Statement`: Required; contains one or more permission statements.
+- `Sid`: Optional statement identifier.
+- `Effect`: `Allow` or `Deny`.
+- `Principal`: Account, user, or role to which the policy applies.
+- `Action`: Operations allowed or denied.
+- `Resource`: Resources affected by those actions.
+- `Condition`: Optional rules controlling when the statement applies.
+
+**Passwords and MFA**
+
+An IAM password policy can require:
+
+- A minimum password length
+- Uppercase and lowercase letters
+- Numbers
+- Non-alphanumeric characters
+- Password expiration
+- Prevention of password reuse
+- Permission for users to change their own passwords
+
+**Multi-Factor Authentication (MFA)** combines something the user knows, the password, with a security device the user owns. If a password is stolen, MFA can prevent that password alone from compromising the account.
+
+The slides list virtual MFA applications, Universal Second Factor security keys, and hardware key-fob devices. Protect both root and IAM users with MFA.
+
+**Ways to access AWS**
+
+- **AWS Management Console:** Uses a password and MFA.
+- **AWS Command Line Interface (CLI):** Uses access keys and sends commands to public AWS service APIs.
+- **AWS Software Development Kit (SDK):** Uses access keys and language-specific libraries embedded in application code.
+
+An **Access Key ID** is comparable to a username. A **Secret Access Key** is comparable to a password. Access keys are generated through the console, managed by their users, and must never be shared.
+
+The CLI supports scripts and is an alternative to the console. SDKs support application development across programming languages, mobile platforms, and IoT devices. The AWS CLI itself is built using the AWS SDK for Python.
+
+**IAM roles**
+
+An **IAM role** grants permissions to an AWS service that must act on your behalf. Examples include:
+
+- EC2 instance roles
+- Lambda function roles
+- Roles for AWS CloudFormation
+
+Decision rule: use roles for AWS services instead of sharing user credentials or access keys with those services.
+
+**Security and audit tools**
+
+- **IAM Credentials Report:** Account-level report listing all users and the status of their credentials.
+- **IAM Access Advisor:** User-level view showing granted service permissions and when those services were last accessed.
+
+Access Advisor can identify permissions that may no longer be needed, supporting least-privilege policy revision.
+
+**Shared responsibility**
+
+AWS handles global infrastructure security, configuration and vulnerability analysis, and compliance validation. The customer handles users, groups, roles, policies, monitoring, MFA, key rotation, permission reviews, and access-pattern analysis.
+
+**Exam traps and failure risks**
+
+- Groups contain users, not groups.
+- A user may belong to zero, one, or several groups.
+- Passwords protect console access; access keys protect CLI and SDK access.
+- Roles are the correct choice for AWS services acting on your behalf.
+- Credentials Report is account-level; Access Advisor is user-level and includes last-access information.
+- Root should be reserved for account setup.
+- A leaked secret access key must be treated like a leaked password.
+- MFA specifically reduces the damage caused by a stolen password.
+
+---
+
+## 3. Amazon EC2 Basics
+
+*Source: PDF pages 39-71*
+
+**What EC2 provides**
+
+Amazon Elastic Compute Cloud (**EC2**) is Infrastructure as a Service. The broader EC2 area includes:
+
+- Renting virtual machines with EC2
+- Network-attached storage with Amazon EBS
+- Load distribution with Elastic Load Balancing
+- Scaling through Auto Scaling groups
+
+Instance configuration includes the operating system, CPU, RAM, storage, network performance, public IP address, security groups, and an optional bootstrap script.
+
+**EC2 User Data**
+
+EC2 User Data runs commands when an instance first starts.
+
+- It runs only once, at the instance’s first start.
+- It can install updates or software and download files.
+- It runs as the root user.
+
+Do not expect a basic User Data script to execute on every later start.
+
+**Instance types**
+
+Naming example: `m5.2xlarge`.
+
+- `m`: Instance class
+- `5`: Generation
+- `2xlarge`: Size within that class
+
+Workload families:
+
+- **General Purpose:** Balanced compute, memory, and networking; suitable for web servers and code repositories.
+- **Compute Optimized:** Batch processing, media transcoding, high-performance servers, HPC, scientific modelling, machine learning, and gaming servers.
+- **Memory Optimized:** Large in-memory datasets, databases, distributed caches, business intelligence, and real-time processing.
+- **Storage Optimized:** High sequential local reads and writes, OLTP, databases, caches, data warehouses, and distributed file systems.
+
+Instance specifications and available families change over time, so slide examples should not be treated as permanent limits.
+
+**Security groups**
+
+A security group acts as a firewall around EC2 instances and controls allowed inbound and outbound traffic.
+
+Rules can refer to:
+
+- IPv4 or IPv6 ranges
+- Ports
+- Another security group
+
+Important behavior:
+
+- One security group can be attached to multiple instances.
+- It belongs to a particular Region and VPC combination.
+- Filtering occurs outside the EC2 instance; blocked traffic does not reach the instance.
+- All inbound traffic is blocked by default.
+- All outbound traffic is authorized by default.
+- A separate security group for SSH access is recommended.
+- An application timeout commonly points to security-group filtering.
+- `Connection refused` points instead to the application being unavailable, not started, or rejecting the connection.
+
+A common design allows public HTTP/HTTPS traffic into a load balancer while permitting application instances to accept traffic only from the load balancer’s security group.
+
+**Ports to know**
+
+- `21`: FTP
+- `22`: SSH
+- `22`: SFTP over SSH
+- `80`: HTTP
+- `443`: HTTPS
+- `3389`: RDP for Windows
+
+**Connecting to an instance**
+
+SSH controls a remote Linux machine through the command line. The slides cover OpenSSH, PuTTY, and EC2 Instance Connect.
+
+EC2 Instance Connect:
+
+- Connects through a browser.
+- Temporarily uploads a key to the EC2 instance.
+- Does not require using the downloaded key file.
+- Works out of the box with Amazon Linux 2.
+- Still requires inbound port `22` to be open.
+
+**Purchasing options**
+
+**On-Demand Instances**
+
+- No upfront payment or long-term commitment.
+- Highest cost among the standard shared purchasing choices.
+- Linux and Windows are billed per second after the first minute; other operating systems are billed per hour.
+- Suitable for short-term, uninterrupted workloads whose behavior is difficult to predict.
+
+**Reserved Instances**
+
+- Terms of one or three years.
+- Reserve attributes such as instance type, Region, tenancy, and operating system.
+- No Upfront, Partial Upfront, or All Upfront payment options.
+- Regional or Zonal scope; Zonal scope reserves capacity in an AZ.
+- Suitable for steady-state workloads such as databases.
+- Standard Reserved Instances show up to 72% discount in the slides.
+- Convertible Reserved Instances can change instance type, family, operating system, scope, and tenancy, with up to 66% discount.
+- Reserved Instances can be bought and sold in the Reserved Instance Marketplace.
+
+The slides explicitly state that exact discount percentages change and are not required for the exam.
+
+**Savings Plans**
+
+- Commit to a fixed amount of usage per hour for one or three years.
+- Usage beyond the plan is billed at On-Demand rates.
+- Locked to an instance family and Region.
+- Flexible across instance size, operating system, and tenancy.
+- Slides show discounts up to 72%.
+
+**Spot Instances**
+
+- Most cost-efficient EC2 option in the slides, with discounts up to 90%.
+- An instance can be lost when the maximum price is below the current Spot price.
+- Suitable for failure-resilient batch jobs, data analysis, image processing, distributed work, and flexible start/end times.
+- Not suitable for critical jobs or databases.
+
+**Dedicated Hosts**
+
+- An entire physical server dedicated to your use.
+- Provides placement control and supports server-bound licensing.
+- Used for compliance, regulation, or Bring Your Own License requirements.
+- Available On-Demand or reserved for one or three years.
+- The slides describe this as the most expensive option.
+
+**Dedicated Instances**
+
+- Run on hardware dedicated to your account.
+- May share that hardware with other instances from the same account.
+- Do not provide placement control and may move hardware after stop/start.
+
+**Capacity Reservations**
+
+- Reserve On-Demand capacity in one specific AZ for any duration.
+- Can be created or cancelled without a time commitment.
+- Provide no billing discount by themselves.
+- Charged at On-Demand rates even when the reserved instances are not running.
+- Can be combined with Regional Reserved Instances or Savings Plans for discounts.
+- Suitable for short-term, uninterrupted workloads requiring guaranteed capacity in a particular AZ.
+
+**Exam decision rules**
+
+- Uncertain, short workload: On-Demand.
+- Predictable steady workload: Reserved Instance.
+- Long-term hourly usage commitment with size, OS, or tenancy flexibility: Savings Plan.
+- Interruptible, failure-tolerant workload: Spot.
+- Physical-server control or server-bound licensing: Dedicated Host.
+- Dedicated hardware without placement control: Dedicated Instance.
+- Guaranteed capacity in one AZ without a discount: Capacity Reservation.
+
+---
+
+## 4. Amazon EC2 Instance Storage
+
+*Source: PDF pages 72-94*
+
+**Amazon EBS**
+
+An Amazon Elastic Block Store (**EBS**) volume is a network drive attached to an EC2 instance.
+
+- Data can persist independently of the instance, subject to deletion settings.
+- At the basic level, a volume mounts to one instance at a time.
+- It is locked to one AZ.
+- Network communication introduces some latency.
+- It can be detached and attached to another instance quickly within its AZ.
+- Moving data to another AZ requires a snapshot and restoration.
+- Capacity is provisioned as storage size and IOPS.
+- Billing covers all provisioned capacity.
+- Capacity can be increased over time.
+
+**Delete on Termination**
+
+- Root EBS volume: deleted by default when the instance terminates.
+- Other attached EBS volumes: retained by default.
+- The attribute can be changed through the console or CLI.
+
+This resolves an important apparent contradiction: EBS supports persistent data, but a default root volume is still deleted on termination unless its attribute is changed.
+
+**Snapshots**
+
+An EBS snapshot is a point-in-time backup.
+
+- Detaching the volume is not required, although the slides recommend it.
+- Snapshots can be copied across AZs or Regions.
+- Snapshot activity consumes I/O; avoid taking backups while the application is processing heavy traffic.
+
+Snapshot features:
+
+- **Snapshot Archive:** 75% cheaper; restoration takes 24-72 hours.
+- **Recycle Bin:** Retains deleted snapshots for recovery, with retention from one day to one year.
+- **Fast Snapshot Restore:** Fully initializes a snapshot to remove first-use latency, at additional cost.
+
+**Amazon Machine Images**
+
+An **Amazon Machine Image (AMI)** packages an operating system, configuration, software, and monitoring setup for faster instance launch.
+
+- AMIs are Region-specific but can be copied across Regions.
+- Sources include AWS public AMIs, self-managed AMIs, and AWS Marketplace AMIs.
+- Creation flow: customize an instance, stop it for data integrity, create the AMI and its EBS snapshots, then launch new instances from it.
+
+**EC2 Instance Store**
+
+Instance Store is local hardware storage.
+
+- Provides better I/O performance than a network EBS volume.
+- Data is lost when the instance stops.
+- Hardware failure can also cause data loss.
+- Suitable for buffers, caches, scratch data, and temporary content.
+- Backup and replication are the customer’s responsibility.
+
+Choose Instance Store only when high local performance matters more than persistence.
+
+**EBS volume types**
+
+Only `gp2`, `gp3`, `io1`, and `io2 Block Express` can be boot volumes.
+
+**General Purpose SSD**
+
+Common uses include boot volumes, virtual desktops, development, and testing. Size range: 1 GiB-16 TiB.
+
+- `gp3`: Baseline 3,000 IOPS and 125 MiB/s. IOPS can rise to 16,000 and throughput to 1,000 MiB/s independently.
+- `gp2`: IOPS scales with volume size at 3 IOPS per GiB. Smaller volumes can burst to 3,000 IOPS. Maximum is 16,000 IOPS, reached at approximately 5,334 GiB.
+
+**Provisioned IOPS SSD**
+
+Designed for critical applications, consistent storage performance, databases, or requirements above 16,000 IOPS.
+
+- `io1`: 4 GiB-16 TiB; maximum 64,000 provisioned IOPS on Nitro instances and 32,000 on other instances. IOPS can be changed independently of size.
+- `io2 Block Express`: 4 GiB-64 TiB; sub-millisecond latency; up to 256,000 IOPS; maximum ratio 1,000 IOPS per GiB; supports Multi-Attach.
+
+**HDD volumes**
+
+HDD volumes cannot be boot volumes. Size range: 125 GiB-16 TiB.
+
+- `st1` Throughput Optimized HDD: frequently accessed, throughput-intensive data such as big data, warehouses, and logs; maximum 500 MiB/s and 500 IOPS.
+- `sc1` Cold HDD: infrequently accessed data where lowest storage cost matters; maximum 250 MiB/s and 250 IOPS.
+
+**EBS Multi-Attach**
+
+For the `io1`/`io2` family:
+
+- One volume can attach to as many as 16 EC2 instances in the same AZ.
+- Every instance receives full read/write access.
+- The application must coordinate concurrent writes.
+- A cluster-aware file system is required; ordinary XFS and EXT4 are not suitable according to the slides.
+
+**Amazon EFS**
+
+Amazon Elastic File System (**EFS**) is a managed NFS file system.
+
+- Mountable by many EC2 instances across multiple AZs.
+- Highly available, automatically scalable, and pay-per-use.
+- Slides describe it as approximately three times the cost of `gp2`.
+- Uses NFSv4.1 and POSIX file semantics.
+- Supports Linux-based AMIs, not Windows.
+- Uses security groups for access control.
+- Supports encryption at rest with AWS KMS.
+- Suitable for content management, web serving, shared data, and WordPress.
+
+Scale figures include thousands of concurrent clients, 10 GB/s or more throughput, and automatic growth to petabyte scale.
+
+Performance mode, chosen at creation:
+
+- **General Purpose:** Default; latency-sensitive workloads.
+- **Max I/O:** Higher latency but greater throughput and parallelism.
+
+Throughput modes:
+
+- **Bursting:** At 1 TB, 50 MiB/s with bursts up to 100 MiB/s.
+- **Provisioned:** Throughput selected independently of stored size.
+- **Elastic:** Automatically follows workload demand, up to 3 GiB/s reads and 1 GiB/s writes.
+
+Storage classes:
+
+- **Standard:** Frequently accessed data.
+- **Infrequent Access:** Lower storage price with a retrieval charge.
+- **Archive:** Data accessed only a few times per year; slides state 50% lower cost.
+- Lifecycle policies move files between tiers after configured periods.
+
+Availability choices:
+
+- **Standard:** Multi-AZ and intended for production.
+- **One Zone:** One AZ, appropriate for development; backup enabled by default and compatible with One Zone-IA.
+- The slides state that storage-class choices can produce over 90% savings.
+
+**Main decision rule**
+
+- Persistent block storage for one instance: EBS.
+- Shared Linux file system across many instances and AZs: EFS.
+- Temporary, highest-performance local storage: Instance Store.
+
+---
+
+## 5. High Availability and Scalability
+
+*Source: PDF pages 95-137*
+
+**Core definitions**
+
+- **Scalability:** A system adapts to handle greater load.
+- **Vertical scaling:** Increase or decrease the size of one instance. Common for non-distributed systems such as databases, but limited by available hardware.
+- **Horizontal scaling:** Add or remove instances. This implies a distributed system and is common for web and modern applications.
+- **High availability:** Run an application across at least two data centers, meaning at least two AZs, so it can survive a data-center loss.
+- High availability may be passive, such as RDS Multi-AZ, or active through horizontal scaling.
+
+For EC2:
+
+- Scale up/down by changing instance size.
+- Scale out/in using an Auto Scaling group and load balancer.
+- Achieve high availability by running the same application across multiple AZs.
+
+**Elastic Load Balancing**
+
+A load balancer forwards traffic to several downstream servers.
+
+Benefits:
+
+- Spreads load.
+- Provides one DNS access point.
+- Handles failed downstream instances.
+- Runs health checks.
+- Terminates SSL/TLS.
+- Supports cookie stickiness.
+- Operates across AZs.
+- Separates public traffic from private application traffic.
+
+Elastic Load Balancing is managed by AWS, including upgrades, maintenance, and high availability. It integrates with EC2, Auto Scaling groups, Amazon ECS, AWS Certificate Manager, CloudWatch, Route 53, AWS WAF, and AWS Global Accelerator.
+
+**Health checks and failure behavior**
+
+A health check tests a configured protocol, port, and route such as `/health`. A response other than HTTP `200 OK` marks the target unhealthy.
+
+The load balancer then avoids sending normal traffic to that unhealthy target. A typical security model permits users to reach the load balancer but permits EC2 application traffic only from the load balancer’s security group.
+
+**Load balancer types**
+
+**Classic Load Balancer (CLB)**
+
+- Old generation, introduced in 2009.
+- TCP at Layer 4 and HTTP/HTTPS at Layer 7.
+- TCP- or HTTP-based health checks.
+- Fixed AWS hostname.
+- Newer load balancers are generally recommended.
+
+**Application Load Balancer (ALB)**
+
+- Layer 7 HTTP load balancer, introduced in 2016.
+- Supports HTTP, HTTPS, HTTP/2, WebSocket, and redirects.
+- Routes to target groups by URL path, hostname, query string, or headers.
+- Can route several applications on one machine and supports dynamic ECS port mapping.
+- Well suited to microservices and container applications.
+- Targets may be EC2 instances, ECS tasks, Lambda functions, or private IP addresses.
+- A request to Lambda is translated into a JSON event.
+- Health checks are configured per target group.
+- Has a fixed AWS hostname.
+- Application servers see the load balancer’s private IP rather than the client IP. The original client details are provided through `X-Forwarded-For`, `X-Forwarded-Port`, and `X-Forwarded-Proto`.
+
+**Network Load Balancer (NLB)**
+
+- Layer 4, introduced in 2017.
+- Handles TCP, TLS, and UDP.
+- Intended for millions of requests per second, ultra-low latency, and extreme performance.
+- Provides one static IP per AZ and supports Elastic IP assignment.
+- Targets include EC2 instances, private IP addresses, and an ALB.
+- Health checks support TCP, HTTP, and HTTPS.
+
+Decision rule: use ALB for HTTP-aware routing; use NLB for extreme performance, TCP/UDP, or static-IP requirements.
+
+**Gateway Load Balancer (GWLB)**
+
+- Layer 3 load balancer for IP packets, introduced in 2020.
+- Deploys and scales third-party virtual appliances such as firewalls, intrusion detection/prevention, deep-packet inspection, and payload-manipulation systems.
+- Combines a transparent network gateway with load distribution.
+- Uses GENEVE on port `6081`.
+- Targets are EC2 instances or private IP addresses.
+
+**Sticky sessions**
+
+Stickiness sends the same client to the same backend instance. It is supported by CLB, ALB, and NLB. For CLB and ALB, the cookie has a configurable expiration.
+
+Benefit: session data remains available on the selected server. Risk: backend load may become uneven.
+
+Cookie details:
+
+- Custom application cookie: generated by the target; configured separately per target group.
+- Do not use reserved names `AWSALB`, `AWSALBAPP`, or `AWSALBTG`.
+- Load-balancer application cookie: `AWSALBAPP`.
+- Duration-based cookie: `AWSALB` for ALB and `AWSELB` for CLB.
+
+**Cross-zone load balancing**
+
+With cross-zone balancing, each load-balancer node distributes traffic across all registered instances in all enabled AZs. Without it, each node distributes only to targets in its own AZ.
+
+Defaults and charges:
+
+- ALB: enabled by default; can be disabled at target-group level; no inter-AZ data charge.
+- NLB and GWLB: disabled by default; enabling it creates inter-AZ data charges.
+- CLB: disabled by default; no inter-AZ data charge when enabled.
+
+**SSL/TLS**
+
+An SSL/TLS certificate encrypts traffic in transit between clients and the load balancer.
+
+- TLS is the newer protocol, although the term SSL remains common.
+- Public certificates are issued by Certificate Authorities.
+- Certificates expire and must be renewed.
+- Load balancers use X.509 server certificates.
+- Certificates can be managed through AWS Certificate Manager or uploaded.
+- An HTTPS listener requires a default certificate and may have additional certificates for multiple domains.
+- A security policy controls supported SSL/TLS versions.
+
+**Server Name Indication (SNI)** lets a client include the requested hostname during the initial TLS handshake. The server then selects the matching certificate or returns the default certificate.
+
+- Supported by ALB, NLB, and CloudFront.
+- Not supported by CLB.
+- CLB supports one SSL certificate, requiring multiple CLBs for multiple hostnames and certificates.
+- ALB and NLB support multiple listeners and certificates through SNI.
+
+**Connection draining**
+
+- Called **Connection Draining** for CLB.
+- Called **Deregistration Delay** for ALB and NLB.
+- Stops new requests from reaching a deregistering or unhealthy instance while allowing in-flight requests to finish.
+- Range: 1-3,600 seconds.
+- Default: 300 seconds.
+- Set to `0` to disable.
+- Use a lower value for short requests.
+
+**Auto Scaling groups**
+
+An Auto Scaling group (**ASG**) automatically:
+
+- Scales out when load increases.
+- Scales in when load decreases.
+- Maintains minimum, desired, and maximum capacity.
+- Registers new instances with a load balancer.
+- Recreates terminated or unhealthy instances.
+
+The ASG service itself is free; the underlying EC2 instances are billed.
+
+A launch template defines the AMI, instance type, User Data, EBS volumes, security groups, SSH key pair, IAM role, VPC/subnets, and load-balancer integration. Launch Configurations are described as deprecated.
+
+**Scaling policies**
+
+CloudWatch alarms monitor metrics for the overall ASG and trigger scaling.
+
+- **Target Tracking:** Keeps a metric near a target, such as average CPU around 40%.
+- **Simple or Step Scaling:** Example: CPU above 70% adds two units; below 30% removes one.
+- **Scheduled Scaling:** Anticipates a known pattern, such as setting minimum capacity to 10 at 5 p.m. on Fridays.
+- **Predictive Scaling:** Forecasts load and schedules capacity in advance.
+
+Useful metrics:
+
+- Average `CPUUtilization`
+- `RequestCountPerTarget`
+- Average network input/output
+- Any custom CloudWatch metric
+
+**Cooldowns and refresh**
+
+After a scaling action, the ASG enters a default 300-second cooldown. During cooldown it does not launch or terminate more instances, allowing metrics to stabilize. A ready-to-use AMI reduces configuration time and can support a shorter cooldown.
+
+**Instance Refresh** replaces instances after a launch-template update. It uses:
+
+- A minimum healthy percentage
+- A warm-up time defining when a replacement becomes ready
+
+The slide example uses a 60% minimum healthy percentage; this is an example, not a universal required setting.
+
+**Exam traps**
+
+- Scalability and high availability are related but different.
+- Vertical scaling changes instance size; horizontal scaling changes instance count.
+- High availability requires multiple AZs, not merely multiple instances in one AZ.
+- A non-200 health-check response makes a target unhealthy.
+- ALB is Layer 7; NLB is Layer 4; GWLB is Layer 3.
+- NLB, not ALB, supplies a static IP per AZ.
+- Stickiness preserves server-local sessions but may create imbalance.
+- Cross-zone defaults and charges differ by load-balancer type.
+- SNI does not work with CLB.
+- Connection draining and ASG cooldown both default to 300 seconds but solve different problems.
+- ASG replaces unhealthy capacity; the load balancer detects unhealthy targets and stops routing normal traffic to them.
+
+---
+
+## 6. RDS Aurora and ElastiCache
+
+*Source: PDF pages 138-164*
+
+- **Amazon RDS (Relational Database Service)** is a managed SQL database service. Supported engines listed are PostgreSQL, MySQL, MariaDB, Oracle, Microsoft SQL Server, IBM Db2, and Amazon Aurora.
+- Compared with running a database on EC2, RDS manages provisioning, OS patching, continuous backups, Point-in-Time Restore, monitoring, maintenance windows, upgrades, Read Replicas, Multi-AZ, and scaling. Storage is backed by EBS. You cannot SSH into RDS, except RDS Custom.
+- **Storage Auto Scaling** dynamically increases storage up to a configured Maximum Storage Threshold. Scaling occurs when free storage is below 10% for at least 5 minutes and at least 6 hours have passed since the last storage modification. It supports all RDS engines and suits unpredictable workloads.
+- **Read Replicas** provide read scalability. RDS supports up to 15, within an AZ, across AZs, or across Regions. Replication is asynchronous, so reads are eventually consistent. Applications must use the replica connection string. Replicas support only read operations such as `SELECT`, can be promoted into independent databases, and are suitable for reporting or analytics. Same-Region replication has no cross-AZ network fee; Cross-Region replication incurs network cost.
+- **Multi-AZ** provides disaster recovery, not read scaling. It uses synchronous replication to a standby in another Availability Zone. The application uses one DNS name, and RDS automatically fails over after an AZ, network, instance, or storage failure. No application intervention is required. A Read Replica can itself be configured as Multi-AZ.
+- Converting Single-AZ to Multi-AZ is described as a zero-downtime operation. RDS takes a snapshot, restores it in another AZ, and establishes synchronous replication.
+- **Amazon Aurora** is an AWS proprietary, cloud-optimized database compatible with PostgreSQL and MySQL drivers. The slides claim up to 5 times RDS MySQL performance and more than 3 times RDS PostgreSQL performance. Aurora costs about 20% more than RDS but is presented as more efficient.
+- Aurora stores six copies across three AZs. Four copies are required for writes and three for reads. Storage uses peer-to-peer self-healing and is striped across hundreds of volumes. One writer handles writes, while up to 15 Aurora Read Replicas serve reads. The Writer Endpoint points to the writer; the Reader Endpoint load-balances reader connections.
+- Aurora supports automated failover, Cross-Region Replication, backup and recovery, security, compliance, monitoring, maintenance, zero-downtime patching, scaling, and Backtrack. One slide calls failover instantaneous; another states automated writer failover takes less than 30 seconds.
+- The source gives conflicting Aurora storage maxima: one slide says storage grows in 10 GB increments up to 256 TB, while another diagram says auto-expansion from 10 GB to 128 TB. The conflict should not be silently resolved.
+- **RDS and Aurora security:** encryption at rest uses AWS KMS and must be selected at launch. An unencrypted writer cannot have encrypted Read Replicas. To encrypt an existing unencrypted database, create a snapshot and restore it as encrypted. TLS is available by default for encryption in flight. IAM database authentication can replace username/password authentication. Security Groups control network access. Audit logs can be sent to CloudWatch Logs.
+- **Amazon RDS Proxy** is a serverless, autoscaling, Multi-AZ database proxy that pools and shares connections. It reduces CPU, memory, connection, and timeout pressure and can reduce failover time by up to 66%. It supports listed RDS and Aurora engines, normally needs no application code changes, can enforce IAM authentication, stores credentials in AWS Secrets Manager, and is accessible only from a VPC.
+- **Amazon ElastiCache** provides managed Redis or Memcached. These in-memory caches offer high performance and low latency, reduce read load on databases, and can hold shared sessions so application instances remain stateless. Using ElastiCache requires substantial application code changes.
+- **Redis versus Memcached:** Redis provides Multi-AZ automatic failover, Read Replicas, AOF persistence, backup and restore, Sets, and Sorted Sets. Memcached supports multi-node sharding, has no replication-based high availability, is non-persistent, uses a multi-threaded architecture, and supports backup and restore in Serverless.
+- **Lazy Loading / Cache-Aside:** read the cache first; on a miss, read the database and populate the cache. Only requested data is cached, and cache-node failure causes extra latency rather than total failure. Its weaknesses are a three-round-trip cache-miss penalty and stale cached data.
+- **Write-Through:** update the database and cache together. Reads are fast and cached data is not stale, but every write requires two calls. It may cache data that is never read. Combining it with Lazy Loading handles data that has not yet entered the cache.
+- Cache only suitable data: slowly changing data with a small number of frequently used keys is a good fit. Rapidly changing data or a large keyspace where everything is frequently needed is a poor fit. Every database-cache design needs an invalidation strategy.
+- Eviction occurs through explicit deletion, Least Recently Used eviction when memory is full, or Time-to-Live expiration. TTLs may range from seconds to days. Frequent memory-driven evictions indicate a need to scale up or out.
+- **Amazon MemoryDB for Redis** is a Redis-compatible, durable in-memory database. The slides state more than 160 million requests per second, scaling from tens of GB to hundreds of TB, with data distributed across up to hundreds of nodes and a Multi-AZ transactional log for durability and recovery.
+
+---
+
+## 7. Amazon Route 53
+
+*Source: PDF pages 165-195*
+
+- **DNS (Domain Name System)** translates human-readable hostnames into IP addresses. Its hierarchy includes the root, Top-Level Domain, Second-Level Domain, subdomain, and Fully Qualified Domain Name. A zone file contains DNS records, while a name server resolves queries and may be authoritative or non-authoritative.
+- Resolution can involve a local DNS server, root DNS server, TLD DNS server, and the authoritative server for the requested domain. TTL values allow intermediate resolvers to cache results.
+- **Amazon Route 53** is a highly available, scalable, fully managed authoritative DNS service and Domain Registrar. “Authoritative” means the customer can update its DNS records. It can also check resource health. The slides identify it as the only AWS service with a 100% availability SLA. The name refers to DNS port 53.
+- Every record includes a domain or subdomain name, record type, value, routing policy, and TTL. Core record types are `A`, `AAAA`, `CNAME`, and `NS`.
+- `A` maps a hostname to IPv4. `AAAA` maps it to IPv6. `CNAME` maps one hostname to another hostname whose destination must ultimately have an `A` or `AAAA` record. `NS` identifies the hosted zone’s name servers.
+- A `CNAME` cannot be created at the Zone Apex, such as `example.com`; it can be used for a subdomain such as `www.example.com`.
+- A **Hosted Zone** is a container for records controlling a domain and its subdomains. A Public Hosted Zone resolves public Internet names. A Private Hosted Zone resolves private names inside one or more VPCs. The slide price is $0.50 per hosted zone per month.
+- A high TTL, such as 24 hours, reduces Route 53 queries but may leave outdated records cached longer. A low TTL, such as 60 seconds, increases queries and cost but makes record changes take effect sooner. TTL is mandatory except for Alias records.
+- **CNAME versus Alias:** a CNAME can point a non-root hostname to any hostname. An Alias points a hostname to a supported AWS resource, works at both root and non-root names, is free, and supports native health checks.
+- Alias records are represented as `A` or `AAAA`, automatically follow changes to the AWS resource’s IP addresses, and do not allow a custom TTL.
+- Alias targets include Elastic Load Balancers, CloudFront distributions, API Gateway, Elastic Beanstalk environments, S3 websites, VPC Interface Endpoints, Global Accelerator, and another Route 53 record in the same hosted zone. An EC2 DNS name cannot be an Alias target.
+- A **routing policy** controls how Route 53 answers DNS queries. DNS does not route the resulting network traffic, so Route 53 routing policies must not be confused with load-balancer routing.
+- **Simple routing** normally points to one resource. A record can return multiple values, after which the client randomly chooses one. Alias mode allows only one AWS resource. Simple routing cannot use Health Checks.
+- **Weighted routing** divides responses according to relative record weights. A record’s percentage is its weight divided by the sum of all weights; weights do not need to total 100. Records must have the same name and type. Weight zero stops traffic to one record, but if every record has weight zero, all are returned equally. It supports Health Checks and suits regional balancing or new-version testing.
+- **Latency-based routing** selects the AWS Region offering the lowest measured latency from the user. This is not necessarily the geographically nearest Region. It can use Health Checks for failover.
+- **Failover routing** implements active-passive behavior between a primary resource and a secondary disaster-recovery resource. The primary’s Health Check is mandatory in the illustrated setup.
+- **Geolocation routing** chooses records from the user’s Continent, Country, or US State. The most precise matching location wins. A Default record should handle users with no matching location. It supports localization, content restrictions, load distribution, and Health Checks.
+- **Geoproximity routing** considers the geographic locations of users and resources. Bias expands or shrinks a resource’s geographic region: `1` to `99` attracts more traffic, while `-1` to `-99` attracts less. AWS resources use an AWS Region; non-AWS resources use latitude and longitude. This policy requires Route 53 Traffic Flow.
+- **IP-based routing** maps client CIDR blocks to specific endpoints or locations. It can optimize performance or network cost, such as routing customers of a particular ISP to a chosen endpoint.
+- **Multi-Value Answer routing** returns multiple healthy resources and can associate each record with a Health Check. It returns up to eight healthy records per query. It is not a replacement for an Elastic Load Balancer.
+- Route 53 endpoint Health Checks support HTTP, HTTPS, and TCP for public resources. About 15 global health checkers test an endpoint. The default healthy/unhealthy threshold is 3, and the default interval is 30 seconds; 10 seconds costs more.
+- Route 53 considers the endpoint healthy when more than 18% of health checkers report it healthy. HTTP checks pass for `2xx` and `3xx` responses and can inspect text in the first 5,120 response bytes. Firewalls must permit traffic from Route 53 health-checker IP ranges.
+- A **Calculated Health Check** combines up to 256 child checks using `AND`, `OR`, or `NOT`, with a configurable number required to pass.
+- Route 53 public health checkers cannot reach private VPC or on-premises endpoints. For private resources, publish a CloudWatch metric, create a CloudWatch Alarm, and make Route 53 check the alarm.
+- A Domain Registrar and DNS service are separate roles. A domain bought from another registrar can use Route 53 DNS by creating a Route 53 Hosted Zone and replacing the registrar’s NS records with the Route 53 name servers.
+
+---
+
+## 8. Amazon VPC Basics
+
+*Source: PDF pages 196-212*
+
+- A **VPC (Virtual Private Cloud)** is a private, Regional network for AWS resources. A **subnet** partitions that network and belongs to one Availability Zone. Public subnets are Internet-accessible; private subnets are not. Route Tables control Internet and inter-subnet access.
+- An **Internet Gateway** operates at VPC level and lets resources connect to the Internet. A public subnet has a route to it.
+- A **NAT Gateway** is AWS managed, while a NAT Instance is self managed. Both allow resources in private subnets to access the Internet while remaining private.
+- A **Network ACL (NACL)** is a stateless firewall attached to a subnet. It has separate inbound and outbound behavior, supports both `ALLOW` and `DENY`, and its rules contain IP addresses.
+- A **Security Group** is a stateful firewall for an ENI or EC2 instance. It supports only `ALLOW` rules. Rules can reference IP addresses or other Security Groups.
+- **VPC Flow Logs** record IP traffic at VPC, subnet, or ENI scope. They help diagnose connectivity between subnets, the Internet, and interfaces. They also cover AWS-managed interfaces such as Elastic Load Balancers, ElastiCache, RDS, and Aurora. Destinations include S3, CloudWatch Logs, and Kinesis Data Firehose.
+- **VPC Peering** privately connects two VPCs through the AWS network. Their CIDR ranges must not overlap. Peering is not transitive; every pair that must communicate needs its own connection.
+- **VPC Endpoints** provide private, lower-latency access to AWS services without using the public Internet. Gateway Endpoints support S3 and DynamoDB. Interface Endpoints support most services, including S3 and DynamoDB, through an ENI. Endpoints are used within the VPC.
+- **Site-to-Site VPN** connects an on-premises network to AWS over the public Internet and is automatically encrypted.
+- **Direct Connect (DX)** provides a private, secure, fast physical connection between on-premises infrastructure and AWS. The slides state that establishment takes at least one month.
+- A typical three-tier design places Route 53 and an Elastic Load Balancer before application instances spread across private subnets and multiple AZs. ElastiCache stores sessions or cached data, while RDS serves the data tier.
+- In the illustrated LAMP stack: Linux is the EC2 operating system, Apache is the web server, PHP contains application logic, MySQL runs on RDS, Redis or Memcached may provide caching, and EBS stores local application data and software.
+- Exam framing from the source: this is an overview for Developer Associate, with fewer than one or two expected questions, rather than the deeper VPC coverage expected in Solutions Architect or SysOps.
+
+---
+
+## 9. Amazon S3
+
+*Source: PDF pages 213-237*
+
+- **Amazon S3** is object storage advertised as infinitely scaling. Use cases include backup, disaster recovery, archives, hybrid storage, application and media hosting, data lakes, analytics, software delivery, and static websites.
+- Objects are stored in **buckets** created in a specific Region, even though S3 appears global. The slides distinguish a Shared Global Namespace, requiring globally unique names across accounts and Regions, from an Account Regional Namespace that allows the same name to be reused across Regions.
+- Bucket names cannot contain uppercase letters or underscores, cannot look like an IP address, and must start with a lowercase letter or number. They cannot start with `xn--` or end with `-s3alias`.
+- An object’s **key** is its complete path-like name. S3 has no true directories inside a bucket; slashes are characters within keys. A key consists of a prefix plus the object name.
+- The maximum object size shown is 50 TB. Uploads larger than 5 GB must use Multipart Upload. Objects can also have text metadata, up to 10 Unicode key/value tags, and a Version ID when versioning is enabled.
+- S3 access can come from IAM policies, bucket policies, Object ACLs, or Bucket ACLs. ACLs can be disabled. A principal receives access when either its IAM permissions or the resource policy allows the action, provided there is no explicit `DENY`.
+- A **bucket policy** is JSON containing resources, effects, actions, and principals. It can grant public access, require encryption during upload, or allow another AWS account. IAM policies are used for IAM users, IAM Roles are used for EC2 instances, and bucket policies enable cross-account access.
+- **Block Public Access** protects against data leaks. Leave it enabled when a bucket must never be public. It can also be configured at account level.
+- S3 can host static websites at one of the two Region-dependent `s3-website` URL forms shown in the slides. A `403 Forbidden` commonly means the bucket policy does not permit public reads.
+- **Versioning** is enabled at bucket level. Overwriting the same key creates another version. It protects against accidental deletion and supports rollback. Objects created before versioning receive version ID `null`. Suspending versioning does not remove existing versions.
+- **Cross-Region Replication (CRR)** and **Same-Region Replication (SRR)** require versioning on both source and destination. Replication is asynchronous, may cross accounts, requires suitable IAM permissions, and normally affects only newly created objects.
+- S3 Batch Replication can copy existing objects and retry objects whose replication failed. Delete-marker replication is optional. A deletion specifying a Version ID is not replicated. Replication does not chain: an object replicated from bucket 1 to bucket 2 is not automatically replicated by bucket 2’s rule into bucket 3.
+- CRR use cases include compliance, lower-latency regional access, and cross-account replication. SRR use cases include log aggregation and live replication between production and test accounts.
+- All storage classes are presented as providing 99.999999999% durability, or eleven nines. At 10 million stored objects, the slide’s illustration is an average loss of one object every 10,000 years. Availability is different from durability and varies by class.
+- **S3 Standard** provides 99.99% availability, low latency, high throughput, and support for two concurrent facility failures. It suits frequently accessed content, analytics, mobile or gaming applications, and content distribution.
+- **S3 Standard-IA** provides 99.9% availability for infrequently accessed data that still needs rapid retrieval. It suits backups and disaster recovery.
+- **S3 One Zone-IA** provides 99.5% availability and eleven-nines durability in one AZ. Data is lost if that AZ is destroyed, so it suits secondary backups or reproducible data.
+- **S3 Glacier Instant Retrieval** offers millisecond retrieval for data accessed about once per quarter and has a 90-day minimum storage duration.
+- **S3 Glacier Flexible Retrieval** has a 90-day minimum. Expedited retrieval takes 1-5 minutes, Standard takes 3-5 hours, and Bulk takes 5-12 hours; Bulk is shown as free.
+- **S3 Glacier Deep Archive** has a 180-day minimum. Standard retrieval takes 12 hours and Bulk takes 48 hours.
+- **S3 Intelligent-Tiering** charges a small monitoring and automatic-tiering fee but no retrieval charge. New objects enter Frequent Access. They move automatically to Infrequent Access after 30 days and Archive Instant Access after 90 days. Optional Archive Access can begin from 90 through 700+ days; optional Deep Archive Access can begin from 180 through 700+ days.
+- Storage classes can be changed manually or through S3 Lifecycle configurations.
+
+| Storage class | Availability | AZs | Minimum duration | Minimum billable size |
+|---|---:|---:|---:|---:|
+| Standard | 99.99% | At least 3 | None | None |
+| Intelligent-Tiering | 99.9% | At least 3 | None | None |
+| Standard-IA | 99.9% | At least 3 | 30 days | 128 KB |
+| One Zone-IA | 99.5% | 1 | 30 days | 128 KB |
+| Glacier Instant Retrieval | 99.9% | At least 3 | 90 days | 128 KB |
+| Glacier Flexible Retrieval | 99.99% | At least 3 | 90 days | 40 KB |
+| Glacier Deep Archive | 99.99% | At least 3 | 180 days | 40 KB |
+
+---
+
+## 10. AWS CLI SDK IAM Roles and Policies
+
+*Source: PDF pages 238-247*
+
+- **EC2 Instance Metadata Service (IMDS)** allows an EC2 instance to learn information about itself without needing an IAM Role merely to obtain that metadata. Its metadata URL is `http://169.254.169.254/latest/meta-data`.
+- Metadata describes the EC2 instance; User Data is the instance’s launch script. IMDS can return the attached IAM Role’s name, but it cannot return the IAM policy.
+- **IMDSv1** accesses the metadata URL directly. **IMDSv2** is more secure and uses two steps: obtain a limited-validity session token with a header-based `PUT`, then include that token in header-based metadata calls.
+- To use **MFA with the AWS CLI**, create a temporary session using the AWS STS `GetSessionToken` API. The example command supplies the MFA device ARN, token code, and a duration of 3,600 seconds.
+- An **AWS SDK** lets application code call AWS services without invoking the CLI. Official SDKs listed are Java, .NET, Node.js, PHP, Python (`boto3`/`botocore`), Go, Ruby, and C++. The slides state that the AWS CLI uses the Python SDK.
+- **API rate limits** and **Service Quotas** are different limits. Examples shown are 100 `DescribeInstances` calls per second for EC2, 5,500 S3 `GetObject` requests per second per prefix, and 1,152 vCPUs for running On-Demand Standard Instances.
+- For intermittent throttling errors, use **Exponential Backoff**. AWS SDK calls already include retry behavior. When calling raw AWS APIs, or in specific cases, the application must implement it.
+- If errors are consistent rather than intermittent, request an API throttling-limit increase. A service-limit increase can be requested through a ticket, while a service-quota increase can use the Service Quotas API.
+- Direct AWS HTTP API requests must usually be signed with AWS credentials so AWS can identify the caller. Some S3 requests do not need signing. The AWS CLI and SDK sign requests automatically.
+- Use **AWS Signature Version 4 (SigV4)** for direct HTTP requests. The signature can be placed in the `Authorization` HTTP header or in query parameters. S3 pre-signed URLs use the query-string form with `X-Amz-Signature`.
+
+---
+
+## 11. Amazon S3 Advanced
+
+*Source: PDF pages 248-260*
+
+**Lifecycle Rules**
+
+- Objects can transition between S3 storage classes automatically. Use Standard-IA for infrequently accessed objects and Glacier classes for archived objects that do not require fast access.
+- A **Transition Action** moves an object to another storage class after a specified time. An **Expiration Action** deletes objects after a specified time.
+- Expiration rules can also remove old object versions and incomplete multipart uploads. Rules can target an object-key prefix, such as `mp3/*`, or objects with specific tags.
+- Decision example: keep source images in S3 Standard for immediate retrieval, then transition them to Glacier after 60 days when a wait of up to six hours is acceptable. Put reproducible thumbnails in S3 One Zone-IA and expire them after 60 days.
+- For deleted-object recovery, enable S3 Versioning. A deletion then creates a delete marker while preserving older versions. Noncurrent versions can transition first to Standard-IA and later to Glacier Deep Archive. This supports immediate recovery for 30 days followed by slower recovery, within 48 hours, for up to 365 days.
+
+**S3 Analytics: Storage Class Analysis**
+
+- Helps determine when objects should transition between S3 Standard and S3 Standard-IA.
+- It does **not** provide recommendations for S3 One Zone-IA or Glacier.
+- The report is updated daily. Initial analysis takes 24 to 48 hours to appear.
+- Use it as an evidence-based first step when creating or improving Lifecycle Rules.
+
+**S3 Event Notifications**
+
+- Supported events include `S3:ObjectCreated`, `S3:ObjectRemoved`, `S3:ObjectRestore`, and replication events.
+- Destinations can be AWS Lambda, Amazon SQS, or Amazon SNS. Lambda uses a Lambda resource policy; SQS and SNS use their respective resource access policies.
+- Object-name filtering is supported, such as selecting only `*.jpg` objects. A typical use is generating thumbnails after image uploads.
+- You can create as many S3 events as desired. Delivery normally takes seconds, but it can take a minute or longer. Do not design as though delivery is always immediate.
+- Amazon EventBridge can receive all bucket events. It adds JSON-based filtering using details such as metadata, object name, and object size; more than 18 AWS services can be destinations. It also provides archiving, replay, and reliable delivery.
+
+**Performance**
+
+- Amazon S3 scales automatically to high request rates with stated latency of 100 to 200 ms.
+- Per prefix, an application can achieve at least 3,500 `PUT`, `COPY`, `POST`, or `DELETE` requests per second, or 5,500 `GET` or `HEAD` requests per second.
+- There is no limit to the number of prefixes in a bucket. Four evenly used prefixes can therefore provide 22,000 `GET` or `HEAD` requests per second.
+- Multipart upload is recommended for files larger than 100 MB and mandatory for files larger than 5 GB. Parallel part uploads can improve transfer speed.
+- S3 Transfer Acceleration sends the file first to an AWS edge location, which forwards it through the private AWS network to the bucket’s Region. It is compatible with multipart upload.
+- S3 Byte-Range Fetches request specific byte ranges in parallel. They can accelerate downloads, improve resilience during failures, or retrieve only a portion such as a file header.
+
+**Metadata and tags**
+
+- User-defined object metadata consists of name-value pairs assigned during upload. Names must start with `x-amz-meta-`; S3 stores their keys in lowercase. Metadata is returned when the object is retrieved.
+- S3 Object Tags are key-value pairs useful for fine-grained permissions and analytics grouping.
+- Neither metadata nor tags can be searched directly. Use an external searchable index such as DynamoDB.
+
+---
+
+## 12. Amazon S3 Security
+
+*Source: PDF pages 261-280*
+
+**Encryption choices**
+
+- **SSE-S3:** Server-side encryption using keys handled, managed, and owned by AWS. It uses AES-256 and the header `x-amz-server-side-encryption: AES256`. It is enabled by default for new buckets and new objects.
+- **SSE-KMS:** Server-side encryption using keys managed through AWS KMS. It provides user control and CloudTrail auditing of key usage. The required header is `x-amz-server-side-encryption: aws:kms`.
+- SSE-KMS can encounter KMS throughput limits. Uploads call `GenerateDataKey`; downloads call `Decrypt`. These calls count toward Regional KMS quotas of 5,500, 10,000, or 30,000 requests per second, depending on the Region. A quota increase can be requested through Service Quotas.
+- **SSE-C:** Server-side encryption using a customer-provided key managed outside AWS. Amazon S3 does not store this key. HTTPS is mandatory, and the key must be supplied in HTTP headers with every request.
+- **Client-side encryption:** The client encrypts before upload and decrypts after retrieval. The customer manages both the keys and the complete encryption cycle.
+
+**Encryption in transit and policy ordering**
+
+- S3 provides an unencrypted HTTP endpoint and an encrypted HTTPS endpoint. HTTPS is recommended generally and required for SSE-C.
+- A bucket policy can deny requests that do not use secure transport by evaluating `aws:SecureTransport`.
+- Default encryption automatically applies SSE-S3 to newly stored objects. A bucket policy can instead reject `PUT` calls without required SSE-KMS or SSE-C headers.
+- Exam trap: bucket policies are evaluated **before** default encryption. A request rejected by the policy is not rescued by the default encryption setting.
+
+**CORS**
+
+- An origin is the combination of scheme, host, and port. Two URLs are same-origin only when all three match.
+- Cross-Origin Resource Sharing is a browser mechanism that permits one origin to request resources from another origin.
+- The browser can send an `OPTIONS` preflight request. The target returns CORS headers such as `Access-Control-Allow-Origin` and allowed methods before the browser sends the actual request.
+- When one S3 static website requests resources from another S3 origin, the target bucket needs an appropriate CORS configuration. It can allow one specific origin or `*` for all origins.
+- Exam trap: CORS does not provide general authorization. It determines whether a browser permits the cross-origin request.
+
+**MFA Delete and logging**
+
+- MFA Delete requires an MFA code to permanently delete an object version or suspend bucket versioning.
+- MFA is not required to enable versioning or list deleted versions.
+- Versioning must already be enabled. Only the bucket owner using the root account can enable or disable MFA Delete.
+- S3 Access Logs record requests from any account, including authorized and denied requests, into another S3 bucket. The logging bucket must be in the same Region.
+- Never use the monitored bucket as its own logging destination. Each log write would produce another log entry, creating an exponentially growing logging loop.
+
+**Temporary and structured access**
+
+- A pre-signed URL grants temporary `GET` or `PUT` access using the permissions of the principal that generated it.
+- Console expiration ranges from 1 to 720 minutes, or 12 hours. AWS CLI expiration defaults to 3,600 seconds and has a maximum of 604,800 seconds, approximately 168 hours.
+- S3 Access Points simplify security management by providing individual DNS names and access point policies. They can separate finance, sales, or analytics access while keeping the bucket policy simpler.
+- A VPC-origin Access Point is reachable only through the VPC. It requires a Gateway or Interface VPC Endpoint, and the endpoint policy must permit both the target bucket and Access Point.
+- S3 Object Lambda changes objects during retrieval. One source bucket can support different Object Lambda Access Points for tasks such as PII redaction, XML-to-JSON conversion, image resizing, watermarking, or caller-specific enrichment.
+
+---
+
+## 13. Amazon CloudFront
+
+*Source: PDF pages 281-311*
+
+**Purpose and origins**
+
+- Amazon CloudFront is a Content Delivery Network. It caches content at hundreds of global edge locations to improve read performance and user experience. It also provides worldwide DDoS protection and integrates with AWS Shield and AWS WAF.
+- An S3 bucket origin supports edge caching and uploads through CloudFront. Origin Access Control and an S3 bucket policy secure the origin.
+- A **VPC Origin** can reach a private Application Load Balancer, Network Load Balancer, or EC2 instance in private subnets without exposing it to the Internet.
+- A **custom HTTP origin** can be an S3 static website or another public HTTP backend. An S3 website origin requires static website hosting to be enabled.
+- On public networking, an ALB used as an origin must be public, although EC2 instances behind it can be private. An EC2 instance used directly as a public origin must itself be public. Security groups allow the CloudFront edge-location public IP ranges.
+
+**CloudFront versus S3 Cross-Region Replication**
+
+- Choose CloudFront for globally distributed static content cached for a TTL and required everywhere.
+- Choose S3 Cross-Region Replication when objects must be copied in near real time to a few explicitly configured Regions. The replicated content is read-only in the described comparison and is suited to low-latency access in those Regions.
+
+**Caching and policies**
+
+- Each edge location has its own cache. A cache hit returns the stored object; a cache miss forwards the request to the origin.
+- The default cache key is the hostname plus the resource portion of the URL. A Cache Policy can add selected headers, cookies, and query strings when the response varies by user, device, language, location, or request details.
+- Cache Policy TTL can range from 0 seconds to 1 year. The origin can influence it through `Cache-Control` and `Expires`.
+- Every header, cookie, or query string included in the cache key is automatically forwarded to the origin.
+- For headers, `None` gives the best caching performance; a whitelist includes and forwards only selected headers.
+- Query-string modes are `None`, `Whitelist`, `Include All-Except`, and `All`. Including all query strings gives the worst caching performance because it creates more distinct cache entries.
+- An **Origin Request Policy** forwards headers, cookies, or query strings without adding them to the cache key. This provides origin context without creating duplicate cached content. It can also add CloudFront headers or custom headers absent from the viewer request.
+- Maximize the cache-hit ratio by excluding unnecessary request values and separating static-content rules from dynamic-content rules.
+
+**Invalidation, routing, and availability**
+
+- Updating the origin does not immediately update cached objects. CloudFront continues serving them until TTL expiry unless a cache invalidation is issued.
+- Invalidation can target everything with `*` or a path such as `/images/*`.
+- Cache Behaviors apply different policies and origins to path patterns such as `/images/*` and `/api/*`. The default behavior is always `/*` and is processed last.
+- Multiple origins can therefore serve different content types. An Origin Group adds high availability with one primary and one secondary origin. If the primary returns an error, CloudFront tries the secondary.
+
+**Controlled access**
+
+- Geo Restriction supports an allowlist of approved countries or a blocklist of prohibited countries. Country identification uses a third-party Geo-IP database.
+- CloudFront Signed URLs and Signed Cookies can include expiration, permitted IP ranges, and trusted signers. Use a Signed URL for one file and Signed Cookies for multiple files.
+- Shared media normally receives a short lifetime of a few minutes; private user content can be valid for years.
+- CloudFront Signed URLs can protect a path regardless of origin, filter by IP, path, date, and expiration, and use CloudFront caching.
+- An S3 pre-signed URL issues an S3 request using the signing IAM principal’s permissions and has a limited lifetime.
+- Trusted key groups are the recommended CloudFront signer. Applications use a private key to sign; CloudFront uses the uploaded public key to verify. The alternative AWS-account key-pair approach requires root-account key management and is not recommended.
+
+**Cost, field protection, and logs**
+
+- Price Class All uses all Regions for best performance. Price Class 200 excludes the most expensive Regions. Price Class 100 uses only the least expensive Regions.
+- Field-Level Encryption adds protection beyond HTTPS. At the edge it uses asymmetric encryption and a public key to encrypt up to 10 selected fields in POST requests. Only the holder of the private key can decrypt them.
+- Real-Time Logs send selected CloudFront requests to Kinesis Data Streams. Configuration can choose the sampling rate, fields, and Cache Behaviors. Consumers can perform real-time processing or send records through Kinesis Data Firehose for near-real-time processing.
+
+---
+
+## 14. Containers on AWS
+
+*Source: PDF pages 312-353*
+
+**Container foundations**
+
+- Docker packages applications into containers intended to run consistently across machines and operating systems. Uses include microservices and lifting applications from on premises to AWS.
+- Docker containers share host resources, allowing many containers on one server. Virtual machines instead include guest operating systems above a hypervisor.
+- A Dockerfile builds an image; the image is pushed to or pulled from a repository; running the image creates a container.
+- Docker Hub provides public repositories. Amazon ECR provides private and public repositories.
+- AWS container services are Amazon ECS, Amazon EKS, AWS Fargate, and Amazon ECR. ECS is AWS’s container platform; EKS is managed Kubernetes; Fargate supplies serverless compute for ECS and EKS; ECR stores images.
+
+**ECS launch types and IAM**
+
+- In the **EC2 launch type**, customers provision and maintain EC2 capacity. Every instance runs the ECS Agent and registers with the ECS cluster. ECS starts and stops the containers.
+- In the **Fargate launch type**, there are no EC2 instances to manage. Define CPU, memory, and task definitions; AWS runs the tasks. Scale by increasing the desired task count.
+- The **EC2 Instance Profile** exists only for EC2 launch type and is used by the ECS Agent. It calls ECS APIs, sends logs to CloudWatch Logs, pulls ECR images, and retrieves referenced secrets.
+- The **ECS Task Role** gives application permissions to an individual task. Different services can have different roles, and the role is declared in the task definition. Do not confuse agent/infrastructure permissions with application permissions.
+
+**Networking, storage, and definitions**
+
+- An Application Load Balancer fits most ECS use cases. Use a Network Load Balancer for high throughput, high performance, or AWS PrivateLink. Classic Load Balancer is supported but not recommended; it lacks advanced features and does not support Fargate.
+- With EC2 launch type, defining only a container port enables dynamic host-port mapping. The ALB discovers the assigned host port. The EC2 security group must allow those ports from the ALB security group.
+- Each Fargate task has a unique private IP. Only the container port is defined because host ports do not apply. The task ENI security group allows the application port from the ALB.
+- A task definition is JSON metadata describing image name, port mappings, CPU, memory, environment variables, networking, IAM role, and logging. It can define up to 10 containers.
+- Amazon EFS mounts to either EC2 or Fargate tasks and provides shared persistent multi-AZ storage. Fargate plus EFS is serverless. Amazon S3 cannot be mounted as a file system.
+- Bind mounts share ephemeral data among containers in one task, including sidecar patterns for logs and metrics. EC2 bind-mount data follows the EC2 instance lifecycle. Fargate ephemeral storage ranges from 20 to 200 GiB, with 20 GiB as the default, and follows the containers using it.
+- Environment values may be hardcoded, loaded from SSM Parameter Store or Secrets Manager for sensitive values, or supplied in bulk through an environment file in S3.
+
+**Scaling, deployment, and events**
+
+- ECS Service Auto Scaling adjusts the desired number of tasks using Application Auto Scaling. Metrics include average CPU, average memory, and ALB request count per target.
+- Target Tracking follows a metric target; Step Scaling responds to a CloudWatch alarm; Scheduled Scaling responds to predictable dates and times.
+- ECS task scaling is different from EC2 instance scaling. For EC2 launch type, the underlying Auto Scaling Group must also gain capacity. An ECS Cluster Capacity Provider paired with an ASG can add instances when CPU or RAM capacity is missing.
+- Rolling updates use **Minimum Healthy Percent**, from 0% to 100%, and **Maximum Percent**, from 100% to 200%, to control how many old tasks may stop and how many new tasks may start. Slide examples use 50%/100% and 100%/150% for a four-task service.
+- EventBridge can launch an ECS task after an S3 event or on a schedule for batch work. ECS services can poll SQS and scale according to queued messages. EventBridge can also detect stopped ECS tasks and trigger SNS notifications.
+
+**EC2 task placement**
+
+- Placement strategies and constraints apply only to ECS tasks using EC2 launch type, not Fargate.
+- ECS first finds instances meeting CPU, memory, and port requirements; then applies placement constraints; then best-effort placement strategies; finally it selects instances.
+- **Binpack** places tasks on instances with the least available CPU or memory, reducing the number of instances and cost.
+- **Random** chooses instances randomly. **Spread** distributes tasks evenly by values such as instance ID or Availability Zone. Strategies can be combined.
+- `distinctInstance` places tasks on different instances. `memberOf` selects instances matching a Cluster Query Language expression.
+
+**ECR, Copilot, and EKS**
+
+- Amazon ECR stores and manages public or private Docker images, is integrated with ECS, and is backed by S3. IAM controls access; image pull failures should lead to an IAM policy check. ECR supports vulnerability scanning, versions, tags, and image lifecycle management.
+- AWS Copilot is a CLI for building, releasing, and operating containerized applications on App Runner, ECS, and Fargate. It provisions infrastructure such as ECS, VPC, load balancers, and ECR; supports CodePipeline deployments, multiple environments, logs, health, and troubleshooting.
+- Amazon EKS runs managed Kubernetes and is an alternative to ECS with a different API. It is useful when Kubernetes is already used on premises or in another cloud. Worker compute can use EC2 or Fargate. Deploy one EKS cluster per Region for multi-Region operation and use CloudWatch Container Insights for logs and metrics.
+- EKS Managed Node Groups create and manage EC2 nodes in an EKS-managed ASG. Self-managed nodes are created and registered by the customer. Both support On-Demand and Spot Instances. Fargate requires no node maintenance.
+- EKS persistent volumes require a `StorageClass` manifest and a CSI-compliant driver. Supported storage includes EBS, EFS, FSx for Lustre, and FSx for NetApp ONTAP. EFS works with Fargate.
+
+---
+
+## 15. AWS Elastic Beanstalk
+
+*Source: PDF pages 354-378*
+
+**Purpose and structure**
+
+- AWS Elastic Beanstalk provides a developer-centred way to deploy applications while using services such as EC2, Auto Scaling Groups, Elastic Load Balancing, and RDS underneath.
+- It automatically handles capacity provisioning, load balancing, scaling, application health monitoring, and instance configuration. The developer is responsible for application code and still controls configuration.
+- Elastic Beanstalk itself is free; the underlying AWS resources are charged.
+- An **Application** contains environments, versions, and configurations. An **Application Version** is one iteration of application code. An **Environment** is the AWS resource collection running exactly one application version at a time. Multiple environments can represent development, test, and production.
+- Supported platforms include Go, Java SE, Java with Tomcat, .NET on Linux or Windows, Node.js, PHP, Python, Ruby, Packer, and single-container, multi-container, or preconfigured Docker.
+
+**Environment tiers and modes**
+
+- A Web Server Environment uses load-balanced EC2 web servers. A Worker Environment pulls work from an SQS queue and can scale using the number of messages. A web tier can submit messages to the worker queue.
+- A Single Instance deployment mode is suited to development. A High Availability deployment uses a load balancer and Auto Scaling Group and is suited to production.
+
+**Update strategies**
+
+- **All at once:** Fastest and has no extra cost, but all instances update together and the application experiences downtime. Best suited to quick development iterations.
+- **Rolling:** Updates configurable buckets sequentially. It has no additional cost, but capacity is reduced during deployment, old and new versions run together, and deployment is long.
+- **Rolling with additional batches:** Adds temporary capacity for each bucket, preserving full capacity. It incurs a small temporary cost, runs both versions during deployment, removes the extra batch afterward, and is suitable for production.
+- **Immutable:** Deploys the new version to a temporary ASG and replaces the old instances only after health checks. It provides zero downtime and quick rollback by terminating the new ASG, but temporarily doubles capacity, has high cost, and is the longest deployment.
+- **Blue/Green:** Not a direct Elastic Beanstalk feature. Create a separate green environment, deploy and validate the new version, optionally direct a small weighted share through Route 53, and then swap environment URLs. The old environment remains available for rollback.
+- **Traffic Splitting:** Canary testing deploys the new version to a temporary ASG with the same capacity and directs a small percentage of traffic to it for a configured time. Health is monitored. Failure causes a fast automatic rollback with no application downtime. On success, new instances move into the original ASG and the old version is terminated.
+
+**Packaging, lifecycle, and configuration**
+
+- Package application code as a ZIP and declare dependencies, such as `requirements.txt` for Python or `package.json` for Node.js. Elastic Beanstalk deploys the archive to each EC2 instance, resolves dependencies, and starts the application.
+- Elastic Beanstalk stores at most 1,000 application versions. Once the limit is reached, further deployment is blocked.
+- A lifecycle policy removes versions by age or when too many exist. Versions currently in use are not deleted. Source bundles can optionally remain in S3 to prevent data loss.
+- Configuration-as-code files belong in `.ebextensions/` at the source root, use YAML or JSON, and have a `.config` extension. `option_settings` changes defaults. Extensions can add resources such as RDS, ElastiCache, or DynamoDB.
+- Resources managed through `.ebextensions` are deleted with the environment. Elastic Beanstalk uses AWS CloudFormation underneath to provision resources.
+
+**Cloning and migration traps**
+
+- Cloning preserves environment configuration, load balancer settings, RDS database type, and environment variables, but it does not preserve RDS data.
+- A load balancer’s type cannot be changed after environment creation; only its configuration can change. Create a new environment with the desired type, deploy the application, and switch using a CNAME swap or Route 53. This migration cannot use cloning because cloning preserves the original load balancer type.
+- Provisioning RDS inside Elastic Beanstalk is convenient for development and testing but ties the database lifecycle to the environment. For production, create RDS separately and provide its connection string to the application.
+- To decouple an existing RDS database: take a snapshot, protect the database from deletion, create an environment without RDS, point it to the existing database, switch traffic and confirm operation, terminate the old environment, and delete the CloudFormation stack left in `DELETE_FAILED`.
+
+---
+
+## 16. AWS CloudFormation
+
+*Source: PDF pages 379-426*
+
+- **AWS CloudFormation** is a declarative Infrastructure as Code service. A template states the required AWS resources and configuration; CloudFormation determines creation order and orchestration.
+- Infrastructure can be version-controlled, reviewed as code, reproduced, separated into multiple stacks, cost-estimated, and deleted/re-created automatically.
+- A template is uploaded to Amazon S3 and referenced when creating a named **stack**. Updating requires uploading a new template version. Deleting a stack normally deletes resources created by that stack.
+- Templates support JSON and YAML. YAML supports nested objects, arrays, multiline strings, and comments.
+
+**Template components**
+
+- `AWSTemplateFormatVersion`: identifies template capabilities; shown as `2010-09-09`.
+- `Description`: information about the template.
+- `Resources`: mandatory; declares AWS resources. Resource types follow `service-provider::service-name::data-type-name`.
+- `Parameters`: dynamic user inputs.
+- `Mappings`: static, hardcoded lookup values.
+- `Outputs`: values exposed in the console, CLI, or exported to other stacks.
+- `Conditions`: control whether resources or outputs are created.
+- Intrinsic functions connect these components.
+
+CloudFormation supports over 700 resource types. Macros and transforms can generate a dynamic number of resources. **Custom Resources** cover unsupported AWS resources, on-premises resources, third-party resources, or custom provisioning logic.
+
+**Parameters versus mappings**
+
+- Make a value a parameter when users must supply it or it may change without changing the template.
+- Parameter types include `String`, `Number`, `CommaDelimitedList`, `List<Number>`, AWS-specific types, lists of AWS-specific types, and SSM Parameter Store values.
+- Constraints include defaults, allowed values, regex patterns, minimum/maximum length or value, `ConstraintDescription`, and `NoEcho`.
+- Use `Ref` or YAML shorthand `!Ref` to reference a parameter.
+- Use mappings when all possible values are known and can be selected from facts such as Region, Availability Zone, account, or environment.
+- `Fn::FindInMap` syntax is `!FindInMap [MapName, TopLevelKey, SecondLevelKey]`.
+- Mappings are especially useful for Region-specific AMI IDs.
+
+**Pseudo parameters**
+
+Built-in pseudo parameters include `AWS::AccountId`, `AWS::Region`, `AWS::StackId`, `AWS::StackName`, `AWS::NotificationARNs`, and `AWS::NoValue`.
+
+**Outputs and cross-stack references**
+
+- Export an output before another stack can import it with `Fn::ImportValue`.
+- A common design is a network stack exporting VPC and subnet IDs for application stacks.
+- CloudFormation cannot delete the exporting stack while another stack still imports its values.
+
+**Important intrinsic functions**
+
+- `Ref`: parameter value or a resource’s physical ID.
+- `Fn::GetAtt`: retrieves a resource attribute, such as an EC2 instance’s public DNS name.
+- `Fn::FindInMap`: reads a mapping.
+- `Fn::ImportValue`: imports an exported output.
+- `Fn::Base64`: converts a string to Base64, commonly for EC2 user data.
+- Condition functions include `Fn::And`, `Fn::Equals`, `Fn::If`, `Fn::Not`, and `Fn::Or`.
+- Other listed functions include `Fn::Join`, `Fn::Sub`, `Fn::ForEach`, `Fn::ToJsonString`, `Fn::Cidr`, `Fn::GetAZs`, `Fn::Select`, `Fn::Split`, `Fn::Transform`, and `Fn::Length`.
+
+**Failure and protection behavior**
+
+- Failed stack creation rolls back and deletes created resources by default. Rollback can be disabled for troubleshooting.
+- Failed stack update automatically returns to the previous known working state.
+- If rollback itself fails, manually fix the resource and call `ContinueUpdateRollback` or `continue-update-rollback`.
+- A **CloudFormation service role** lets CloudFormation manage resources for users who lack direct resource permissions. The user must have `iam:PassRole`.
+- `CAPABILITY_IAM` acknowledges unnamed IAM resource changes; `CAPABILITY_NAMED_IAM` is required for named IAM resources.
+- `CAPABILITY_AUTO_EXPAND` acknowledges macros or nested-stack transformations. Missing acknowledgement causes `InsufficientCapabilitiesException`.
+
+**Deletion and update controls**
+
+- Default `DeletionPolicy` is `Delete`.
+- `Retain` preserves a resource when the stack or resource declaration is deleted.
+- `Snapshot` takes a final snapshot before deletion for supported resources such as EBS volumes, RDS databases, Redshift, ElastiCache, Neptune, and DocumentDB.
+- An S3 bucket cannot be deleted while non-empty.
+- A **stack policy** controls permitted update actions. Without one, all updates are allowed. After one is applied, resources are protected by default unless explicitly allowed.
+- **Termination protection** prevents accidental stack deletion.
+
+**Custom Resources and StackSets**
+
+- Custom Resources use `AWS::CloudFormation::CustomResource` or the recommended `Custom::TypeName`.
+- They are usually backed by AWS Lambda, or by an Amazon SNS topic.
+- `ServiceToken` is required and identifies the Lambda or SNS ARN. It must be in the same Region.
+- A custom resource can empty an S3 bucket before CloudFormation deletes it.
+- **StackSets** create, update, or delete stacks across accounts and Regions from one template. Updates propagate to associated stack instances. Only the administrator or delegated administrator account can create StackSets, including across AWS Organizations.
+
+---
+
+## 17. AWS Integration and Messaging
+
+*Source: PDF pages 427-468*
+
+Distributed applications can communicate synchronously or asynchronously. Synchronous dependencies become problematic during sudden traffic spikes. Amazon SQS, Amazon SNS, and Amazon Kinesis decouple components and scale independently.
+
+**Amazon SQS Standard queues**
+
+- Fully managed queue used to decouple applications.
+- Unlimited throughput and number of queued messages.
+- Default retention: **4 days**; maximum: **14 days**.
+- Publish and receive latency is below **10 ms**.
+- Maximum message size: **1,024 KB**.
+- Delivery is **at least once**, so duplicates are possible.
+- Ordering is best effort, so messages can arrive out of order.
+- A producer calls `SendMessage`; the message remains until a consumer calls `DeleteMessage`.
+- A consumer can receive up to **10 messages** per request and process messages in parallel.
+- Consumers can scale horizontally. An Auto Scaling Group can scale from the `ApproximateNumberOfMessages` queue-length metric.
+
+**Security**
+
+- HTTPS provides encryption in transit.
+- AWS KMS provides encryption at rest.
+- Client-side encryption is also possible.
+- IAM policies govern SQS API access.
+- SQS access policies support cross-account access and permit services such as Amazon SNS or Amazon S3 to write to the queue.
+
+**Visibility Timeout and failures**
+
+- A received message becomes invisible to other consumers.
+- Default Visibility Timeout: **30 seconds**.
+- If it expires before deletion, the message becomes visible and can be processed again.
+- Use `ChangeMessageVisibility` when processing needs more time.
+- Too short a timeout causes duplicates; too long a timeout delays recovery after a consumer crashes.
+- After a configured maximum receive threshold, repeatedly failing messages move to a **dead-letter queue (DLQ)**.
+- A FIFO source requires a FIFO DLQ; a Standard source requires a Standard DLQ.
+- A **14-day DLQ retention** is recommended in the slides.
+- **Redrive to source** moves messages back after the consumer has been fixed, without custom redrive code.
+
+**Delay and polling**
+
+- A Delay Queue hides new messages for up to **15 minutes**; default delay is zero.
+- Set a queue default or override it with `DelaySeconds`.
+- Long polling waits for messages for **1–20 seconds**; **20 seconds is preferred**.
+- Long polling reduces API calls, latency, and empty responses compared with short polling.
+- Enable it at queue level or with `ReceiveMessageWaitTimeSeconds`.
+- For content over 1,024 KB, the Java SQS Extended Client stores the large object in Amazon S3 and sends small metadata through SQS.
+- Batch APIs for send, delete, and visibility changes reduce cost.
+
+**SQS FIFO**
+
+- Preserves order and supports exactly-once send through deduplication.
+- Throughput: **300 messages/second without batching** or **3,000 messages/second with batching**.
+- `MessageGroupId` is mandatory. Messages in one group remain ordered.
+- Different groups permit parallel consumers, but ordering across groups is not guaranteed.
+- Deduplication window: **5 minutes**.
+- Deduplication can use a SHA-256 hash of the message body or an explicit Deduplication ID.
+
+**Amazon SNS**
+
+- A publisher sends once to an SNS topic; subscriptions receive the publication.
+- Limits shown: **12,500,000 subscriptions per topic** and **100,000 topics**.
+- Subscribers include SQS, Lambda, Amazon Data Firehose, Kinesis Data Streams, HTTP/S, email, SMS, and mobile notifications.
+- SNS uses HTTPS, KMS, IAM policies, and SNS access policies.
+- Topic publishing uses topics and subscriptions; direct mobile publishing uses platform applications and endpoints.
+- SNS does not persist undelivered data.
+
+**SNS and SQS fan-out**
+
+- Publish once to SNS and deliver to multiple subscribed SQS queues.
+- SQS adds persistence, retries, and delayed processing.
+- The SQS access policy must allow the SNS topic to write.
+- Cross-Region delivery to SQS is supported.
+- For one S3 event type and prefix combination, only one S3 event rule is allowed. Use SNS fan-out to send that event to multiple queues.
+- SNS subscription filter policies are JSON. A subscription without a filter receives every message.
+- SNS FIFO offers Message Group ordering and deduplication. SNS FIFO plus SQS FIFO gives fan-out with ordering and deduplication.
+
+**Kinesis Data Streams**
+
+- Collects and stores real-time streaming data.
+- Retention can be configured up to **365 days**, allowing replay.
+- Records cannot be individually deleted; they remain until expiration.
+- Record size can be up to **10 MiB**.
+- Records sharing a Partition ID are ordered.
+- Encryption uses KMS at rest and HTTPS in transit.
+- Provisioned mode: each shard supports **1 MB/s or 1,000 records/s input**, and **2 MB/s output**. Scaling is manual and pricing is per shard-hour.
+- On-demand mode starts with **4 MB/s or 4,000 records/s input**, automatically scales from the observed peak over the previous **30 days**, and charges by stream-hour and data volume.
+- Standard consumers pull at **2 MB/s per shard**. Enhanced fan-out pushes at **2 MB/s per shard per consumer**.
+
+**Amazon Data Firehose and Apache Flink**
+
+- Amazon Data Firehose is fully managed, serverless, automatically scaling, and near real-time because it buffers by time or size.
+- Destinations include S3, Redshift, OpenSearch, partner services, and custom HTTP endpoints.
+- It supports CSV, JSON, Parquet, Avro, raw text, and binary data; conversion, compression, and Lambda transformations are supported.
+- Unlike Kinesis Data Streams, Firehose does not store data or support replay.
+- Amazon Managed Service for Apache Flink processes streams using Java, Scala, or SQL, with managed compute, scaling, checkpoints, and snapshots.
+- Flink reads from Kinesis Data Streams or Amazon MSK, not Amazon Data Firehose.
+
+---
+
+## 18. AWS Monitoring Troubleshooting and Audit
+
+*Source: PDF pages 469-526*
+
+**Service decision rule**
+
+- **Amazon CloudWatch**: metrics, logs, alarms, dashboards, and operational monitoring.
+- **AWS X-Ray**: request tracing, latency, faults, errors, and service dependency maps.
+- **AWS CloudTrail**: audit API calls and identify who or what changed an AWS resource.
+
+**CloudWatch Metrics**
+
+- A metric is a timestamped variable such as `CPUUtilization`.
+- Metrics belong to namespaces and can have up to **30 dimensions**.
+- Standard EC2 metrics arrive every **5 minutes**.
+- EC2 detailed monitoring costs extra and provides **1-minute** metrics. It supports faster Auto Scaling reactions.
+- EC2 memory is not sent by default; publish it as a custom metric.
+- `PutMetricData` publishes custom metrics.
+- Standard custom metric resolution is **60 seconds**.
+- High-resolution values are **1, 5, 10, or 30 seconds** and cost more.
+- CloudWatch accepts points up to **two weeks in the past** and **two hours in the future**.
+
+**CloudWatch Logs**
+
+- A log group normally represents an application. A log stream represents an instance, container, or log file.
+- Retention can be never-expire or from **1 day to 10 years**.
+- Logs are encrypted by default and can use customer-managed KMS keys.
+- CloudWatch Logs Insights queries and aggregates stored logs. It is a query engine, not a real-time engine.
+- An S3 export may require up to **12 hours** before data is available. Use `CreateExportTask`.
+- For real-time processing, use a subscription filter to Lambda, Kinesis Data Streams, or Amazon Data Firehose.
+- Cross-account subscriptions require a destination access policy and suitable IAM roles.
+- EC2 sends no operating-system logs by default. Install an agent and grant it IAM permissions.
+- The older CloudWatch Logs Agent sends only logs. The CloudWatch Unified Agent also collects RAM, processes, disk, disk I/O, network, swap, and other system metrics, with centralized configuration in SSM Parameter Store.
+- Metric filters only process events received after the filter is created; they are not retroactive. They support up to **three dimensions**.
+
+**Alarms and active monitoring**
+
+- Alarm states are `OK`, `INSUFFICIENT_DATA`, and `ALARM`.
+- High-resolution alarm periods can be **10 seconds**, **30 seconds**, or multiples of 60 seconds.
+- Alarm actions include EC2 stop, terminate, reboot or recover; Auto Scaling actions; and SNS notifications.
+- Composite alarms combine other alarms with `AND` or `OR` to reduce noise.
+- EC2 recovery from a `StatusCheckFailed_System` alarm preserves private, public, and Elastic IP addresses, metadata, and placement group.
+- CloudWatch Synthetics canaries are Node.js or Python scripts using headless Chrome. They test availability, latency, APIs, links, visual changes, and UI workflows once or on a schedule.
+
+**Amazon EventBridge**
+
+- Formerly CloudWatch Events.
+- Rules react to event patterns or schedules and can target Lambda, SQS, SNS, Kinesis Data Streams, Step Functions, CodePipeline, CodeBuild, ECS tasks, AWS Batch, Systems Manager, or EC2 actions.
+- Default, partner, and custom event buses are supported.
+- Resource-based policies allow cross-account or cross-Region events.
+- Events can be archived indefinitely or for a chosen period and later replayed.
+- Schema Registry infers schemas, versions them, and can generate application code.
+- A central event bus can aggregate events from multiple accounts.
+
+**AWS X-Ray**
+
+- X-Ray creates end-to-end traces from segments and subsegments.
+- **Annotations** are indexed key-value pairs usable in filters; **metadata** is not indexed.
+- Sampling reduces trace volume and cost.
+- Default sampling records the first request each second as the reservoir, then **5%** of additional requests.
+- Application code imports the X-Ray SDK; EC2 or servers also run the X-Ray daemon. Lambda and some integrated services run the daemon for you.
+- The daemon receives trace data over UDP and sends batches to X-Ray.
+- Troubleshooting requires the SDK/instrumentation, a running daemon or service integration, and IAM write permissions.
+- Lambda additionally needs Active Tracing and an execution role such as `AWSXRayWriteOnlyAccess`.
+- X-Ray supports Lambda, Elastic Beanstalk, ECS, ELB, API Gateway, EC2, application servers, and on-premises workloads.
+- AWS Distro for OpenTelemetry supplies supported open-source APIs, agents, libraries, and collectors for traces and metrics, including multiple AWS or partner destinations.
+
+**AWS CloudTrail**
+
+- Enabled by default and records API activity from the console, SDK, CLI, AWS users, roles, and services.
+- Trails can cover all Regions, which is the default, or one Region.
+- **Management events** record control-plane operations and are logged by default. Read and write events can be separated.
+- **Data events** cover high-volume operations such as S3 object access and Lambda `Invoke`; they are not logged by default.
+- **CloudTrail Insights** builds a baseline from management activity and detects unusual write patterns. Findings appear in CloudTrail, go to S3, and generate EventBridge events.
+- CloudTrail retains events for **90 days**. Send them to S3 and query with Athena for longer retention.
+- When a resource is unexpectedly deleted or changed, investigate CloudTrail first.
+
+---
+
+## 19. AWS Lambda
+
+*Source: PDF pages 527-601*
+
+**Core model and limits**
+
+AWS Lambda runs functions without users provisioning or managing servers. It runs on demand and scales automatically, but is intended for short executions.
+
+- Supported runtimes shown: Node.js, Python, Java, .NET/PowerShell, and Ruby.
+- Custom Runtime API supports other languages.
+- Container images must implement the Lambda Runtime API. Use ECS or Fargate for arbitrary containers.
+- Memory: **128 MB to 10 GB**, in 1 MB increments.
+- More memory supplies more CPU and network. At **1,792 MB**, a function receives approximately one full vCPU; it can scale to **six vCPUs**.
+- Timeout: **3 seconds default**, **900 seconds/15 minutes maximum**.
+- Regional concurrency limit shown: **1,000 executions**, increaseable through support.
+- Free tier: **1 million requests** and **400,000 GB-seconds** monthly.
+- Duration is billed in **1 ms increments**.
+
+**Invocation models**
+
+- **Synchronous invocation**: CLI, SDK, API Gateway, Application Load Balancer and other listed services. The caller waits for the response and owns retries, exponential backoff, and error handling.
+- An ALB exposes Lambda through a target group and converts HTTP requests to JSON. Multi-value headers and query parameters become arrays when enabled.
+- **Asynchronous invocation**: services such as S3, SNS and EventBridge place events in Lambda’s internal event queue.
+- For function errors, Lambda makes **three attempts total**: the initial attempt, another after **1 minute**, and another after **2 minutes**.
+- Functions must be idempotent because retries can create duplicate processing and duplicate logs.
+- Failed asynchronous events can go to an SNS or SQS DLQ when IAM permissions allow it.
+- For throttling and 500-series system errors, Lambda queues and retries for up to **six hours**, with exponential delay from **1 second** to at most **5 minutes**.
+- Asynchronous destinations can receive successful or failed results through SQS, SNS, another Lambda function, or EventBridge. The slides recommend destinations over DLQs, although both can coexist.
+
+**S3 event behavior**
+
+- Notifications include object creation, removal, restore, and replication events, with object-name filters.
+- Delivery normally takes seconds but can take a minute or longer.
+- Two simultaneous writes to one non-versioned key may produce only one notification. Enable S3 Versioning when every successful write must generate its own notification.
+
+**Event Source Mapping**
+
+- Used for Kinesis Data Streams, DynamoDB Streams, SQS, and SQS FIFO because Lambda must poll them.
+- Lambda invokes the function synchronously with a batch.
+- For streams, it creates an iterator per shard and preserves order.
+- A batch window can collect records during low traffic.
+- Parallelization supports up to **10 batches per shard**, while preserving order for each partition key.
+- By default, one failing stream record causes the complete batch to retry until success or record expiry, and the affected shard pauses to preserve order.
+- Options include discarding old events, limiting retries, splitting failed batches, and sending discarded events to a destination.
+- For SQS, batch size is **1–10 messages**. Set queue Visibility Timeout to **six times the Lambda timeout**.
+- Configure the DLQ on SQS, not on Lambda; Lambda DLQs apply to asynchronous invocations.
+- SQS Standard scaling adds **60 instances per minute**, up to **1,000 concurrent batches**.
+- SQS FIFO scales to the number of active message groups and keeps each group ordered.
+- Duplicate SQS delivery remains possible, even without a function error.
+
+**Event, permissions, and monitoring**
+
+- The event object is JSON-derived invocation data. The context object exposes invocation, function, and runtime properties.
+- The **execution role** grants the function access to services and lets event source mappings read source data. Best practice in the slides is one execution role per function.
+- A **resource-based policy** lets services or other accounts invoke Lambda.
+- Environment variables are string key-value pairs. KMS can protect sensitive values.
+- CloudWatch captures logs and metrics such as invocations, duration, concurrency, errors, success rate, throttles, asynchronous delivery failures, and stream Iterator Age.
+- X-Ray requires Active Tracing, the X-Ray SDK, and an execution role with write permission.
+
+**Edge functions**
+
+- **CloudFront Functions** use JavaScript for viewer request/response changes, start in under **1 ms**, and support millions of requests per second. They have no network, file-system, or request-body access.
+- **Lambda@Edge** uses Node.js or Python for viewer and origin request/response triggers, supports thousands of requests per second, and provides network, file-system, request-body, and third-party library access.
+- Lambda@Edge functions are authored in `us-east-1` and replicated by CloudFront.
+- CloudFront Functions have **2 MB memory** and **10 KB package size**. The Lambda@Edge column shows **128 MB up to 10 GB memory**, **1–50 MB packages**, and **5–10 second execution time**.
+
+**Networking and storage**
+
+- Lambda runs outside the customer VPC by default, so it cannot reach private VPC resources.
+- VPC attachment requires VPC, subnet, security-group configuration, and `AWSLambdaVPCAccessExecutionRole`; Lambda creates an ENI.
+- A VPC Lambda does not automatically have internet access. A public subnet does not give it a public IP.
+- A private subnet needs a NAT gateway/instance for internet access. VPC endpoints privately reach supported AWS services.
+- Initialize database connections, HTTP clients, and SDK clients outside the handler so warm invocations can reuse the execution context.
+- `/tmp` is transient cache shared by reused execution contexts, configurable up to **10 GB**. Use S3 for permanent objects.
+- A function supports **five layers**, with **250 MB total**.
+- Lambda can mount EFS only while running in a VPC and must use an EFS Access Point.
+
+**Concurrency and deployment**
+
+- Reserved concurrency places a function-level limit. Excess synchronous requests receive HTTP **429**; asynchronous requests retry and may reach a DLQ.
+- Provisioned concurrency pre-allocates execution environments to avoid cold-start latency and can use Application Auto Scaling.
+- ZIP upload limit: **50 MB compressed**; uncompressed code plus dependencies: **250 MB**.
+- Container images from ECR can be up to **10 GB**.
+- In CloudFormation, changing an S3 object without changing `S3Bucket`, `S3Key`, or `S3ObjectVersion` does not update the function.
+- `$LATEST` is mutable. Published versions are immutable and include code plus configuration.
+- Aliases are mutable pointers to versions, have their own ARNs, and support weighted canary traffic. An alias cannot point to another alias.
+- CodeDeploy supports all-at-once, linear, and canary traffic shifts, with pre- and post-traffic hooks.
+
+**Function URLs**
+
+- A Function URL is a stable, public HTTP/S endpoint with IPv4 and IPv6 support.
+- It applies to `$LATEST` or an alias, not directly to another published version.
+- It supports CORS and resource-based policies but not PrivateLink.
+- `AuthType NONE` permits unauthenticated access only when the resource policy grants public access.
+- `AuthType AWS_IAM` requires `lambda:InvokeFunctionUrl`.
+- Same-account access can be allowed by either identity or resource policy; cross-account access requires both.
+
+---
+
+## 20. Amazon DynamoDB
+
+*Source: PDF pages 602-655*
+
+**Database model**
+
+- Amazon DynamoDB is a fully managed, serverless, distributed NoSQL database with multi-AZ replication.
+- It provides low-latency performance, IAM integration, automatic scaling, DynamoDB Streams, and Standard or Standard-Infrequent Access table classes.
+- Unlike relational databases, NoSQL modeling avoids joins and aggregations. Data needed by a query is normally stored together.
+- Each table has a primary key chosen at creation.
+- Items are rows; attributes can vary between items and be added later.
+- Maximum item size: **400 KB**.
+- Types include scalar (`String`, `Number`, `Binary`, `Boolean`, `Null`), document (`List`, `Map`), and set types.
+
+**Primary keys**
+
+- A partition key alone must uniquely identify every item.
+- A composite key uses partition key plus sort key; the combination must be unique.
+- Items sharing a partition key are grouped and ordered by sort key.
+- Select diverse, high-cardinality partition keys to distribute data. A unique movie ID is better than a low-cardinality value such as language.
+- DynamoDB hashes partition-key values to place items. RCUs and WCUs are spread across partitions.
+
+**Capacity modes**
+
+- **Provisioned**: configure RCUs and WCUs, optionally with Auto Scaling. Temporary burst capacity can absorb excess traffic.
+- When burst capacity is exhausted, DynamoDB returns `ProvisionedThroughputExceededException`; retry with exponential backoff.
+- Throttling can result from hot keys, hot partitions, large items, or insufficient capacity.
+- **On-demand**, the default shown, scales automatically and charges per RRU/WRU. The slides describe it as unlimited capacity without throttling, but about **2.5 times more expensive** than provisioned capacity.
+- Switch capacity modes only once every **24 hours**.
+- Prefer on-demand for unknown or unpredictable traffic; provisioned mode requires capacity planning.
+
+**Capacity calculations**
+
+- One WCU provides one write per second for an item up to **1 KB**. Round item size upward to the next 1 KB.
+- Formula: writes/second × rounded 1 KB units.
+- Examples: 10 writes/s at 2 KB = **20 WCUs**; 6 writes/s at 4.5 KB = **30 WCUs**; 120 writes/min at 2 KB = **4 WCUs**.
+- One RCU provides one strongly consistent read/s, or two eventually consistent reads/s, for an item up to **4 KB**.
+- Round item size upward to a 4 KB boundary.
+- Examples: 10 strong reads/s at 4 KB = **10 RCUs**; 16 eventual reads/s at 12 KB = **24 RCUs**; 10 strong reads/s at 6 KB = **20 RCUs**.
+- Eventually consistent reads are the default and may briefly return stale data. Set `ConsistentRead=true` for strong consistency, which costs twice the RCUs.
+
+**Core operations**
+
+- `PutItem`: creates or fully replaces an item with the same primary key.
+- `UpdateItem`: updates attributes or creates an item; supports atomic counters.
+- Conditional writes accept a put, update, or delete only when the expression succeeds and have no performance impact.
+- `GetItem`: retrieves by primary key and supports projection expressions.
+- `Query`: requires equality on the partition key and optionally filters the sort key with equality, comparisons, `BETWEEN`, or `begins_with`.
+- `FilterExpression` runs after Query but before returning results, and only applies to non-key attributes.
+- Query returns the requested limit or up to **1 MB**, then uses pagination.
+- `Scan` reads the whole table and is inefficient. It returns up to **1 MB** per page and can consume many RCUs.
+- Parallel Scan improves speed with multiple workers but consumes more throughput.
+- Projection and filter expressions do not reduce Scan RCU consumption.
+- `DeleteTable` is much faster and cheaper for complete cleanup than scanning and deleting every item.
+
+**Batch and conditional operations**
+
+- `BatchWriteItem`: up to **25** puts/deletes and **16 MB** total, with each item still limited to 400 KB. It cannot perform updates.
+- Retry `UnprocessedItems` with exponential backoff or more capacity.
+- `BatchGetItem`: up to **100 items** and **16 MB** across one or more tables.
+- Retry `UnprocessedKeys`.
+- Batch operations run in parallel and can partially fail.
+- Condition expressions support `attribute_exists`, `attribute_not_exists`, type checks, `contains`, `begins_with`, `IN`, `BETWEEN`, and `size`.
+- A Condition Expression controls writes; a Filter Expression filters read results.
+- `attribute_not_exists(partition_key)` prevents accidental replacement.
+- Conditional writes implement optimistic locking through a version attribute.
+
+**Indexes**
+
+- **Local Secondary Index (LSI)**: same partition key as the table but an alternative sort key.
+- Maximum **five LSIs** per table; they must be created with the table.
+- LSI capacity comes from the base table.
+- **Global Secondary Index (GSI)**: alternative partition key or partition-plus-sort key and can be added or changed after table creation.
+- A GSI has separate RCUs and WCUs.
+- If GSI writes throttle, base-table writes also throttle even when the table has enough capacity.
+- Both index types support `KEYS_ONLY`, `INCLUDE`, or `ALL` projections.
+
+**DAX, Streams, and TTL**
+
+- DynamoDB Accelerator is a managed, highly available in-memory cache compatible with DynamoDB APIs.
+- DAX provides microsecond cached reads, addresses read hot keys, has a **5-minute default TTL**, and supports up to **10 nodes**.
+- The slides recommend at least **three nodes across Availability Zones** for production.
+- Use DAX for item, Query, and Scan caching. Use ElastiCache for application-generated aggregation results.
+- DynamoDB Streams records ordered item-level create, update, and delete changes for up to **24 hours**.
+- Stream views are `KEYS_ONLY`, `NEW_IMAGE`, `OLD_IMAGE`, or `NEW_AND_OLD_IMAGES`.
+- Shards are managed automatically. Enabling a stream does not retroactively add old records.
+- Lambda reads a stream through an Event Source Mapping and is invoked synchronously.
+- TTL automatically deletes items after a numeric Unix epoch timestamp, without consuming WCUs.
+- Deletion can occur within a few days after expiry; until then, expired items can still appear in reads and must be filtered.
+- TTL deletion also removes index entries and writes a delete record to DynamoDB Streams.
+
+**Transactions and patterns**
+
+- Transactions provide ACID, all-or-nothing changes across items and tables.
+- `TransactGetItems` groups reads; `TransactWriteItems` groups puts, updates, and deletes.
+- Transactional operations consume **twice** the normal RCUs or WCUs because DynamoDB performs prepare and commit operations.
+- Example: 3 transactional writes/s at 5 KB require **30 WCUs**. Five transactional reads/s at 5 KB require **20 RCUs**.
+- Write sharding adds random or calculated suffixes to a low-cardinality partition key to avoid hot partitions.
+- Store large objects in S3 and keep their metadata or URL in DynamoDB.
+- DynamoDB commonly stores shared session state; S3 has higher latency for small objects, while EBS and instance store are not shared caches.
+- Table copying options include AWS Backup, AWS Glue, or custom Scan plus `PutItem`/`BatchWriteItem`.
+
+**Security and global features**
+
+- IAM controls access; VPC endpoints avoid public internet paths.
+- Data is encrypted at rest with AWS KMS and in transit with SSL/TLS.
+- Backup, restore, and Point-in-Time Recovery have no performance impact according to the slides.
+- Global Tables provide multi-Region, multi-active replication.
+- DynamoDB Local supports offline local development.
+- Cognito or web identity federation can issue temporary credentials for direct client access.
+- IAM conditions using `LeadingKeys` restrict rows by primary key; `Attributes` restricts visible attributes.
+
+---
+
+## 21. Amazon API Gateway
+
+*Source: PDF pages 656-699*
+
+**Purpose:** Amazon API Gateway builds, deploys, and manages APIs. A common serverless design is Client -> API Gateway -> Lambda -> DynamoDB. API Gateway can manage API versions, stages, authentication, authorization, API keys, throttling, validation, transformation, SDK generation, caching, and WebSocket communication.
+
+**Backend integrations:**
+- **Lambda function:** Exposes Lambda through an API.
+- **HTTP:** Places an API layer before HTTP endpoints such as an on-premises service or Application Load Balancer. This adds authentication, throttling, caching, and API keys.
+- **AWS service:** Calls AWS APIs directly, such as sending records to Kinesis, posting to SQS, or starting a Step Functions workflow.
+- **MOCK:** Returns a response without contacting any backend.
+
+**Endpoint types:**
+- **Edge-Optimized:** Default choice for global clients. Requests travel through CloudFront edge locations, although the API itself remains in one Region.
+- **Regional:** Intended for clients in the same Region. You can place CloudFront in front manually for more control over distribution and caching.
+- **Private:** Accessible only from a VPC through an interface VPC endpoint. Access is controlled with a resource policy.
+
+For a custom HTTPS domain, use an ACM certificate and configure a Route 53 CNAME or A-alias. An Edge-Optimized endpoint requires the certificate in `us-east-1`; a Regional endpoint requires it in the API Gateway Region.
+
+**Stages and deployments:** Saving an API Gateway change does not activate it. You must create a deployment to a stage. Stages can represent `dev`, `test`, `prod`, or API versions such as `v1` and `v2`. Each stage has separate settings, and deployment history allows rollback.
+
+**Stage variables:** These act like environment variables. They can select a Lambda ARN or alias, HTTP endpoint, or value used by a mapping template. Lambda receives them through its context object. Their format is `${stageVariables.variableName}`. A stage can point to a Lambda alias, allowing the alias to change versions or weighted traffic without changing API Gateway.
+
+**Canary deployment:** A stage can send a chosen percentage of traffic to a canary version. Canary metrics and logs are separate, and canary stage variables can override normal variables. The slides describe this as blue/green deployment with Lambda and API Gateway.
+
+**Integration behavior:**
+- **HTTP or AWS integration:** Configure integration requests and responses. Mapping templates may transform both directions.
+- **AWS_PROXY / Lambda proxy:** The complete incoming request becomes Lambda input. Lambda owns request and response logic. No mapping template is used; headers and query-string parameters are passed in the invocation payload.
+- **HTTP_PROXY:** The HTTP request passes to the backend and its response passes back through API Gateway. There is no mapping template, although headers such as an API key may be added.
+- **Mapping templates:** Use Velocity Template Language (VTL). They can rename query parameters, change request or response bodies, add headers, remove unnecessary output, and translate formats such as JSON to XML for a SOAP service.
+
+**API definitions and validation:** OpenAPI 3.0 definitions can be imported in YAML or JSON and exported from an existing API. AWS extensions can configure API Gateway-specific options, and the definition can generate application SDKs. Request validation can require non-blank URI, query-string, and header parameters and can validate a JSON payload against a JSON Schema model. Invalid requests stop before the backend and return `400 Bad Request`.
+
+**Caching:**
+- Defined per stage, with optional per-method overrides.
+- Default TTL: **300 seconds**.
+- Minimum TTL: **0 seconds**.
+- Maximum TTL: **3600 seconds**.
+- Capacity range: **0.5 GB to 237 GB**.
+- Encryption is optional.
+- The entire cache can be flushed immediately.
+- An authorized client can request invalidation with `Cache-Control: max-age=0`.
+- Without an `InvalidateCache` policy or the authorization requirement, any client may invalidate the cache.
+- Caching reduces backend calls but is expensive; it is more likely to make sense in production than development or test.
+
+**Usage plans and API keys:** A usage plan determines which deployed stages and methods a client may access, how quickly it may call them, and its total quota. Throttling limits control request rate; quota limits control the overall maximum request count. API keys identify and meter clients, and callers send the assigned key in the `x-api-key` header.
+
+Correct setup order:
+1. Create APIs, mark methods as requiring an API key, and deploy them.
+2. Generate or import API keys.
+3. Create a usage plan with throttle and quota limits.
+4. Associate the stages and keys with the usage plan.
+
+**Observability:**
+- Enable CloudWatch Logs at stage level with `ERROR`, `DEBUG`, or `INFO`.
+- Enable X-Ray for request tracing; API Gateway plus Lambda tracing provides the full request picture.
+- Useful metrics include `Count`, `CacheHitCount`, `CacheMissCount`, `IntegrationLatency`, `Latency`, `4XXError`, and `5XXError`.
+- `IntegrationLatency` covers backend processing time seen by API Gateway.
+- `Latency` includes integration latency plus API Gateway overhead.
+
+**Limits and failure behavior:**
+- Account soft limit: **10,000 requests per second across all APIs**.
+- Throttling returns `429 Too Many Requests`, described as retriable.
+- An uncontrolled overloaded API can consume the account limit and throttle other APIs.
+- `400`: bad request.
+- `403`: access denied or WAF filtering.
+- `429`: quota exceeded or throttled.
+- `502`: bad gateway, commonly an incompatible Lambda proxy response; the slides also mention out-of-order invocations under heavy load.
+- `503`: service unavailable.
+- `504`: integration failure or endpoint timeout.
+- Maximum API Gateway request timeout: **29 seconds**.
+
+**CORS:** Enable CORS for calls from another domain. The `OPTIONS` preflight response must provide `Access-Control-Allow-Methods`, `Access-Control-Allow-Headers`, and `Access-Control-Allow-Origin`.
+
+**Security decision rules:**
+- **IAM:** Best for AWS users and roles, especially internal applications. It performs authentication and authorization through IAM policies and Signature Version 4. Combine it with resource policies for cross-account access.
+- **Resource policy:** Restricts or permits cross-account callers, source IP addresses, or VPC endpoints.
+- **Cognito User Pools:** Best for external application users. API Gateway validates the Cognito token without custom authorizer code. The slides emphasize that application authorization still needs to be implemented in the backend.
+- **Lambda authorizer:** Best for third-party bearer tokens such as JWT or OAuth, or authorization based on headers, query strings, and stage variables. The Lambda function returns an IAM principal and policy. Results are cached, but each uncached evaluation invokes Lambda.
+
+**HTTP API versus REST API:**
+- Choose **HTTP API** for low-latency, cost-effective Lambda proxy, HTTP proxy, or private integrations without data mapping. It has built-in CORS and native OIDC, OAuth 2.0, and JWT authorization. It has no usage plans or API keys.
+- Choose **REST API** when the full API Gateway feature set is required, including data mapping, usage plans, and API keys. The slides identify native OIDC/OAuth 2.0 as the exception.
+
+**WebSocket API:** WebSockets provide persistent, two-way communication, allowing the server to push data to clients. Uses include chat, collaboration, multiplayer games, and financial trading. `$connect`, `$disconnect`, and `$default` are special routes. A route selection expression such as `$request.body.action` maps incoming JSON to route keys. The connection ID is reused for messaging. The server uses an IAM Signature Version 4 HTTP `POST` to `@connections/{connectionId}` to send data; `GET` checks connection status and `DELETE` disconnects the client.
+
+---
+
+## 22. AWS CICD
+
+*Source: PDF pages 700-731*
+
+**Core model:** Continuous Integration means developers push code frequently and an automated build server immediately compiles and tests it. Fast feedback finds defects early. Continuous Delivery means every passing change remains reliably releasable and deployments become frequent and quick.
+
+The AWS toolchain separates responsibilities:
+- **CodeCommit:** source repository.
+- **CodeBuild:** compile, test, and package.
+- **CodePipeline:** workflow orchestration.
+- **CodeDeploy or Elastic Beanstalk:** deployment.
+- **CloudFormation:** provisioning.
+- Third-party repositories and build systems can participate.
+
+**CodeCommit:** A fully managed, highly available private Git repository with no repository size limit stated in the slides. It supports collaboration, backup, auditing, pull requests, and CodeBuild integration.
+
+Security:
+- Authenticate through SSH keys or HTTPS using the AWS CLI credential helper or IAM-user Git credentials.
+- Authorize repository actions with IAM policies.
+- Repositories are automatically encrypted at rest with AWS KMS.
+- Only HTTPS or SSH is used in transit.
+- For cross-account access, assume an IAM role with AWS STS. Do not share credentials or SSH keys.
+- Compared with GitHub, CodeCommit uses IAM users and roles and has a minimal UI; GitHub uses GitHub users and has a more complete UI.
+
+**CodePipeline:** A visual workflow that can use CodeCommit, ECR, S3, Bitbucket, or GitHub as sources; CodeBuild or third-party systems for builds; CodeBuild, Device Farm, or third-party tools for tests; and CodeDeploy, Elastic Beanstalk, CloudFormation, ECS, or S3 for deployment. It can also invoke Lambda or Step Functions.
+
+A pipeline contains stages. Actions inside a stage may run sequentially or in parallel. Manual approval can be placed at any stage. Each stage can produce artifacts, which are stored in S3 and passed to later stages.
+
+Failure behavior:
+- A failed stage stops the pipeline.
+- EventBridge receives pipeline, action, and stage state changes and can notify on failures or cancellations.
+- If an action cannot run, inspect the pipeline IAM service role.
+- CloudTrail audits AWS API calls.
+
+**CodeBuild:** A fully managed CI service that compiles code, runs tests, and creates packages. It scales continuously, requires no build servers, and has no build queue described in the slides. Charging is per minute of compute time. Builds run using prepackaged or custom Docker images for reproducibility.
+
+Sources include CodeCommit, S3, Bitbucket, and GitHub. Logs may go to S3 and CloudWatch Logs. CloudWatch Metrics tracks build statistics; EventBridge detects failed builds; CloudWatch Alarms provide threshold-based notification. Security options include KMS artifact encryption, IAM permissions, VPC network controls, and CloudTrail logging.
+
+**`buildspec.yml`:** It must be at the root of the source code. Important sections:
+- `env.variables`: plaintext variables.
+- `env.parameter-store`: values from Systems Manager Parameter Store.
+- `env.secrets-manager`: values from Secrets Manager.
+- `install`: install dependencies.
+- `pre_build`: final preparation before the build.
+- `build`: compilation and test commands.
+- `post_build`: finishing work such as packaging.
+- `artifacts`: output uploaded to S3 and encrypted with KMS.
+- `cache`: reusable files, commonly dependencies, stored in S3.
+
+Supported environments listed are Java, Ruby, Python, Go, Node.js, Android, .NET Core, PHP, and Docker. Docker permits a custom environment.
+
+**CodeDeploy:** Automates deployments to EC2, on-premises servers, Lambda, and ECS. `appspec.yml` defines deployment behavior. It supports gradual deployment and rollback after deployment failure or a CloudWatch Alarm.
+
+For EC2 and on-premises:
+- The CodeDeploy Agent must run on every target.
+- The instance needs permission to download deployment bundles from S3.
+- Systems Manager can install and update the agent.
+- **AllAtOnce:** fastest, but most downtime.
+- **HalfAtATime:** capacity is reduced by 50%.
+- **OneAtATime:** slowest, with the lowest availability impact.
+- **Custom:** choose a percentage.
+- Both in-place and blue/green deployments are supported.
+- Hooks can verify deployment phases.
+
+For an Auto Scaling Group:
+- In-place deployment updates existing instances; newly created instances also receive the deployment.
+- Blue/green creates a new ASG by copying settings, requires an ELB, and lets you choose how long to retain the old ASG.
+
+For Lambda aliases:
+- **Linear:** increase traffic every interval until 100%, including `LambdaLinear10PercentEvery3Minutes` and `LambdaLinear10PercentEvery10Minutes`.
+- **Canary:** send a test percentage, wait, then move to 100%, including `LambdaCanary10Percent5Minutes` and `LambdaCanary10Percent30Minutes`.
+- **AllAtOnce:** switch immediately.
+- Lambda traffic shifting is integrated with SAM.
+
+For ECS:
+- CodeDeploy updates the ECS task definition.
+- Only blue/green deployment is supported.
+- An Application Load Balancer is required.
+- Options include `ECSLinear10PercentEvery3Minutes`, `ECSLinear10PercentEvery10Minutes`, `ECSCanary10Percent5Minutes`, `ECSCanary10Percent30Minutes`, and AllAtOnce.
+
+**Rollback trap:** A rollback is not restoration of an old deployment record. CodeDeploy takes the last known good revision and deploys it again as a new deployment. Rollback may be automatic, manual, or disabled.
+
+**CodeArtifact:** A secure, scalable package repository for software dependencies. It works with Maven, Gradle, npm, yarn, twine, pip, and NuGet. Developers and CodeBuild retrieve packages from it, and it can proxy public repositories. EventBridge emits events when package versions are created, modified, or deleted, enabling Lambda, Step Functions, SNS, SQS, CodePipeline, or rebuild/redeployment workflows.
+
+---
+
+## 23. AWS Serverless Application Model SAM
+
+*Source: PDF pages 732-743*
+
+**Definition:** AWS Serverless Application Model (SAM) is a framework for developing and deploying serverless applications. Configuration is written in YAML. A short SAM template is transformed into a more complex CloudFormation template, so CloudFormation features such as parameters, mappings, outputs, and resources remain available.
+
+A SAM template is identified by:
+
+```yaml
+Transform: AWS::Serverless-2016-10-31
+```
+
+Important resource types are `AWS::Serverless::Function`, `AWS::Serverless::Api`, and `AWS::Serverless::SimpleTable`.
+
+**Deployment mechanism:** `sam build` builds locally. `sam deploy`, optionally preceded by `sam package`, packages code, uploads artifacts to S3, transforms the SAM template to CloudFormation, creates or executes a CloudFormation change set, and produces a CloudFormation stack containing resources such as Lambda, API Gateway, and DynamoDB.
+
+**SAM Accelerate:**
+- `sam sync`: synchronizes code and infrastructure.
+- `sam sync --code`: updates code through service APIs without updating infrastructure, bypassing CloudFormation and completing in seconds.
+- `sam sync --code --resource AWS::Serverless::Function`: synchronizes all Lambda functions and their dependencies.
+- `sam sync --code --resource-id HelloWorldLambdaFunction`: synchronizes one logical resource.
+- `sam sync --watch`: watches files and synchronizes automatically. Configuration changes use full `sam sync`; code-only changes use `sam sync --code`.
+
+**Policy templates:** Reusable permission templates attach permissions to Lambda functions. Examples are `S3ReadPolicy` for read-only S3 object access, `SQSPollerPolicy` for polling an SQS queue, and `DynamoDBCrudPolicy` for create, read, update, and delete access.
+
+**CodeDeploy integration:** SAM uses CodeDeploy for Lambda updates. `AutoPublishAlias` detects new code, publishes a Lambda version, and moves an alias toward it. `DeploymentPreference` selects Canary, Linear, or AllAtOnce traffic shifting. Pre-traffic and post-traffic Lambda hooks test the release. CloudWatch Alarms can trigger automatic rollback.
+
+**Local capabilities:**
+- `sam local start-lambda`: starts an endpoint that emulates Lambda for automated tests.
+- `sam local invoke`: invokes one function with one payload and exits. Use the correct `--profile` if the function calls AWS APIs.
+- `sam local start-api`: starts a local HTTP server for functions; function changes reload automatically.
+- `sam local generate-event`: creates sample S3, API Gateway, SNS, Kinesis, or DynamoDB event payloads.
+
+Multiple deployment environments can be stored in `samconfig.toml` and selected with commands such as `sam deploy --config-env dev`.
+
+**Decision rule:** Use SAM when the application is serverless-focused and you want concise declarative YAML, CloudFormation deployment, local Lambda/API testing, and built-in CodeDeploy traffic shifting.
+
+---
+
+## 24. AWS Cloud Development Kit CDK
+
+*Source: PDF pages 744-756*
+
+**Definition:** AWS Cloud Development Kit (CDK) defines infrastructure using JavaScript/TypeScript, Python, Java, or .NET. CDK code uses high-level components called constructs. `cdk synth` converts the application into a JSON or YAML CloudFormation template, and CloudFormation performs deployment.
+
+CDK can deploy infrastructure and application runtime code together. The slides highlight Lambda functions and Docker containers running in ECS or EKS.
+
+**CDK versus SAM:**
+- **SAM:** Serverless-focused, declarative JSON/YAML, and quick for Lambda applications.
+- **CDK:** Covers all AWS services and defines infrastructure with a programming language.
+- Both ultimately use CloudFormation.
+
+SAM CLI can test a CDK Lambda locally, but first run `cdk synth`. Then pass the generated CloudFormation template to a command such as `sam local invoke -t MyCDKStack.template.json myFunction`.
+
+**Constructs:** A construct contains what CDK needs to create part or all of a CloudFormation stack. It can represent one resource or a collection of related resources. The AWS Construct Library supplies constructs for AWS resources, while Construct Hub also contains AWS, third-party, and community constructs.
+
+Three construct levels:
+- **L1 / CFN Resources:** Direct CloudFormation resources. Names begin with `Cfn`, such as `CfnBucket`. Every resource property must be configured explicitly. They are generated periodically from the CloudFormation Resource Specification.
+- **L2:** Intent-based AWS resource APIs with convenient defaults, less boilerplate, and helper methods such as `bucket.addLifeCycleRule()`.
+- **L3 / Patterns:** Multiple related resources forming a common architecture. Examples include `LambdaRestApi` and `ApplicationLoadBalancerFargateService`.
+
+**Important commands listed in the slides:**
+- `npm install -g aws-cdk-lib`: install the CDK CLI and libraries.
+- `cdk init app`: create a CDK project from a template.
+- `cdk synth`: synthesize and print the CloudFormation template.
+- `cdk bootstrap`: deploy the CDK Toolkit staging stack.
+- `cdk deploy`: deploy stacks.
+- `cdk diff`: compare local and deployed stacks.
+- `cdk destroy`: destroy stacks.
+
+**Bootstrapping:** An AWS environment is an account and Region pair. Before deployment, bootstrap each new environment with:
+
+```text
+cdk bootstrap aws://<aws_account>/<aws_region>
+```
+
+This creates the `CDKToolkit` CloudFormation stack, including an S3 bucket for files and IAM roles for deployment. If the environment is not bootstrapped, the slides identify the possible error: `Policy contains a statement with one or more invalid principal`.
+
+---
+
+## 25. Amazon Cognito
+
+*Source: PDF pages 757-780*
+
+**Purpose:** Amazon Cognito gives web and mobile application users identities. Its two major components solve different problems:
+- **Cognito User Pools (CUP):** User registration and sign-in.
+- **Cognito Identity Pools:** Temporary AWS credentials that let users access AWS resources.
+
+An Identity Pool can use a User Pool as one of its identity providers. Exam clues favoring Cognito over IAM include hundreds of users, mobile users, or SAML authentication.
+
+**Cognito User Pools:** A serverless user database for web and mobile applications. It supports username or email plus password, password reset, email and phone verification, MFA, and federation through providers such as Facebook, Google, OIDC, or SAML. It can block users whose credentials are known to be compromised. Successful login returns a JWT.
+
+User Pools integrate directly with API Gateway and Application Load Balancer. API Gateway receives the token and evaluates it. An ALB can authenticate users before requests reach the target group, allowing the application to focus on business logic.
+
+**Synchronous Lambda triggers:**
+- **Pre Authentication:** Custom validation to accept or reject sign-in.
+- **Post Authentication:** Event logging or custom analytics.
+- **Pre Token Generation:** Add, change, or suppress token claims and attributes.
+- **Pre Sign-up:** Custom validation to accept or reject registration.
+- **Post Confirmation:** Welcome messages or event logging.
+- **Migrate User:** Move a user from an existing directory during authentication.
+- **Custom Message:** Customize and localize messages.
+
+**Hosted UI:** Cognito supplies a hosted sign-up and sign-in interface that provides a base for social, OIDC, and SAML integration. It can use a custom logo and CSS. A custom domain must be configured in App Integration and requires an ACM certificate in `us-east-1`.
+
+**Adaptive authentication:** Cognito assigns each sign-in a low, medium, or high risk score. The score can consider device, location, and IP address. Based on the risk, Cognito can allow the sign-in, require MFA, or block it. It also checks compromised credentials and supports account takeover protection, phone verification, and email verification. CloudWatch Logs can record attempts, risk scores, and failed challenges.
+
+**JWT handling:** A User Pool JWT is Base64 encoded and contains a header, payload, and signature. The signature must be verified before trusting the token. The payload may contain the user `sub` UUID, name, email, phone number, timestamps, and other attributes. The `sub` UUID identifies the user and can be used to retrieve user details from Cognito or OIDC.
+
+**Application Load Balancer authentication:**
+- An HTTPS listener is required for `authenticate-oidc` and `authenticate-cognito` rules.
+- `OnUnauthenticatedRequest` supports `authenticate` as the default, `deny`, or `allow`.
+- Cognito can connect the ALB to social identities or corporate identities using SAML, LDAP, or Microsoft AD.
+- For Cognito authentication, create a User Pool, client, and domain; ensure an ID token is returned; add social or corporate providers if needed; and configure the necessary callback URLs.
+- Example Cognito callbacks include `/saml2/idpresponse` and `/oauth2/idpresponse`.
+- For a directly configured OIDC provider, configure a client ID and secret and permit redirects to both the AWS ALB DNS name and the application CNAME at `/oauth2/idpresponse`.
+
+In the OIDC flow, the ALB redirects the user to the identity provider, receives an authorization grant code, obtains ID and access tokens, retrieves user claims with the access token, and redirects the user back to the original request.
+
+**Cognito Identity Pools:** These exchange an identity-provider token for temporary AWS credentials. Supported identity sources include Amazon, Facebook, Google, Apple, Cognito User Pools, OIDC providers, SAML providers, and developer-authenticated identities using a custom login server. Identity Pools can also permit unauthenticated guest users.
+
+The resulting credentials allow direct access to AWS resources such as a private S3 bucket or DynamoDB table, or access through API Gateway. Cognito defines the IAM policies attached to the credentials. Policies may use the user ID for fine-grained partitioning.
+
+**IAM role mechanism:**
+- Configure default roles for authenticated users and guests.
+- Rules can select a role according to the user's identity.
+- IAM policy variables can isolate each user's data.
+- Cognito obtains credentials from STS using `AssumeRoleForWebIdentity`.
+- The selected IAM role must trust Cognito Identity Pools.
+
+**Critical decision rule:**
+- Choose a **User Pool** when the requirement is authentication, user registration, login, federation, MFA, hosted UI, JWT issuance, or a user database.
+- Choose an **Identity Pool** when the requirement is authorization through temporary AWS credentials, direct access to AWS services, IAM roles, policy variables, or guest access.
+- Combine **User Pool + Identity Pool** when the application needs both user authentication and AWS-resource authorization.
+
+**Exam traps:**
+- A User Pool returns JWTs; it does not perform the Identity Pool role of issuing temporary AWS credentials.
+- An Identity Pool maps identities to IAM roles and policies; it is not the application user database.
+- Social, OIDC, and SAML federation can appear in both. Focus on the required output: a login token indicates User Pools; AWS credentials indicate Identity Pools.
+- Suspicious-login handling and adaptive MFA belong to User Pools.
+- Guest access and `AssumeRoleForWebIdentity` belong to Identity Pools.
+- An ALB authentication rule requires HTTPS.
+
+---
+
+## 26. Other Serverless
+
+*Source: PDF pages 781-803*
+
+**AWS Step Functions**
+
+- AWS Step Functions models a workflow as a JSON state machine. Each workflow has its own state machine, visual execution view, and execution history. Example uses include order fulfilment, data processing, and web application workflows.
+- A workflow can start through an SDK call, API Gateway, or Amazon EventBridge.
+
+**State types**
+
+- **Task:** Performs work by invoking an AWS service. It can invoke Lambda, run AWS Batch jobs, run and wait for Amazon ECS tasks, write to DynamoDB, publish to SNS or SQS, start another Step Functions workflow, or run an Activity.
+- **Choice:** Tests conditions and selects a matching branch or a default branch.
+- **Fail / Succeed:** Ends the execution explicitly with failure or success.
+- **Pass:** Passes input to output or injects fixed data without doing work.
+- **Wait:** Delays execution for a duration or until a specified date and time.
+- **Map:** Dynamically iterates through steps.
+- **Parallel:** Starts multiple execution branches in parallel.
+
+**Error handling**
+
+- Errors can come from an invalid state-machine definition, failed tasks, Lambda exceptions, network partitions, timeouts, or missing permissions.
+- Prefer defining `Retry` and `Catch` in the state machine instead of implementing workflow retries in application code.
+- Important predefined errors:
+  - `States.ALL`: Matches any error name.
+  - `States.Timeout`: A task exceeded `TimeoutSeconds` or did not send a required heartbeat.
+  - `States.TaskFailed`: General execution failure.
+  - `States.Permissions`: Insufficient permission to execute the work.
+- A state can also report its own custom errors.
+
+**Retry and Catch**
+
+- Retry rules for Task or Parallel states are evaluated from top to bottom.
+- `ErrorEquals` selects errors, `IntervalSeconds` sets the initial delay, `BackoffRate` multiplies the delay after each attempt, and `MaxAttempts` limits retries.
+- `MaxAttempts` defaults to **3**. Set it to **0** to prevent retries.
+- After retry attempts are exhausted, a matching `Catch` rule runs.
+- Catch rules are also evaluated from top to bottom. `Next` chooses the recovery state. `ResultPath` controls how the error is added to the input sent to that state.
+
+**Waiting for external work**
+
+- With **Wait for Task Token**, Step Functions pauses a Task until the token is returned through `SendTaskSuccess` or `SendTaskFailure`.
+- Add `.waitForTaskToken` to the Task resource. This supports human approval, third-party integrations, legacy systems, and work delegated through services such as SQS.
+- An **Activity Worker** polls with `GetActivityTask`, performs the work, and returns its result through `SendTaskSuccess` or `SendTaskFailure`.
+- `TimeoutSeconds` controls the maximum wait. The worker must send `SendTaskHeartbeat` within `HeartbeatSeconds`.
+- With a long timeout and active heartbeats, an Activity Task can wait for up to **1 year**.
+
+**Standard versus Express workflows**
+
+- **Standard** is the default. It has exactly-once execution, supports executions up to **1 year**, handles over **2,000 executions per second**, and retains history for up to **90 days** or through CloudWatch. Pricing is based on state transitions. It suits non-idempotent actions such as payment processing.
+- **Express** supports executions up to **5 minutes** and over **100,000 executions per second**. History is stored in CloudWatch Logs. Pricing considers executions, duration, and memory.
+- Asynchronous Express execution is at-least-once; synchronous Express execution is at-most-once. Express workflows therefore require idempotence management.
+- Express fits high-volume, short-running workloads such as IoT ingestion, streaming data, mobile backends, and microservice orchestration. It can be invoked from API Gateway or Lambda.
+
+**AWS AppSync**
+
+- AppSync is a managed **GraphQL** service. Clients request exactly the fields they need, including combined data from multiple sources.
+- Supported sources include DynamoDB, Aurora, OpenSearch, HTTP APIs, and custom sources through Lambda. A GraphQL schema and resolvers connect requests to those sources.
+- It supports real-time retrieval through WebSocket or MQTT over WebSocket, plus local data access and synchronization for mobile applications.
+- Authorization options are `API_KEY`, `AWS_IAM`, `OPENID_CONNECT`, and `AMAZON_COGNITO_USER_POOLS`.
+- For custom domains and HTTPS, place CloudFront in front of AppSync.
+
+**AWS Amplify**
+
+- Amplify is a collection of tools for building mobile and web applications with AWS-backed authentication, storage, data, and machine-learning features.
+- **Amplify Studio:** Visually builds frontend UI and backend resources.
+- **Amplify Libraries:** Connect applications to services such as Cognito and S3.
+- **Amplify CLI:** Configures an Amplify backend through a guided workflow.
+- **Amplify Hosting:** Builds and hosts applications through the AWS content delivery network.
+- Authentication uses Cognito and supports registration, sign-in, account recovery, MFA, social sign-in, pre-built UI, and fine-grained authorization.
+- DataStore uses AppSync, DynamoDB, and GraphQL. It supports local data, automatic cloud synchronization, offline use, real-time updates, and visual data modelling.
+- Hosting includes CI/CD, pull-request previews, custom domains, monitoring, redirects, custom headers, and password protection.
+- Amplify can run E2E tests during its test phase. Commands are configured in `amplify.yml`; Cypress integration can produce a UI test report.
+
+---
+
+## 27. Advanced Identity in AWS
+
+*Source: PDF pages 804-825*
+
+**AWS Security Token Service (AWS STS)**
+
+- STS grants limited, temporary access to AWS resources, generally for up to **1 hour**.
+- `AssumeRole` returns credentials for a role in the same account or another account. The role defines its permissions and which principals may assume it.
+- Temporary `AssumeRole` credentials can last from **15 minutes to 1 hour**.
+- `AssumeRoleWithSAML` returns credentials for users authenticated through SAML.
+- `AssumeRoleWithWebIdentity` supports identities from Facebook, Google, or an OIDC-compatible provider. The slides recommend Cognito Identity Pools instead.
+- `GetSessionToken` provides temporary credentials for MFA-authenticated IAM users or the root user.
+- `GetFederationToken` provides temporary credentials for a federated user.
+- `GetCallerIdentity` identifies the IAM user or role making an API call.
+- `DecodeAuthorizationMessage` decodes an authorization error from a denied AWS API request.
+
+**STS with MFA**
+
+- Call `GetSessionToken` and use an IAM condition such as `aws:MultiFactorAuthPresent: true`.
+- The response contains an access key ID, secret access key, session token, and expiration time.
+
+**IAM best practices from the slides**
+
+- Do not use root credentials for routine work; enable MFA for the root account.
+- Apply least privilege. Every user, group, role, application, and service should receive only the permissions it needs.
+- Avoid policies that grant `"*"` access to a service.
+- Monitor API calls in CloudTrail, especially denied calls.
+- EC2 instances, Lambda functions, ECS tasks, and CodeBuild should each use appropriate service roles.
+- Create a separate least-privileged role per application or Lambda function rather than reusing one role.
+- For on-premises servers, use STS temporary credentials instead of persistent IAM credentials.
+
+**Authorization model**
+
+1. Evaluation begins with an implicit deny.
+2. If any applicable policy has an explicit `Deny`, the final result is deny.
+3. Otherwise, an applicable `Allow` produces allow.
+4. If no allow exists, the final result remains deny.
+
+For S3, AWS evaluates the union of the principal's IAM policies and the bucket policy. An allow in either can grant access, but an explicit deny in either overrides every allow.
+
+**Dynamic and managed policies**
+
+- A dynamic policy can use `${aws:username}` so one policy gives each user access to a matching path such as `/home/<username>`. This scales better than one policy per user.
+- **AWS managed policies** are maintained and updated by AWS and are useful for power users and administrators.
+- **Customer managed policies** are the recommended reusable option. They support versions, rollback, central management, and use by multiple principals.
+- **Inline policies** have a strict one-to-one relationship with a principal and are deleted when that principal is deleted.
+
+**Passing roles**
+
+- Many AWS services require a user to pass an IAM role during setup. The service later assumes that role.
+- Examples include EC2, Lambda, ECS tasks, and CodePipeline.
+- The user needs `iam:PassRole`, commonly together with `iam:GetRole`.
+- `iam:PassRole` does not let a role be passed to every service. The role's trust policy must allow the receiving service to assume it.
+
+**Microsoft Active Directory and AWS Directory Service**
+
+- Active Directory stores objects such as users, computers, printers, file shares, and security groups. Objects form trees; a group of trees is a forest.
+- **AWS Managed Microsoft AD:** Creates an AD in AWS, manages users there, supports MFA, and can establish trust with on-premises AD.
+- **AD Connector:** Acts as a proxy to on-premises AD. It supports MFA, while users remain managed on premises.
+- **Simple AD:** An AD-compatible managed directory in AWS that cannot join an on-premises AD.
+
+---
+
+## 28. AWS Security and Encryption
+
+*Source: PDF pages 826-870*
+
+**Encryption models**
+
+- **Encryption in flight:** The sender encrypts data and the receiver decrypts it. TLS certificates provide HTTPS and protect against man-in-the-middle attacks.
+- **Server-side encryption at rest:** The server encrypts received data before storage and decrypts it before returning it. The server must have access to the key.
+- **Client-side encryption:** The client encrypts the data; the storage service cannot decrypt it. A receiving client performs decryption. Envelope encryption can support this model.
+
+**AWS Key Management Service (AWS KMS)**
+
+- KMS manages encryption keys, integrates with IAM, records key usage in CloudTrail, and integrates with services such as EBS, S3, RDS, and Systems Manager.
+- Do not store secrets in plaintext, especially in source code. Applications can store encrypted values and call KMS through an API, SDK, or CLI.
+- A **symmetric KMS key** uses AES-256. The same key encrypts and decrypts. Integrated AWS services use symmetric keys. The unencrypted KMS key is never exposed.
+- An **asymmetric KMS key** uses an RSA or ECC key pair. It supports encrypt/decrypt or sign/verify. The public key is downloadable, but the private key is never exposed unencrypted. This allows encryption outside AWS by clients that cannot call KMS.
+
+**Key ownership, cost, and rotation**
+
+- AWS owned keys are free and include default service encryption such as SSE-S3, SSE-SQS, and SSE-DDB.
+- AWS managed keys are free and use aliases such as `aws/rds` or `aws/ebs`.
+- Customer managed and imported KMS keys cost **$1 per month** in the slides, plus **$0.03 per 10,000 KMS API calls**.
+- AWS managed keys rotate automatically every **1 year**.
+- Automatic rotation for a customer managed key must be enabled; on-demand rotation is also available.
+- Imported key material supports only manual rotation using an alias.
+
+**Key policies and snapshot sharing**
+
+- Every KMS key requires a key policy. Without one, access cannot be controlled.
+- The default key policy gives the root user, meaning the AWS account, full access.
+- A custom key policy defines key users, key administrators, and cross-account access.
+- Policy principals may include accounts/root, roles, role sessions, users, federated sessions, AWS services, or all principals.
+- Copying an encrypted snapshot to another Region re-encrypts it with a KMS key in the destination Region.
+- For cross-account sharing: encrypt with a customer managed key, authorize the target account in the key policy, share the snapshot, copy it in the target account using that account's key, and create the volume from the copied snapshot.
+
+**Direct KMS encryption and envelope encryption**
+
+- KMS `Encrypt` and `Decrypt` support data up to **4 KB**.
+- For data over **4 KB**, use **envelope encryption** with `GenerateDataKey`.
+- `GenerateDataKey` returns a plaintext Data Encryption Key (DEK) and a copy encrypted by the chosen KMS key. The client encrypts the large data with the plaintext DEK and stores the encrypted DEK with the ciphertext.
+- During decryption, KMS decrypts the encrypted DEK. The client then uses the plaintext DEK to decrypt the data.
+- `GenerateDataKeyWithoutPlaintext` returns only the encrypted DEK for later use.
+- `GenerateRandom` returns random bytes.
+
+**AWS Encryption SDK**
+
+- The AWS Encryption SDK implements envelope encryption for Java, Python, C, and JavaScript and is also available as a CLI.
+- Data key caching reuses DEKs, reducing KMS calls at a security trade-off.
+- `LocalCryptoMaterialsCache` can limit reuse by maximum age, bytes, and message count.
+
+**KMS quotas and throttling**
+
+- Exceeding a KMS request quota produces `ThrottlingException`. Respond with exponential backoff and retries.
+- Cryptographic operations share quotas, including calls made by AWS services for features such as SSE-KMS.
+- The slides list symmetric shared quotas of **5,500 requests/second** generally; **10,000** in `us-east-2`, `ap-southeast-1`, `ap-southeast-2`, `ap-northeast-1`, `eu-central-1`, and `eu-west-2`; and **30,000** in `us-east-1`, `us-west-2`, and `eu-west-1`.
+- Asymmetric shared quotas are **500** for RSA keys and **300** for ECC keys. Quotas vary by Region and key type and are calculated separately.
+- Reduce `GenerateDataKey` traffic through Encryption SDK caching or request a quota increase.
+- An **S3 Bucket Key** can reduce S3 calls to KMS and associated KMS cost by **99%**. Because S3 uses the bucket key to derive data keys, fewer KMS events appear in CloudTrail.
+
+**AWS CloudHSM**
+
+- CloudHSM provides dedicated, tamper-resistant hardware security modules. AWS manages the hardware, but the customer manages keys and HSM users through CloudHSM client software.
+- It supports symmetric and asymmetric encryption, SSL/TLS keys, and FIPS 140-2 Level 3 compliance. There is no free tier.
+- Clusters can span multiple Availability Zones for availability and durability.
+- A KMS Custom Key Store connects KMS-integrated services such as EBS, S3, and RDS to CloudHSM.
+- Choose KMS when AWS-managed key software, IAM access, and managed availability fit the requirement. Choose CloudHSM when single-tenant hardware and complete customer control of keys and users are required.
+
+**SSM Parameter Store**
+
+- Parameter Store stores configuration and secrets with version tracking, IAM security, optional KMS encryption, EventBridge notifications, SDK access, and CloudFormation integration.
+- Hierarchical names such as `/department/application/dev/db-password` separate applications and environments. Applications can use `GetParameters` or `GetParametersByPath`.
+- **Standard:** Up to **10,000** parameters per account and Region, **4 KB** maximum value, no parameter policies, no additional storage charge.
+- **Advanced:** Up to **100,000** parameters, **8 KB** maximum value, parameter policies, and **$0.05 per parameter per month** in the slides.
+- Advanced policies include expiration, expiration notification through EventBridge, and no-change notification.
+
+**AWS Secrets Manager**
+
+- Secrets Manager is designed specifically for secrets. It encrypts them with KMS and can generate and rotate them every specified number of days through Lambda.
+- It integrates with RDS MySQL, PostgreSQL, Aurora, Redshift, and DocumentDB.
+- Multi-Region secrets maintain replicas synchronized with the primary. A replica can be promoted to a standalone secret for multi-Region applications or disaster recovery.
+- Choose Secrets Manager for mandatory KMS encryption and built-in automatic rotation. Parameter Store has optional encryption and no built-in rotation, although EventBridge and Lambda can implement it.
+- Parameter Store can retrieve a Secrets Manager secret through its API.
+
+**CloudFormation and operational security**
+
+- CloudFormation dynamic references retrieve values from Parameter Store or Secrets Manager during create, update, and delete operations.
+- Reference types are `ssm`, `ssm-secure`, and `secretsmanager`.
+- For RDS, `ManageMasterUserPassword` lets RDS or Aurora create and rotate an administrator secret. Alternatively, create a secret, reference it from the database resource, and link it to the database for rotation.
+- CloudWatch Logs encryption is configured per log group. The console cannot associate a KMS key; use `associate-kms-key` for an existing group or `create-log-group` for a new one.
+- CodeBuild needs an explicit VPC configuration to access VPC resources. Do not put secrets in plaintext environment variables; reference Parameter Store or Secrets Manager.
+
+**AWS Nitro Enclaves**
+
+- Nitro Enclaves process sensitive data in isolated virtual machines with their own kernel, memory, and CPU.
+- They are not containers and provide no persistent storage, interactive access, or external networking.
+- Cryptographic attestation restricts sensitive data to authorized enclave code through KMS integration.
+- Create one by enabling `EnclaveOptions` on a compatible Nitro-based EC2 instance, converting the application to an Enclave Image File with the Nitro CLI, and launching the enclave from that image.
+
+---
+
+## 29. Other Services
+
+*Source: PDF pages 871-887*
+
+**Amazon Simple Email Service (Amazon SES)**
+
+- SES is a managed service for inbound and outbound email at global scale.
+- Applications send through AWS APIs or SMTP.
+- It provides reputation information, delivery and bounce statistics, feedback-loop results, open information, and anti-spam feedback.
+- It supports DKIM and SPF plus shared, dedicated, or customer-owned IP addresses.
+- Typical uses are transactional, marketing, bulk, and other application-generated email.
+
+**Amazon OpenSearch Service**
+
+- OpenSearch is the successor to Amazon Elasticsearch. It supports searches across any field, including partial matches.
+- It commonly complements a primary database. For example, DynamoDB handles CRUD while DynamoDB Streams and Lambda copy searchable data into OpenSearch.
+- Deployment modes are managed clusters and serverless clusters.
+- SQL is not native but can be enabled through a plugin.
+- Data can arrive from Kinesis Data Firehose, AWS IoT, and CloudWatch Logs. Lambda paths provide real-time ingestion, while Firehose paths provide near-real-time ingestion.
+- Security options include Cognito, IAM, KMS encryption, and TLS. OpenSearch Dashboards provides visualization.
+
+**Amazon Athena**
+
+- Athena is a serverless SQL query service for data stored in S3. It is built on Presto and supports CSV, JSON, ORC, Avro, and Parquet.
+- The slide price is **$5 per TB scanned**. The exam decision rule is: for serverless SQL analysis of S3 data, consider Athena.
+- Common uses include analytics, reporting, VPC Flow Logs, ELB logs, and CloudTrail trails. QuickSight can create reports and dashboards.
+- Reduce cost and improve performance by using Parquet or ORC, compressing data, partitioning S3 datasets, and using larger files above **128 MB** to reduce overhead. AWS Glue can convert source data to Parquet or ORC.
+- Federated Query uses Lambda-based Data Source Connectors to query relational, non-relational, object, custom, AWS, or on-premises sources. Results are stored in S3.
+
+**Amazon Managed Streaming for Apache Kafka (Amazon MSK)**
+
+- MSK is a fully managed Apache Kafka alternative to Kinesis. AWS creates and manages Kafka brokers and ZooKeeper nodes and recovers from common Kafka failures.
+- An MSK cluster runs in a VPC and can span up to **3 Availability Zones** for high availability. Data remains on EBS volumes for the selected duration.
+- MSK Serverless provisions resources and scales compute and storage without capacity management.
+- Kinesis Data Streams uses shards, supports splitting and merging, and has a **1 MB** message limit.
+- MSK uses Kafka topics and partitions. Partitions can be added but not removed. Its default message size is **1 MB** and can be configured higher, such as **10 MB**.
+- Kinesis provides TLS in-flight and KMS at-rest encryption. MSK supports plaintext or TLS in flight and KMS at rest.
+- MSK consumers include Lambda, EC2 applications, ECS, EKS, Kinesis Data Analytics for Apache Flink, and AWS Glue streaming ETL.
+
+**Certificates**
+
+- **AWS Certificate Manager (ACM)** provisions, manages, deploys, and automatically renews public and private SSL/TLS certificates.
+- Public certificates are free. ACM integrates with Elastic Load Balancers, CloudFront distributions, and API Gateway APIs.
+- **AWS Private Certificate Authority** creates private root and subordinate CAs and issues X.509 certificates trusted only inside the organization, not by the public Internet.
+- Private CA supports private TLS, code signing, and authentication of users, computers, APIs, and IoT devices.
+
+**Amazon Macie**
+
+- Macie is a managed data security and privacy service. It uses machine learning and pattern matching to discover and protect sensitive data, including PII, in S3.
+- Findings can integrate with EventBridge for notifications and downstream actions.
+
+**AWS AppConfig**
+
+- AppConfig validates and deploys dynamic configuration separately from application code. Applications do not need to restart.
+- Uses include feature flags, application tuning, and allow/block lists for applications on EC2, Lambda, ECS, or EKS.
+- It can deploy changes gradually and roll them back when CloudWatch alarms report problems.
+- JSON Schema performs syntactic validation. Lambda performs semantic validation by running custom code.
+
+---
+
+## 30. Exam Review and Tips
+
+*Source: PDF pages 888-904*
+
+**Preparation**
+
+- The exam recommends one or more years of experience developing and maintaining AWS applications.
+- Reinforce the material through practical work. Suggested exercises include deploying an existing application to EC2 and Elastic Beanstalk, adding scaling and CI/CD, decoupling components with SQS or SNS, moving suitable work to Lambda, and writing CLI or SDK automation.
+- Suggested automation projects include scheduled EC2 start/stop, nightly EBS snapshots, and finding EC2 instances below **10% CPU utilization**.
+- Review relevant AWS whitepapers, including Security Best Practices, the Well-Architected Framework, cloud architecture practices, CI/CD, microservices, serverless architecture, containers, and blue/green deployments.
+- Read service FAQs to confirm detailed understanding. Practice tests, course Q&A, forums, blogs, meetups, and AWS re:Invent videos are additional review sources.
+
+**Question strategy**
+
+- Most questions are scenario-based.
+- First eliminate answers that definitely violate the requirement.
+- Compare the remaining options and choose the one that makes the most sense.
+- There are few deliberate trick questions. Do not overthink the scenario.
+- A feasible but unnecessarily complicated answer is probably wrong.
+- Use the exam's Flag feature for uncertain questions and review them at the end.
+
+**Exam rules and numbers from the slides**
+
+- Registration is online through AWS Training.
+- Exam fee: **$150 USD**.
+- Bring one accepted identity document.
+- Notes, pens, and speaking are not allowed.
+- Exam length: **65 questions in 130 minutes**.
+- Passing score: at least **720 out of 1,000**.
+- Pass/fail status arrives within **5 days**, usually sooner. The overall score follows later.
+- AWS does not disclose which individual answers were correct or incorrect.
+- After a failed attempt, the exam can be retaken after **14 days**.
+
+**Certification paths**
+
+- **Foundational:** Knowledge-based introduction; no prior experience required.
+- **Associate:** Role-based knowledge and skills; prior cloud or strong on-premises IT experience is recommended.
+- **Professional:** Advanced design, optimization, modernization, and automation; the slides recommend two years of AWS Cloud experience.
+- **Specialty:** Deeper expertise in a strategic field; consult each exam guide for recommended experience.
+- The slides show paths across Architecture, Operations, DevOps, Security, Development, Networking, Data Analytics, and AI/ML. Example roles include Solutions Architect, Application Architect, Systems Administrator, Cloud Engineer, Test Engineer, Cloud DevOps Engineer, DevSecOps Engineer, Cloud Security Engineer, Software Development Engineer, Network Engineer, Cloud Data Engineer, Machine Learning Engineer, Prompt Engineer, Machine Learning Ops Engineer, and Data Scientist.
+
+---
+
+## 31. Congratulations and Next Steps
+
+*Source: PDF pages 905-907*
+
+- Identify the AWS services that interest you most and continue with deeper, service-specific study.
+- After passing, share the result and useful exam tips with other students through the course Q&A; the slides also suggest sharing it on LinkedIn.

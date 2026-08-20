@@ -1,0 +1,705 @@
+IAM, Authentication & Authorization
+├── Security Foundations
+│   ├── Authentication
+│   │   ├── Answers: Who are you?
+│   │   ├── Identifies the caller
+│   │   └── AWS must identify the caller before checking permissions
+│   ├── Authorization
+│   │   ├── Answers: What are you allowed to do?
+│   │   ├── Checks Caller + Action + Resource + Request details
+│   │   └── Decides whether to Allow or Deny the request
+│   ├── Authentication and Authorization Relationship
+│   │   ├── A successful login does not grant every permission
+│   │   └── Console login can succeed while S3 DeleteBucket returns AccessDenied
+│   ├── IAM Default Deny
+│   │   ├── Every new identity starts with no permissions
+│   │   ├── Creating a user or role does not grant access
+│   │   └── Logging in successfully does not grant access
+│   ├── Implicit Deny
+│   │   ├── AWS cannot find a matching Allow
+│   │   ├── Another matching Allow can grant the request
+│   │   └── One policy's silence does not cancel another identity policy's Allow
+│   ├── Explicit Deny
+│   │   ├── Comes from a matching statement with Effect = Deny
+│   │   └── Always wins over matching Allows
+│   ├── Failed Allow Condition
+│   │   ├── Makes that Allow statement inactive for the request
+│   │   ├── Does not become an explicit Deny
+│   │   └── Leaves an implicit deny when no other Allow matches
+│   ├── Least Privilege
+│   │   ├── Start with no access
+│   │   ├── Grant only the needed actions on the needed resources
+│   │   ├── Limits damage from bugs or stolen workload access
+│   │   └── Is a security-design rule, not another name for implicit deny
+│   ├── AWS Account Security Boundary
+│   │   ├── Separates resources, permissions, usage, and billing
+│   │   ├── Has its own 12-digit account ID and root user
+│   │   ├── Reduces the blast radius of mistakes and security incidents
+│   │   ├── DEV, QA, STAGE, and PROD can be separate accounts
+│   │   └── One access portal does not merge separate accounts
+│   └── Application Users vs IAM Principals
+│       ├── IAM users and roles call AWS APIs
+│       ├── Application users sign in through Cognito or another application IdP
+│       ├── Customers should not become IAM users
+│       ├── IAM asks: Can this Lambda role call DynamoDB:GetItem?
+│       └── Application code asks: Can this customer read this order?
+├── IAM Principals and Identities
+│   ├── IAM Users
+│   │   ├── Long-lived identities inside one AWS account
+│   │   ├── Can have a Console password, access keys, both, or neither
+│   │   ├── Creating a user does not automatically create access keys
+│   │   ├── Access keys work until disabled, deleted, or replaced
+│   │   └── Creating the same employee in many accounts makes offboarding risky
+│   ├── IAM Groups
+│   │   ├── Collections of IAM users that share permissions
+│   │   ├── Cannot sign in
+│   │   ├── Cannot hold credentials
+│   │   ├── Cannot make AWS API requests
+│   │   └── Add permissions while the IAM user remains the caller
+│   ├── IAM Roles
+│   │   ├── Reusable AWS identities with permissions
+│   │   ├── Do not have permanent credentials
+│   │   ├── Allowed callers assume them temporarily
+│   │   ├── Continue to exist after individual sessions expire
+│   │   └── Are neither IAM users nor the workloads that use them
+│   ├── Assumed-Role Sessions
+│   │   ├── Temporary identities created from an IAM role
+│   │   ├── Receive temporary credentials from STS
+│   │   ├── Have their own expiration time
+│   │   └── Session expiration does not delete the role
+│   ├── Human Identities
+│   │   └── Represent people such as employees or contractors
+│   ├── Workload Identities
+│   │   ├── Represent running software such as Lambda, EC2, ECS, or CI/CD
+│   │   ├── Usually act through IAM roles
+│   │   ├── Source code requests an action but does not own IAM permissions
+│   │   └── The workload's role decides whether AWS allows the action
+│   ├── AWS Service Principals
+│   │   ├── Represent AWS services when those services make calls
+│   │   ├── S3 = s3.amazonaws.com
+│   │   ├── EventBridge = events.amazonaws.com
+│   │   ├── Lambda = lambda.amazonaws.com
+│   │   ├── API Gateway = apigateway.amazonaws.com
+│   │   ├── Answer: Which AWS service is calling?
+│   │   └── Do not identify the specific bucket, rule, API, or source resource
+│   ├── AWS Account Principal
+│   │   ├── arn:aws:iam::<account-id>:root can represent the whole account
+│   │   ├── Does not mean only the human root user
+│   │   ├── The trusted account must still allow its actual user or role
+│   │   └── Trusting the account is broader than trusting one named role
+│   ├── IAM Role ARN
+│   │   ├── Format: arn:aws:iam::<account-id>:role/<role-name>
+│   │   └── Identifies the reusable IAM role
+│   ├── Assumed-Role Session ARN
+│   │   ├── Format: arn:aws:sts::<account-id>:assumed-role/<role>/<session>
+│   │   ├── Identifies one temporary session created from the role
+│   │   └── Matches only that exact temporary session
+│   ├── Same-Account Resource Grant Difference
+│   │   ├── A role-ARN grant can still be limited by the boundary and session policy
+│   │   ├── An exact-session-ARN grant goes directly to one temporary session
+│   │   ├── Some implicit role-level limits may not block that direct session grant
+│   │   └── A matching explicit Deny still blocks both types of grant
+│   ├── Role Session Name
+│   │   ├── Gives one temporary role session a name
+│   │   ├── Can come from the caller, IdP, or AWS service
+│   │   └── Helps investigation but may not prove who originally started it
+│   └── Source Identity
+│       ├── Records the original person or workload behind the session
+│       ├── Can remain available through role chaining when configured
+│       ├── Appears in CloudTrail
+│       └── Is stronger evidence than a session name chosen by the caller
+├── IAM Policies
+│   ├── Identity-Based Policies
+│   │   ├── Attach to IAM users, groups, or roles
+│   │   ├── Answer: What can this identity do?
+│   │   └── Omit Principal because the attached identity is already known
+│   ├── Resource-Based Policies
+│   │   ├── Attach directly to supported AWS resources
+│   │   ├── Answer: Who can access this resource?
+│   │   ├── Include Principal to name the trusted caller
+│   │   ├── Examples: S3, SQS, SNS, KMS, and Lambda resource policies
+│   │   └── A Resource ARN inside an identity policy does not change its policy type
+│   ├── IAM Role Trust Policy
+│   │   ├── Special resource-based policy attached to an IAM role
+│   │   ├── Answers: Who or what can assume this role?
+│   │   ├── Controls who can enter the role
+│   │   ├── Every IAM role has one
+│   │   └── Does not grant later actions such as S3 or DynamoDB calls
+│   ├── Role Permission Policy
+│   │   ├── Identity-based policy attached to the IAM role
+│   │   ├── Answers: What can the role session do?
+│   │   └── Applies after AWS creates the role session
+│   ├── Policy Statement Elements
+│   │   ├── Effect
+│   │   │   └── Allow or Deny
+│   │   ├── Principal
+│   │   │   └── Caller trusted by the resource policy
+│   │   ├── Action
+│   │   │   └── AWS API operation being allowed or denied
+│   │   ├── Resource
+│   │   │   └── AWS resource on which the action applies
+│   │   └── Condition
+│   │       └── Extra rules that the request must meet
+│   ├── Policy Management Forms
+│   │   ├── AWS-managed policies are created and maintained by AWS
+│   │   ├── Customer-managed policies are created by you and can be reused
+│   │   └── Inline policies belong to one specific user, group, or role
+│   ├── Policy Conditions
+│   │   ├── Must match before the statement can apply
+│   │   ├── Different requirements use AND, so all must pass
+│   │   ├── Several accepted values for one key are alternatives
+│   │   └── A failed Allow condition removes that Allow but does not create a Deny
+│   ├── Condition Operators
+│   │   ├── StringEquals and StringLike
+│   │   ├── ArnEquals and ArnLike
+│   │   ├── IpAddress
+│   │   ├── Bool
+│   │   ├── DateLessThan
+│   │   └── Null
+│   ├── Important Condition Keys
+│   │   ├── aws:SourceArn = Which source resource caused the request?
+│   │   ├── aws:SourceAccount = Which account owns that source?
+│   │   ├── aws:PrincipalTag/<key> = What tag does the caller or session have?
+│   │   ├── aws:ResourceTag/<key> = What tag does the target resource have?
+│   │   ├── aws:RequestedRegion = Which Region does the request target?
+│   │   └── aws:CalledVia = Which AWS service passed the request along?
+│   └── Request Context
+│       ├── AWS adds trusted details from the verified request
+│       ├── IAM compares those details with the policy conditions
+│       └── The caller cannot simply claim a trusted value
+├── Complete IAM Policy Evaluation
+│   ├── Identity-Policy Allow Union
+│   │   ├── AWS adds together Allows from normal identity policies
+│   │   ├── S3 Allow + Lambda Allow + DynamoDB Allow keeps all three
+│   │   ├── One policy's silence does not cancel another policy's Allow
+│   │   └── Normal identity-policy Allows are added, not intersected
+│   ├── Explicit Deny Precedence
+│   │   ├── AWS cannot stop checking after it finds one Allow
+│   │   └── A matching Deny overrides all matching Allows
+│   ├── Permissions Boundary
+│   │   ├── One managed policy used as a maximum-permission limit
+│   │   ├── Limits one IAM user or role
+│   │   ├── Acts as a ceiling and does not grant access
+│   │   └── Identity permissions ∩ boundary = permissions that remain
+│   ├── Session Policy
+│   │   ├── Optional limit added when STS creates a session
+│   │   ├── Limits only that temporary session
+│   │   ├── Can remove permissions but cannot add new ones
+│   │   └── Does not change the IAM role
+│   ├── Service Control Policy
+│   │   ├── Organization-level permission limit
+│   │   ├── Can attach to the organization root, OU, or member account
+│   │   ├── Limits identities in affected member accounts
+│   │   ├── Never grants permission by itself
+│   │   ├── FullAWSAccess means the SCP layer is not limiting those actions
+│   │   └── Does not limit users or roles in the management account
+│   ├── Effective-Permission Calculation
+│   │   ├── Step 1: Add all normal identity-policy Allows
+│   │   ├── Step 2: Keep only actions allowed by the permissions boundary
+│   │   ├── Step 3: Keep only actions allowed by the session policy
+│   │   ├── Step 4: Keep only actions allowed by the SCP
+│   │   ├── Step 5: A matching explicit Deny removes the action
+│   │   └── Cross-account access also needs permission from the resource owner
+│   ├── Same-Account Authorization
+│   │   ├── An identity-policy Allow may be enough when the resource policy is silent
+│   │   ├── A resource-policy Allow may be enough when the identity policy is silent
+│   │   └── A matching explicit Deny still blocks the request
+│   ├── Cross-Account Authorization
+│   │   ├── The caller's account must allow its user or role
+│   │   ├── The resource owner's policy must allow that external caller
+│   │   ├── Permission on only one side is not enough
+│   │   └── A resource policy cannot fix a caller-side boundary, session, or SCP block
+│   ├── Principal Variations in Resource Policies
+│   │   ├── Can name one IAM user ARN
+│   │   ├── Can name one IAM role ARN
+│   │   ├── Can name one exact assumed-role session ARN
+│   │   ├── Can name an AWS account principal ending in root
+│   │   ├── Can name an AWS service principal
+│   │   └── Can use a wildcard, but it needs careful conditions
+│   └── Mixed Evaluation Scenario
+│       ├── Identity policies grant GetObject, PutObject, DeleteObject, and ListBucket
+│       ├── The boundary removes DeleteObject
+│       ├── The session policy removes PutObject
+│       ├── The SCP removes ListBucket
+│       ├── The cross-account bucket policy allows GetObject
+│       └── Only GetObject remains unless an explicit Deny blocks it
+├── Programmatic AWS Access
+│   ├── AWS Access Interfaces
+│   │   ├── Console, CLI, and SDK are different ways to call AWS APIs
+│   │   └── CDK creates CloudFormation, which then calls AWS APIs
+│   ├── Long-Term Access Keys
+│   │   ├── Access key ID + secret access key
+│   │   ├── Are created separately from the IAM user
+│   │   ├── Must be stored, rotated, revoked, and audited safely
+│   │   └── Become harder and riskier to manage when copied to many places
+│   ├── Temporary Credentials
+│   │   ├── Access key ID + secret access key + session token + expiration
+│   │   ├── All values must come from the same session
+│   │   └── Expire automatically and reduce permanent-secret work
+│   ├── Credential Provider Chain
+│   │   ├── AWS SDK checks known places for credentials
+│   │   ├── These can include environment variables and AWS profiles
+│   │   ├── They can also include ECS task-role credentials
+│   │   ├── They can include EC2 instance-role credentials
+│   │   ├── They can include Lambda execution-role credentials
+│   │   └── The SDK uses the first valid source it finds
+│   ├── Workload Credentials
+│   │   ├── EC2 can use an instance profile
+│   │   ├── Lambda uses an execution role
+│   │   ├── ECS can use a task role
+│   │   └── Workloads should avoid hardcoded long-term keys
+│   ├── Credential Leakage
+│   │   ├── Keys can leak through source repositories
+│   │   ├── Keys can leak through builds and CI/CD pipelines
+│   │   ├── Keys can leak through logs and configuration files
+│   │   ├── Keys can leak through screenshots and developer computers
+│   │   └── Hardcoded keys make rotation require code or deployment changes
+│   └── Signature Version 4
+│       ├── Signs each AWS API request
+│       ├── Covers request data, time, Region, service, and credentials
+│       ├── Proves the caller and detects request changes
+│       ├── Is normally handled automatically by AWS SDKs
+│       └── Still requires a separate IAM permission check
+├── AWS STS and AssumeRole
+│   ├── STS Purpose
+│   │   ├── Creates temporary AWS credentials
+│   │   ├── Supports IAM roles and federated users
+│   │   └── Lets roles work without permanent credentials
+│   ├── AssumeRole Flow
+│   │   ├── An existing user or role requests the target role
+│   │   ├── The caller must have sts:AssumeRole permission for that role
+│   │   ├── The target role must trust the caller
+│   │   ├── STS creates a new temporary target-role session
+│   │   └── The target role's permissions control later AWS calls
+│   ├── Directional Trust
+│   │   ├── The caller role's trust policy says who can become that caller role
+│   │   ├── The caller's permissions say which target role it can request
+│   │   ├── The target role's trust policy accepts or rejects the caller
+│   │   └── A trusting B does not mean B trusts A
+│   ├── Cross-Account Role Assumption
+│   │   ├── The source role needs sts:AssumeRole permission
+│   │   ├── The target role must trust the source role
+│   │   ├── STS creates credentials for the target-account role
+│   │   └── The target role controls later resource access
+│   ├── Role Chaining
+│   │   ├── A temporary Role A session assumes Role B
+│   │   ├── AWS checks caller permission and target trust at every hop
+│   │   ├── Role A, not the original person, is the caller for the second hop
+│   │   ├── A chained session can last no more than one hour
+│   │   ├── A request over one hour fails instead of being shortened
+│   │   ├── Role B gets its own credentials and expiration
+│   │   └── Role B does not automatically end when Role A ends
+│   ├── Session Policies
+│   │   ├── Can be added when STS creates the session
+│   │   ├── Limit only that session
+│   │   └── Cannot add permissions or permanently change the role
+│   ├── Session Tags
+│   │   ├── Temporary key-value details added during role assumption
+│   │   ├── Become aws:PrincipalTag values for the session
+│   │   └── Let policies make decisions using session details
+│   ├── Transitive Session Tags
+│   │   ├── Pass to the next role when marked transitive
+│   │   └── Disappear at the next hop when not marked transitive
+│   ├── Preventing Future Sessions
+│   │   ├── Disable the company user
+│   │   ├── Remove the caller's sts:AssumeRole permission
+│   │   └── Remove the caller from the target trust policy
+│   ├── Existing Session Behavior
+│   │   ├── Disabling the IdP user does not automatically cancel issued credentials
+│   │   ├── Existing sessions may work until they expire
+│   │   └── Another Deny or policy change can stop them earlier
+│   ├── Session Revocation
+│   │   ├── Adds a time-based explicit Deny for matching older sessions
+│   │   ├── Does not block sessions created after the cutoff
+│   │   └── Can block every matching older session that uses the role
+│   └── CloudTrail Traceability
+│       ├── The AssumeRole event records session creation
+│       ├── Later events show the role and session name
+│       ├── The caller may choose the session name
+│       └── Source identity gives stronger evidence of the original caller
+├── Federation and Workforce Access
+│   ├── Federation Model
+│   │   ├── The company IdP signs in the employee
+│   │   ├── AWS checks which accounts and roles the employee may use
+│   │   ├── The employee receives a temporary role session
+│   │   └── The employee does not need an IAM user in every account
+│   ├── External Identity Providers
+│   │   ├── Keep employee login and MFA in one place
+│   │   ├── Make onboarding and offboarding easier
+│   │   └── Authenticate the employee but do not replace AWS permission checks
+│   ├── SAML Federation
+│   │   ├── The IdP creates a SAML assertion after login
+│   │   └── AssumeRoleWithSAML uses it to create temporary AWS access
+│   ├── OIDC Federation
+│   │   ├── The IdP creates an OIDC token after login
+│   │   └── AssumeRoleWithWebIdentity uses it to create temporary AWS access
+│   ├── IAM Identity Center
+│   │   ├── Provides one portal for employee AWS access
+│   │   ├── Can synchronize company users and groups
+│   │   ├── Shows the employee's assigned accounts and access levels
+│   │   └── Does not merge the separate AWS accounts shown in the portal
+│   ├── Permission Sets
+│   │   ├── Define permissions and session settings in one place
+│   │   └── Create matching IAM roles in assigned target accounts
+│   ├── Account Assignments
+│   │   └── Connect a user or group + permission set + target AWS account
+│   ├── Corporate Groups vs IAM Groups
+│   │   ├── Company groups contain employees and control account assignments
+│   │   ├── IAM groups contain IAM users and add IAM permissions
+│   │   └── Federated employees do not need IAM users in target accounts
+│   └── Disabled Federated User
+│       ├── Cannot sign in again or create new sessions
+│       ├── Existing AWS sessions are not automatically cancelled
+│       └── Existing sessions may work until expiration or an AWS-side Deny
+├── Amazon Cognito
+│   ├── Application Users vs Workforce Users
+│   │   ├── Cognito is for application customers
+│   │   └── IAM Identity Center or federation is for employees accessing AWS
+│   ├── Cognito User Pool
+│   │   ├── Managed directory for application users
+│   │   ├── Handles sign-up, confirmation, login, reset, MFA, and federation
+│   │   ├── Creates ID, access, and refresh tokens
+│   │   └── Stores login data, not orders, addresses, or other business data
+│   ├── User Lifecycle
+│   │   ├── Sign-up creates an UNCONFIRMED user
+│   │   ├── A correct confirmation code creates a CONFIRMED user
+│   │   ├── Login creates an authenticated token session
+│   │   ├── A disabled user cannot log in
+│   │   └── Sign-up, confirmation, and login are separate steps
+│   ├── App Clients
+│   │   ├── Hold User Pool settings for one application
+│   │   ├── Client ID is public and does not prove trust
+│   │   ├── Client secret is confidential and is not the user's password
+│   │   └── Browser and mobile apps cannot safely hide a permanent secret
+│   ├── ID Token
+│   │   ├── Contains identity claims
+│   │   ├── Answers: Who signed in?
+│   │   └── Should not be used when an API expects an access token
+│   ├── Access Token
+│   │   ├── Contains access claims and scopes
+│   │   ├── Is sent to protected APIs
+│   │   └── A route scope does not grant access to every business record
+│   ├── Refresh Token
+│   │   ├── Gets new ID and access tokens without another login
+│   │   ├── Is sent to Cognito, not to every business API
+│   │   └── Is sensitive because it can create more tokens while valid
+│   ├── Cognito sub
+│   │   ├── Stable unique ID for one application user
+│   │   ├── Does not change when email or username changes
+│   │   └── Should connect the signed-in user to application records
+│   ├── Cognito Groups
+│   │   ├── Group application users for role-based access
+│   │   └── Appear in the cognito:groups token claim
+│   ├── Lambda Triggers
+│   │   ├── Pre sign-up checks registration before Cognito completes it
+│   │   ├── Post confirmation runs after the user confirms the account
+│   │   ├── Pre authentication runs an extra check before login finishes
+│   │   ├── Post authentication runs after a successful login
+│   │   ├── Custom message changes Cognito emails or SMS messages
+│   │   ├── Pre token generation changes controlled token claims
+│   │   ├── Custom authentication triggers build challenge-response login flows
+│   │   └── A slow or failing trigger can break sign-up, login, or token creation
+│   ├── User Pool Federation
+│   │   ├── An external IdP signs in the user
+│   │   └── Cognito accepts that login and creates application tokens
+│   ├── Hosted UI
+│   │   ├── Provides ready-made sign-up, login, reset, MFA, and federation pages
+│   │   └── Redirects through configured callback and sign-out URLs
+│   ├── Identity Pool
+│   │   ├── this comes into picture, when your third party app needs to access AWS resources
+│   │   ├── Accepts supported proof of a user or guest identity
+│   │   ├── Maps that identity to an IAM role
+│   │   ├── Uses STS to get temporary AWS credentials
+│   │   └── Lets the application call AWS APIs directly
+│   ├── Authenticated Identity
+│   │   └── Maps valid login proof to an authenticated-user role
+│   ├── Unauthenticated Identity
+│   │   ├── Represents a guest when guest access is enabled
+│   │   ├── Maps the guest to a restricted IAM role
+│   │   └── Still follows normal IAM permission checks
+│   └── User Pool vs Identity Pool
+│       ├── User Pool = Application login and JWT tokens
+│       ├── Identity Pool = IAM role mapping and temporary AWS credentials
+│       └── A User Pool token is not an AWS access key
+├── JWT and Bearer-Token Security
+│   ├── Bearer Token
+│   │   ├── Anyone who has a valid token can present it
+│   │   ├── An attacker can replay a stolen token without the user's password
+│   │   └── The signature does not prove that the presenter is the original user
+│   ├── JWT Structure
+│   │   ├── Header contains details such as algorithm, kid, and token type
+│   │   ├── Payload contains claims about identity and access
+│   │   ├── Signature protects the exact header and payload
+│   │   └── Header and payload are readable Base64URL, not encryption
+│   ├── Decoding
+│   │   ├── Turns Base64URL text into readable JSON
+│   │   ├── Does not require a key
+│   │   └── Lets you read claims but does not prove they are trusted
+│   ├── Asymmetric Signature
+│   │   ├── Cognito's private key creates the signature
+│   │   ├── Cognito's public key checks the signature
+│   │   ├── The public key cannot create a Cognito signature
+│   │   └── Changing the payload makes signature verification fail
+│   ├── JWKS and kid
+│   │   ├── JWKS publishes Cognito's public keys
+│   │   ├── kid tells the validator which public key to use
+│   │   └── Several keys let Cognito rotate keys safely
+│   ├── Token Validation Sequence
+│   │   ├── Step 1: Check token structure and JSON
+│   │   ├── Step 2: Use JWKS and kid to verify the signature
+│   │   ├── Step 3: Check the trusted issuer
+│   │   ├── Step 4: Check that the token has not expired
+│   │   ├── Step 5: Check the expected audience or app client
+│   │   ├── Step 6: Check the expected token type
+│   │   ├── Step 7: Check required scopes and claims
+│   │   └── Step 8: Separately check access to the business resource
+│   ├── Validation Traps
+│   │   ├── A valid signature alone is not enough
+│   │   ├── Reject a real token when it comes from the wrong issuer
+│   │   ├── Reject an expired token even when other checks pass
+│   │   ├── Do not use an ID token when the API expects an access token
+│   │   └── A valid token does not grant access to every business record
+│   ├── Token Exposure
+│   │   ├── Tokens can leak through URLs and browser history
+│   │   ├── Tokens can leak through logs, analytics, and monitoring
+│   │   ├── Tokens can leak through screenshots and unsafe storage
+│   │   └── HTTPS protects network travel but not stored copies
+│   ├── Replay Risk
+│   │   ├── An attacker sends an unchanged stolen token
+│   │   └── Short token life reduces the attack time but does not prevent theft
+│   ├── Refresh-Token Risk
+│   │   ├── A valid refresh token can create new access tokens
+│   │   └── It can be more dangerous than one short-lived access token
+│   ├── Token Revocation
+│   │   ├── Revoking a refresh token prevents it from creating new access tokens
+│   │   └── Existing access tokens may still work until they expire
+│   └── Global Sign-Out
+│       ├── Ends the user's sessions
+│       └── Requires the user to log in again for new tokens
+├── OAuth 2.0 and OpenID Connect
+│   ├── OAuth 2.0
+│   │   ├── Lets an application receive delegated access
+│   │   ├── Answers: What may the client do?
+│   │   └── Uses access tokens and scopes
+│   ├── OpenID Connect
+│   │   ├── Adds user identity on top of OAuth 2.0
+│   │   ├── Answers: Who signed in?
+│   │   └── Uses the ID token
+│   ├── Authorization Code Flow
+│   │   ├── Send the user to the authorization server
+│   │   ├── The user signs in there
+│   │   ├── Return a short-lived, one-time authorization code
+│   │   └── Exchange that code for tokens
+│   ├── PKCE
+│   │   ├── Protects browser and mobile apps if an authorization code is stolen
+│   │   ├── Uses a code verifier and matching code challenge
+│   │   └── Avoids relying on a client secret that public apps cannot hide
+│   └── Public-Client Security
+│       ├── Client ID can appear in public application code
+│       └── Client secret must not be embedded in browser or mobile code
+├── API Authentication and Authorizers
+│   ├── Cognito User Pool Authorizer
+│   │   ├── Checks Cognito tokens before calling the backend
+│   │   ├── Checks signature, issuer, expiration, audience/client, and token type
+│   │   └── Can require scopes for a route
+│   ├── JWT Authorizer
+│   │   ├── Checks JWTs from a configured OIDC or OAuth provider
+│   │   └── Checks issuer, audience, and the signature using JWKS
+│   ├── Lambda Authorizer
+│   │   ├── Runs your custom authorization code in Lambda
+│   │   ├── Can handle custom tokens and request details
+│   │   └── Can receive only a token or a larger request context
+│   ├── Authorizer Caching
+│   │   ├── Reuses earlier results to reduce response time and cost
+│   │   ├── Keeps each result for a configured TTL
+│   │   └── May keep an Allow briefly after a token is revoked
+│   ├── Claims Forwarding
+│   │   ├── API Gateway passes validated claims to the backend
+│   │   └── Backend can use sub, email, and groups for business checks
+│   ├── Authentication Failure
+│   │   ├── Token is missing, broken, expired, or wrongly signed
+│   │   └── Usually returns 401 and does not call the backend
+│   ├── Authorization Failure
+│   │   ├── The identity is valid but lacks a needed permission or scope
+│   │   └── Usually returns 403
+│   └── Authorization Boundaries
+│       ├── API Gateway checks the token and route access
+│       ├── Backend checks access to the exact business resource
+│       └── IAM checks whether the AWS identity may call the AWS API
+├── Application-Level Authorization
+│   ├── Authentication vs Application Authorization
+│   │   ├── Authentication identifies the application user
+│   │   └── Authorization decides what that user can do
+│   ├── Operation-Level Authorization
+│   │   ├── Uses scopes such as orders/read or orders/write
+│   │   └── Does not decide which exact order the caller may access
+│   ├── Role-Based and Group-Based Authorization
+│   │   ├── Uses roles or Cognito group claims
+│   │   └── May not contain enough detail for one specific resource
+│   ├── Resource-Level Authorization
+│   │   ├── Decides access to one specific order, profile, or other record
+│   │   └── Checks ownership or other trusted business details
+│   ├── Ownership Authorization
+│   │   ├── Compare validated token.sub with resource.ownerId
+│   │   ├── Matching IDs can allow access under the business rules
+│   │   └── Different IDs produce 403
+│   ├── Fine-Grained Authorization
+│   │   ├── Checks who the user is
+│   │   ├── Checks what action the user wants
+│   │   ├── Checks which resource the user wants
+│   │   └── Checks trusted business details
+│   ├── Context Examples
+│   │   ├── Customer owns this order
+│   │   ├── Support agent belongs to this order's queue
+│   │   └── Manager is in the right department and within the approval limit
+│   ├── Trusted Identity Data
+│   │   ├── Claims from a validated token
+│   │   └── Records loaded by the trusted backend
+│   ├── Untrusted Client Data
+│   │   ├── IDs in URL paths
+│   │   ├── Values in query parameters
+│   │   ├── Values in request bodies
+│   │   └── Values in client-created headers
+│   ├── Horizontal Privilege Escalation
+│   │   ├── One user changes an ID to request another user's data
+│   │   └── Prevent it by comparing trusted token identity with resource ownership
+│   └── Tenant Isolation
+│       ├── Read tenant ID from validated claims or trusted data
+│       ├── Never trust a tenant ID sent by the client
+│       └── Use the trusted tenant ID in the database key, query, or filter
+├── Cross-Service Authentication
+│   ├── Caller Identity Model
+│   │   ├── A human uses an IAM user or federated role session
+│   │   ├── An application user uses a Cognito token
+│   │   └── An AWS service uses a service principal
+│   ├── Lambda Execution Role
+│   │   ├── Is the AWS identity used by the running Lambda code
+│   │   ├── Trusts the Lambda service to assume the role
+│   │   └── Grants the function permission to call other AWS APIs
+│   ├── Lambda Resource-Based Invocation Policy
+│   │   ├── Controls who or what can invoke the Lambda function
+│   │   ├── Is separate from the Lambda execution role
+│   │   └── Does not guarantee the running code can access DynamoDB or S3
+│   ├── S3 Invoking Lambda
+│   │   ├── Principal = s3.amazonaws.com
+│   │   ├── aws:SourceArn = the allowed bucket ARN
+│   │   └── aws:SourceAccount = the allowed bucket owner's account
+│   ├── EventBridge Invoking Lambda
+│   │   ├── Principal = events.amazonaws.com
+│   │   ├── aws:SourceArn = the allowed rule ARN
+│   │   └── aws:SourceAccount = the allowed rule owner's account
+│   ├── API Gateway Invoking Lambda
+│   │   ├── Principal = apigateway.amazonaws.com
+│   │   └── aws:SourceArn = the allowed API Gateway ARN pattern
+│   ├── Target Configuration vs Permission
+│   │   ├── The rule and target make EventBridge try the invocation
+│   │   ├── The Lambda resource policy allows or denies that attempt
+│   │   └── Both are needed for a successful invocation
+│   ├── Confused Deputy Risk
+│   │   ├── One trusted AWS service can act for many customers and resources
+│   │   ├── Trusting only the service may allow an unintended source
+│   │   └── SourceArn and SourceAccount restrict which source may use the service
+│   ├── Cross-Account Direct Access
+│   │   └── Needs permission from both the caller and the target resource policy
+│   ├── Cross-Account AssumeRole
+│   │   └── Needs caller sts:AssumeRole permission plus target-role trust
+│   └── Three Policy Questions
+│       ├── Trust policy = Who can assume this role?
+│       ├── Execution-role policy = What can the running workload do?
+│       └── Resource policy = Who can access or invoke this resource?
+├── RBAC, ABAC, and Session Tags
+│   ├── RBAC
+│   │   ├── Role-Based Access Control
+│   │   ├── Gives access through a role or group
+│   │   ├── Is usually easy to understand
+│   │   └── Can create too many roles when permission combinations grow
+│   ├── ABAC
+│   │   ├── Attribute Based Access Control
+│   │   ├── Gives access by comparing caller and resource attributes
+│   │   ├── Finance caller → Finance resource → Allow
+│   │   │   HR caller      → HR resource      → Allow
+│   │   │   Finance caller → HR resource      → Deny
+│   │   └── Adds tags to new resources instead of creating more roles
+│   ├── Principal Tags
+│   │   ├── Come from IAM identity tags or temporary session tags
+│   │   └── Policies read them with aws:PrincipalTag/<key>
+│   ├── Resource Tags
+│   │   ├── Are tags on supported target resources
+│   │   └── Policies read them with aws:ResourceTag/<key>
+│   ├── Tag Evaluation
+│   │   ├── Matching required tags can make the Allow apply
+│   │   ├── Different tags make that Allow inactive
+│   │   ├── No other Allow leaves the request implicitly denied
+│   │   └── A matching explicit Deny still wins
+│   ├── Session Tags
+│   │   ├── Are added when a caller assumes a role
+│   │   ├── Become principal tags for that temporary session
+│   │   └── Can describe department, project, tenant, or environment
+│   ├── Transitive Session Tags
+│   │   ├── Pass to the next role when marked transitive
+│   │   └── Must stay transitive at every hop in the role chain
+│   └── Tag Governance
+│       ├── ABAC is secure only when tag values are trustworthy
+│       ├── Limit who can call iam:TagRole and iam:UntagRole
+│       ├── Limit who can change resource tags
+│       └── Limit which session tags and transitive tags callers can pass
+└── Security Auditing and Troubleshooting
+    ├── Authentication Failures
+    │   ├── Credentials may be missing or wrong
+    │   ├── Temporary credentials may have expired
+    │   ├── The SigV4 signature may be invalid
+    │   ├── The JWT may be missing, broken, invalid, or expired
+    │   └── First ask: Could AWS identify the caller?
+    ├── Authorization Failures
+    │   ├── AWS may not find a matching Allow
+    │   ├── AWS may find a matching explicit Deny
+    │   ├── A policy condition may not match
+    │   ├── The permissions boundary may block the action
+    │   ├── The session policy may block the action
+    │   ├── The SCP may block the action
+    │   └── The resource policy may not allow the caller
+    ├── AssumeRole Troubleshooting
+    │   ├── Check the caller's sts:AssumeRole permission
+    │   ├── Check the target role's trust policy
+    │   ├── Check that the trust policy names the correct caller
+    │   └── Fix the target trust policy when the target rejects the caller
+    ├── Resource-Policy Troubleshooting
+    │   ├── Check that Principal names the intended caller
+    │   ├── For cross-account access, check permission in both accounts
+    │   ├── Check the exact SourceArn
+    │   └── Check the SourceAccount
+    ├── Condition Troubleshooting
+    │   ├── Compare the request's real values with the policy values
+    │   ├── The same resource name in another account has a different ARN
+    │   └── A failed Allow condition leaves implicit deny when no other Allow exists
+    ├── Temporary-Credential Troubleshooting
+    │   ├── ExpiredTokenException means the session credentials expired
+    │   ├── Assume the role again or log in again for a new session
+    │   └── Expired credentials do not delete the IAM role
+    ├── JWT Troubleshooting
+    │   ├── Broken structure or bad signature → 401
+    │   ├── Wrong issuer or audience/client → 401
+    │   ├── Wrong token type → 401
+    │   ├── Expired token → 401
+    │   └── Valid token without required scope → 403
+    ├── Authorizer Troubleshooting
+    │   ├── Missing Authorization header → 401
+    │   ├── Invalid or expired token → 401
+    │   ├── Valid token without required scope → 403
+    │   ├── Lambda authorizer error → check the Lambda logs
+    │   └── A cached Allow may continue briefly after token revocation
+    ├── CloudTrail Assumed-Role Investigation
+    │   ├── Find the AssumeRole event near the incident time
+    │   ├── Record the caller, target role, and session name
+    │   ├── Find later events using assumed-role/<Role>/<Session>
+    │   └── Use source identity for stronger proof of the original caller
+    └── Access-Denied Decision Sequence
+        ├── Step 1: Check login or request authentication and identify the caller
+        ├── Step 2: Find the exact Action and Resource
+        ├── Step 3: Look for a matching explicit Deny
+        ├── Step 4: Find the Allow that should grant access
+        ├── Step 5: Check the boundary, session policy, and SCP
+        ├── Step 6: For cross-account access, check permission in both accounts
+        ├── Step 7: Check policy conditions and request details
+        ├── Step 8: Check that credentials or tokens are still valid
+        └── Step 9: For JWTs, check issuer, audience, type, expiration, and scope

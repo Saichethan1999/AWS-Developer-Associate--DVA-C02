@@ -1816,6 +1816,20 @@ These solve three distinct authorization questions. None of them substitutes for
 - Simple to reason about but can lead to role explosion as the number of permission combinations grows.
 - Requires creating a new role for each new combination of access needs.
 
+Example:
+Departments: Finance, HR, Engineering
+Environments: DEV, QA, PROD
+Access levels: Read, Write
+
+Finance-DEV-Read
+Finance-DEV-Write
+Finance-PROD-Read
+Finance-PROD-Write
+HR-DEV-Read
+...
+
+3×3×2=18 role combinations. This is called role explosion.
+
 ---
 
 ### ABAC (Attribute-Based Access Control)

@@ -1,0 +1,102 @@
+Now that you have the 7 files given. Do the below thing. 
+
+Find the current chapter to be learned from the Master Tracker.
+
+Use these sources:
+1. The latest official AWS DVA-C02 exam guide as the authoritative curriculum.
+2. The Master Tracker for my current position, completed knowledge, weak areas, and existing learning state.
+3. The universal learning and interaction protocols already provided.
+
+Use this hierarchy consistently:
+Course: AWS DVA-C02
+Domain: [Find from the Master Tracker]
+Chapter: [Find the exact current chapter from the Master Tracker]
+Section: One item taught within that chapter
+
+Before teaching the chapter, create a complete curriculum-mapped teaching plan with an unmapped-item check.
+
+Process:
+Official AWS DVA-C02 exam guide
+        +
+Master Tracker
+        ↓
+Extract every official requirement related to the chapter
+        ↓
+Add only genuinely necessary supporting concepts
+        ↓
+Add optional enrichment only when it provides meaningful practical value
+        ↓
+Map every requirement to a numbered section
+        ↓
+Check for missing, unmapped, overlapping, or duplicated items
+        ↓
+Present the complete chapter plan
+        ↓
+Wait before beginning Section 1
+
+For every section, clearly label it as one of:
+- Official curriculum
+- Necessary supporting knowledge
+- Optional enrichment
+
+At the end, provide a completeness check containing:
+- Official exam skills mapped
+- Master Tracker items mapped
+- Unmapped official items
+- Missing Master Tracker items
+- Duplicate or overlapping sections
+- Optional enrichment included
+- Final completeness status
+
+Important rules:
+- Do not begin teaching while creating the plan.
+- Do not skip an official exam requirement.
+- Do not treat supporting knowledge or enrichment as official curriculum.
+- Do not repeat concepts already demonstrated in the Master Tracker unless a short prerequisite reminder is necessary.
+- Keep the plan at the Section level. Do not split it into lessons, parts, coverage slots, or other hierarchies.
+- Preserve the exact Course → Domain → Chapter → Section hierarchy.
+- Use current official AWS sources and cite them.
+- If the official guide and Master Tracker conflict, explicitly show the conflict instead of silently choosing one.
+- Once the plan is complete, teach exactly one section at a time.
+
+
+STRICT OUTPUT FORMAT:
+
+Use exactly the following response structure for every chapter.
+Do not rename, remove, reorder, or add top-level headings.
+
+# Complete Curriculum-Mapped Plan
+
+- **Course:** [Course]
+- **Domain:** [Domain]
+- **Current Chapter:** [Chapter]
+- **[ChapterPrevious Chapter:** s chapter and status]
+
+## Official Chapter Scope
+
+[Briefly state the relevant official AWS DVA-C02 tasks or skills.]
+
+## Sections
+
+1. **[Section name]**
+   **Classification:** [Official curriculum / Necessary supporting knowledge / Optional enrichment]
+   **Curriculum mapping:** [Official skill number, Master Tracker item, or supporting reason]
+
+[Continue using identical formatting for every section.]
+
+## Completeness Check
+
+- **Official exam skills mapped:** [List or range]
+- **[List or rangeMaster Tracker items  / list exceptions]
+- **Unmapped official items:** [None / list]
+- **Missing Master Tracker items:** [None / list]
+- **Duplicate or overlapping sections:** [None / list]
+- **Optional enrichment included:** [None / list]
+- **Conflicts found:** [None / explain]
+- **Final completeness status:** [COMPLETE / INCOMPLETE]
+
+**Plan complete. Teaching has not started.**
+
+Formatting is part of the requirement, not merely a presentation preference.
+The response must use this exact template every time.
+Only the chapter-specific content may change.

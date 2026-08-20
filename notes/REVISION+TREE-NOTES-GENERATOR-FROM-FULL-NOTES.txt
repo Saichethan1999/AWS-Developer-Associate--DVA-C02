@@ -1,6 +1,6 @@
 FULL-NOTES REVISION AND KNOWLEDGE-TREE GENERATION PROMPT
 
-I will provide FULL NOTES as the input.
+Treat the pdf provided as the FULL NOTES as the input.
 
 Use only the supplied FULL NOTES as the source of truth.
 
@@ -269,4 +269,4 @@ INPUT
 
 FULL NOTES PATH:
 
-C:\Users\919823\OneDrive - American Airlines, Inc\Kernel\AWS-Developer-Associate--DVA-C02\notes\IAM, AUTHENTICATION & AUTHORIZATION\full-notes
+C:\Users\919823\OneDrive - American Airlines, Inc\Kernel\AWS-Developer-Associate--DVA-C02\AWS Certified Developer Slides v45.pdf

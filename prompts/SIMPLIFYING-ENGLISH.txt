@@ -1,0 +1,38 @@
+Use the attached FULL NOTES as the only source of truth.
+
+Create two separate files in the same folder:
+
+1. revision-notes.txt
+2. simplified-knowledge-tree.txt
+
+Write for someone returning to the topic after one year.
+
+Language rules:
+- Use simple English and short, complete sentences.
+- Explain the idea plainly before using the official AWS term.
+- Keep official AWS terms because I need them for the exam.
+- Avoid dense, formal, noun-heavy phrases.
+- Do not reduce explanations to keywords only.
+- Include a short example when it improves understanding.
+
+Content rules:
+- Preserve all important definitions, mental models, rules, relationships,
+  distinctions, corrections, edge cases, failure behavior, and exam traps.
+- Preserve words such as “may,” “can,” and “not guaranteed.”
+- Do not add knowledge that is absent from the full notes.
+- Remove repetition without removing important reasoning.
+
+Revision notes:
+- Make them detailed but easy to revise.
+- Organize them by concept.
+- Use simple explanations, mental models, and examples.
+
+Knowledge tree:
+- Create a standalone hierarchical ASCII tree using │, ├──, and └──.
+- Keep the actual knowledge inside the branches.
+- Use simple sentences, not compressed technical phrases.
+- Preserve the conceptual relationships.
+- Do not use generic branches such as “Important Points” or “Details.”
+
+After writing both files, verify that all source sections are represented and
+that no important rule was lost.

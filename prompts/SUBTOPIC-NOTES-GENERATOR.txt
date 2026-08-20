@@ -1,0 +1,242 @@
+POST-LEARNING SUBTOPIC CAPTURE PROMPT
+
+I have just completed ONE SUBTOPIC.
+
+Use everything covered in the current learning session/conversation as the source of truth.
+
+Do NOT teach the subtopic again.
+
+Produce EXACTLY THREE SEPARATE OUTPUTS.
+
+============================================================
+OUTPUT 1 — FULL SESSION NOTES
+============================================================
+
+Create detailed, clean revision notes for the SUBTOPIC that I just completed.
+
+Capture everything important that was actually taught and established during this session, including where applicable:
+
+- Definitions
+- Core concepts
+- Mental models
+- How things work
+- Important distinctions
+- Relationships between concepts
+- Examples
+- Scenarios
+- Practical understanding
+- Exam-oriented understanding
+- Common misconceptions
+- Corrections made during the session
+- Important rules
+- Exam traps
+- Important edge cases
+
+Rules:
+
+1. Use the current learning session as the source of truth.
+2. Do not add concepts that were not actually covered or established.
+3. If an explanation was corrected during the session, preserve the corrected understanding.
+4. Do not blindly copy the conversation.
+5. Convert the learning into clean, structured notes for future revision.
+6. These are the FULL notes, so retain important reasoning and explanations.
+
+============================================================
+OUTPUT 2 — CONCISE REVISION NOTES
+============================================================
+
+Create a separate, highly condensed revision version of the SAME SUBTOPIC.
+
+This should answer:
+
+"What are the most important things I absolutely need to remember?"
+
+Include only the highest-value information:
+
+- Critical definitions
+- Core mental models
+- Key rules
+- Important distinctions
+- Important relationships
+- Exam traps
+- Common misconceptions/corrections
+- Important examples/scenarios
+- Anything that would be dangerous to forget
+
+Do NOT simply copy Output 1 and shorten it mechanically.
+
+Actually identify the highest-value knowledge for quick revision.
+
+============================================================
+OUTPUT 3 — SUBTOPIC KNOWLEDGE TREE
+============================================================
+
+Create a STANDALONE HIERARCHICAL KNOWLEDGE TREE for ONLY the SUBTOPIC completed in this session.
+
+THIS IS NOT AN UPDATE TO MY EXISTING AWS DVA-C02 KNOWLEDGE TREE.
+
+DO NOT USE, MODIFY, RECREATE, OR INCLUDE THE OLD/MASTER KNOWLEDGE TREE.
+
+DO NOT INCLUDE THE PARENT TOPIC.
+
+DO NOT INCLUDE OTHER SUBTOPICS.
+
+DO NOT INCLUDE ANYTHING OUTSIDE THE SUBTOPIC COMPLETED IN THIS SESSION.
+
+The tree must contain the ACTUAL KNOWLEDGE learned in this subtopic.
+
+Use a hierarchical ASCII structure with:
+
+│
+├──
+└──
+
+Definitions, explanations, important distinctions, rules, relationships,
+examples, and exam-relevant information should be placed directly under
+the appropriate concepts in the hierarchy.
+
+Do NOT create generic placeholder nodes such as:
+
+- Summary + Notes
+- Important Points
+- Details
+- Key Takeaways
+
+Instead, put the actual knowledge directly into the tree.
+
+For example, the structure should conceptually be:
+
+SUBTOPIC
+├── Concept
+│   ├── Definition
+│   │   └── Actual definition
+│   ├── Core Concept
+│   │   └── Actual explanation
+│   └── Important Distinction
+│       └── Actual distinction
+├── Concept
+│   └── Actual explanation
+└── Concept
+    ├── Definition
+    │   └── Actual definition
+    └── Key Rule
+        └── Actual rule
+
+Do not literally use the words "Actual definition", "Actual explanation",
+or "Actual rule". Replace them with the knowledge learned during the session.
+
+============================================================
+KNOWLEDGE TREE RULES
+============================================================
+
+1. The tree represents ONLY the completed subtopic.
+
+2. Do NOT include the parent topic.
+
+3. Do NOT include sibling subtopics.
+
+4. Do NOT include unrelated AWS concepts.
+
+5. Do NOT reference the existing/master Knowledge Tree.
+
+6. Do NOT attempt to merge this tree into any previous tree.
+
+7. Do NOT assume knowledge from previous lessons unless it was actually
+   used or established in this current subtopic session.
+
+8. Only include knowledge actually covered and validated in this session.
+
+9. Preserve important corrections made during the session.
+
+10. Do not silently add general AWS knowledge that was not covered.
+
+11. Preserve the hierarchical ASCII format.
+
+12. Concepts must be nested according to their actual conceptual
+    relationship.
+
+13. Definitions must appear directly under the concept they define.
+
+14. Important distinctions must appear directly under the relevant concept.
+
+15. Important rules, examples, and exam traps may appear underneath the
+    concept they belong to.
+
+16. Do NOT flatten the knowledge into a simple list.
+
+17. Do NOT turn the tree into a table.
+
+18. Do NOT create a generic "Summary + Notes" node.
+
+19. The tree should be compact enough for revision, but detailed enough
+    that important understanding is not lost.
+
+20. The tree should contain definitions and explanatory text wherever
+    that improves understanding.
+
+21. Do not over-compress the tree into keywords only.
+
+============================================================
+CRITICAL DISTINCTION
+============================================================
+
+There are THREE completely separate outputs:
+
+OUTPUT 1 = FULL SESSION NOTES
+Detailed notes for THIS SUBTOPIC.
+
+OUTPUT 2 = CONCISE REVISION NOTES
+High-value revision notes for THIS SUBTOPIC.
+
+OUTPUT 3 = SUBTOPIC KNOWLEDGE TREE
+A standalone hierarchical knowledge tree for ONLY THIS SUBTOPIC.
+
+The third output has NOTHING to do with my existing/master Knowledge Tree.
+
+============================================================
+FINAL RESPONSE FORMAT
+============================================================
+
+Return EXACTLY THREE SECTIONS, in this exact order:
+
+1. FULL SESSION NOTES
+
+2. CONCISE REVISION NOTES
+
+3. SUBTOPIC KNOWLEDGE TREE
+
+IMPORTANT FORMATTING RULE:
+
+Each of the three sections must be contained inside its OWN separate
+Markdown code block.
+
+There must be NOTHING between the section heading and its corresponding
+code block.
+
+Do NOT place any section heading, label, explanation, or text from one
+section inside another section's code block.
+
+Do NOT nest code blocks inside code blocks.
+
+The final response must visually contain exactly:
+
+SECTION 1 HEADING
+[one code block containing only Full Session Notes]
+
+SECTION 2 HEADING
+[one code block containing only Concise Revision Notes]
+
+SECTION 3 HEADING
+[one code block containing only the Subtopic Knowledge Tree]
+
+The words "CONCISE REVISION NOTES" and "SUBTOPIC KNOWLEDGE TREE" must NOT
+appear inside the Full Session Notes code block.
+
+The words "FULL SESSION NOTES" and "SUBTOPIC KNOWLEDGE TREE" must NOT
+appear inside the Concise Revision Notes code block.
+
+The words "FULL SESSION NOTES" and "CONCISE REVISION NOTES" must NOT
+appear inside the Knowledge Tree code block.
+
+Before responding, verify that all three code blocks are properly closed
+and that no section has leaked into another code block.

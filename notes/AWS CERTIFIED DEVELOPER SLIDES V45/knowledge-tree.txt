@@ -1,0 +1,1117 @@
+AWS Certified Developer Associate (DVA-C02)
+├── Getting Started with AWS
+│   ├── Cloud purpose
+│   │   ├── AWS is a cloud provider
+│   │   ├── Servers and services are available on demand
+│   │   ├── Resources can scale with application needs
+│   │   ├── Enterprise IT, storage, analytics
+│   │   └── Web, mobile, social, gaming
+│   ├── Global infrastructure
+│   │   ├── Regions
+│   │   │   ├── Geographic clusters of data centers
+│   │   │   └── Most services are Region-scoped
+│   │   ├── Availability Zones
+│   │   │   ├── One or more discrete data centers
+│   │   │   ├── Redundant power, networking, connectivity
+│   │   │   ├── Disaster isolation
+│   │   │   ├── High-bandwidth, ultra-low-latency links
+│   │   │   └── Usually 3; stated range 3-6
+│   │   └── Edge Locations
+│   │       ├── Content closer to users
+│   │       └── Lower latency
+│   ├── Region selection
+│   │   ├── Compliance and data governance
+│   │   ├── Customer proximity
+│   │   ├── Service and feature availability
+│   │   └── Regional pricing
+│   └── Service scope
+│       ├── Global: IAM, Route 53, CloudFront, WAF
+│       └── Regional: EC2, Elastic Beanstalk, Lambda, Rekognition
+├── AWS Identity and Access Management
+│   ├── IAM scope
+│   │   ├── Global service
+│   │   └── Root account reserved for setup
+│   ├── Identities
+│   │   ├── Users represent physical users
+│   │   ├── Groups contain users only
+│   │   ├── Users may join zero or multiple groups
+│   │   └── Roles grant permissions to AWS services
+│   ├── Authorization
+│   │   ├── JSON policies
+│   │   ├── Allow or Deny actions on resources
+│   │   ├── Optional conditions
+│   │   └── Least privilege
+│   ├── Authentication
+│   │   ├── Console: password and MFA
+│   │   ├── CLI and SDK: access keys
+│   │   └── Never share credentials
+│   ├── Security controls
+│   │   ├── Password policy
+│   │   ├── Multi-Factor Authentication
+│   │   └── Frequent key rotation
+│   └── Audit
+│       ├── Credentials Report: account-level credential status
+│       └── Access Advisor: user permissions and last access
+├── Amazon EC2 Basics
+│   ├── EC2 configuration
+│   │   ├── OS, CPU, RAM
+│   │   ├── EBS, EFS, or Instance Store
+│   │   ├── Network and public IP
+│   │   ├── Security groups
+│   │   └── User Data
+│   │       ├── First start only
+│   │       └── Runs as root
+│   ├── Instance families
+│   │   ├── General Purpose: balanced
+│   │   ├── Compute Optimized: CPU-intensive
+│   │   ├── Memory Optimized: in-memory processing
+│   │   └── Storage Optimized: intensive local I/O
+│   ├── Network security
+│   │   ├── Security groups filter outside EC2
+│   │   ├── Default inbound blocked
+│   │   ├── Default outbound allowed
+│   │   ├── Timeout: likely security-group path
+│   │   └── Connection refused: application path
+│   ├── Access ports
+│   │   ├── FTP 21
+│   │   ├── SSH and SFTP 22
+│   │   ├── HTTP 80
+│   │   ├── HTTPS 443
+│   │   └── RDP 3389
+│   └── Purchasing
+│       ├── On-Demand: short and unpredictable
+│       ├── Reserved: steady one- or three-year workload
+│       ├── Savings Plans: hourly usage commitment
+│       ├── Spot: interruptible and cheapest
+│       ├── Dedicated Host: entire physical server
+│       ├── Dedicated Instance: dedicated account hardware
+│       └── Capacity Reservation: guaranteed AZ capacity
+├── Amazon EC2 Instance Storage
+│   ├── Amazon EBS
+│   │   ├── Network block storage
+│   │   ├── Bound to one AZ
+│   │   ├── Provisioned size and IOPS
+│   │   ├── Root deleted by default on termination
+│   │   ├── Other volumes retained by default
+│   │   └── Snapshots
+│   │       ├── Point-in-time backup
+│   │       ├── Archive: 75% cheaper, 24-72 hour restore
+│   │       ├── Recycle Bin: 1 day-1 year
+│   │       └── Fast Snapshot Restore
+│   ├── AMI
+│   │   ├── Pre-packaged instance configuration
+│   │   ├── Region-specific and copyable
+│   │   └── Creation also creates EBS snapshots
+│   ├── Instance Store
+│   │   ├── Local high-performance hardware
+│   │   ├── Ephemeral on stop
+│   │   └── Customer backup and replication
+│   ├── EBS volume families
+│   │   ├── gp2: size-linked IOPS
+│   │   ├── gp3: independently provisioned IOPS and throughput
+│   │   ├── io1/io2: critical high-IOPS workloads
+│   │   ├── st1: frequently accessed throughput workloads
+│   │   ├── sc1: infrequently accessed lowest-cost HDD
+│   │   └── Multi-Attach: io1/io2, same AZ, up to 16 instances
+│   └── Amazon EFS
+│       ├── Managed NFSv4.1
+│       ├── Shared Linux POSIX file system
+│       ├── Multi-AZ and automatic scaling
+│       ├── General Purpose or Max I/O
+│       ├── Bursting, Provisioned, or Elastic throughput
+│       ├── Standard, Infrequent Access, and Archive tiers
+│       └── Standard Multi-AZ or One Zone
+├── High Availability and Scalability
+│   ├── Scalability
+│   │   ├── Vertical: change instance size
+│   │   └── Horizontal: change instance count
+│   ├── High availability
+│   │   ├── At least two Availability Zones
+│   │   ├── Survive data-center loss
+│   │   └── Passive or active
+│   ├── Elastic Load Balancing
+│   │   ├── Distribution and one DNS endpoint
+│   │   ├── Health checks
+│   │   │   ├── Port and route
+│   │   │   └── Non-200 means unhealthy
+│   │   ├── CLB
+│   │   │   ├── Layer 4 TCP
+│   │   │   └── Layer 7 HTTP/HTTPS
+│   │   ├── ALB
+│   │   │   ├── Layer 7 HTTP routing
+│   │   │   ├── Path, host, query, header rules
+│   │   │   └── EC2, ECS, Lambda, private IP targets
+│   │   ├── NLB
+│   │   │   ├── Layer 4 TCP, TLS, UDP
+│   │   │   ├── Ultra-low latency
+│   │   │   └── Static IP per AZ
+│   │   └── GWLB
+│   │       ├── Layer 3 IP packets
+│   │       ├── Virtual network appliances
+│   │       └── GENEVE port 6081
+│   ├── Traffic behavior
+│   │   ├── Sticky sessions
+│   │   │   ├── Same client to same target
+│   │   │   └── Possible load imbalance
+│   │   ├── Cross-zone balancing
+│   │   │   ├── ALB enabled by default
+│   │   │   └── NLB, GWLB, CLB disabled by default
+│   │   └── Connection draining
+│   │       ├── Complete in-flight requests
+│   │       └── Default 300 seconds
+│   ├── TLS
+│   │   ├── X.509 certificates
+│   │   ├── ACM or uploaded certificates
+│   │   ├── SNI for multiple hostnames
+│   │   └── SNI: ALB and NLB, not CLB
+│   └── Auto Scaling groups
+│       ├── Minimum, desired, maximum capacity
+│       ├── Replace unhealthy instances
+│       ├── Register instances with load balancer
+│       ├── Launch template
+│       ├── Scaling policies
+│       │   ├── Target Tracking
+│       │   ├── Simple or Step
+│       │   ├── Scheduled
+│       │   └── Predictive
+│       ├── Cooldown
+│       │   └── Default 300 seconds
+│       └── Instance Refresh
+│           ├── Minimum healthy percentage
+│           └── Instance warm-up time
+├── RDS Aurora and ElastiCache
+│   ├── Amazon RDS
+│   │   ├── Managed relational database service
+│   │   ├── Engines
+│   │   │   ├── PostgreSQL
+│   │   │   ├── MySQL
+│   │   │   ├── MariaDB
+│   │   │   ├── Oracle
+│   │   │   ├── Microsoft SQL Server
+│   │   │   ├── IBM Db2
+│   │   │   └── Aurora
+│   │   ├── Managed operations
+│   │   │   ├── Provisioning and patching
+│   │   │   ├── Backups and Point-in-Time Restore
+│   │   │   ├── Monitoring and maintenance
+│   │   │   └── Vertical and horizontal scaling
+│   │   ├── Storage Auto Scaling
+│   │   │   ├── Free storage below 10% for 5 minutes
+│   │   │   ├── 6 hours since previous modification
+│   │   │   └── Maximum Storage Threshold
+│   │   ├── Read Replicas
+│   │   │   ├── Up to 15
+│   │   │   ├── Asynchronous and eventually consistent
+│   │   │   ├── Read scaling and reporting
+│   │   │   └── Can be promoted
+│   │   └── Multi-AZ
+│   │       ├── Synchronous standby
+│   │       ├── Disaster recovery, not scaling
+│   │       └── One DNS name with automatic failover
+│   ├── Amazon Aurora
+│   │   ├── MySQL and PostgreSQL compatible
+│   │   ├── Six copies across three AZs
+│   │   ├── Write quorum: four of six
+│   │   ├── Read quorum: three of six
+│   │   ├── Writer Endpoint
+│   │   ├── Reader Endpoint
+│   │   ├── Up to 15 Read Replicas
+│   │   ├── Self-healing shared storage
+│   │   └── Backtrack and automated failover
+│   ├── Security
+│   │   ├── AWS KMS encryption at launch
+│   │   ├── TLS in flight
+│   │   ├── IAM database authentication
+│   │   ├── Security Groups
+│   │   └── Audit logs to CloudWatch Logs
+│   ├── RDS Proxy
+│   │   ├── Connection pooling
+│   │   ├── Serverless, autoscaling, Multi-AZ
+│   │   ├── IAM authentication and Secrets Manager
+│   │   └── VPC-only access
+│   ├── Amazon ElastiCache
+│   │   ├── Redis
+│   │   │   ├── Replication and Multi-AZ failover
+│   │   │   ├── Read Replicas
+│   │   │   └── Persistence and backups
+│   │   ├── Memcached
+│   │   │   ├── Sharding
+│   │   │   ├── Multi-threaded
+│   │   │   └── Non-persistent, no replication HA
+│   │   ├── Cache-Aside
+│   │   ├── Write-Through
+│   │   ├── Invalidation
+│   │   └── TTL and LRU eviction
+│   └── Amazon MemoryDB for Redis
+│       ├── Durable in-memory database
+│       └── Multi-AZ transactional log
+├── Amazon Route 53
+│   ├── DNS foundations
+│   │   ├── Hostname to IP translation
+│   │   ├── Root
+│   │   ├── Top-Level Domain
+│   │   ├── Second-Level Domain
+│   │   ├── Subdomain and FQDN
+│   │   ├── Zone file
+│   │   └── Authoritative and non-authoritative name servers
+│   ├── Route 53 capabilities
+│   │   ├── Authoritative DNS
+│   │   ├── Domain Registrar
+│   │   ├── Health checking
+│   │   └── 100% availability SLA
+│   ├── Records
+│   │   ├── A: hostname to IPv4
+│   │   ├── AAAA: hostname to IPv6
+│   │   ├── CNAME: hostname to hostname
+│   │   └── NS: hosted-zone name servers
+│   ├── Hosted Zones
+│   │   ├── Public: Internet names
+│   │   └── Private: names within VPCs
+│   ├── TTL
+│   │   ├── High: fewer queries, longer staleness
+│   │   └── Low: more queries, quicker changes
+│   ├── CNAME versus Alias
+│   │   ├── CNAME
+│   │   │   ├── Non-root names only
+│   │   │   └── Any destination hostname
+│   │   └── Alias
+│   │       ├── Root and non-root names
+│   │       ├── Supported AWS resources
+│   │       ├── Type A or AAAA
+│   │       ├── No configurable TTL
+│   │       └── Cannot target an EC2 DNS name
+│   ├── Routing Policies
+│   │   ├── Simple
+│   │   ├── Weighted
+│   │   ├── Latency-based
+│   │   ├── Failover
+│   │   ├── Geolocation
+│   │   ├── Geoproximity
+│   │   ├── IP-based
+│   │   └── Multi-Value Answer
+│   ├── Health Checks
+│   │   ├── Public endpoints only
+│   │   ├── HTTP, HTTPS, and TCP
+│   │   ├── About 15 global checkers
+│   │   ├── Default threshold: 3
+│   │   ├── Intervals: 30 or 10 seconds
+│   │   ├── Healthy when more than 18% report healthy
+│   │   ├── HTTP success: 2xx or 3xx
+│   │   ├── Text inspection: first 5,120 bytes
+│   │   ├── Calculated checks
+│   │   │   └── Up to 256 child checks
+│   │   └── Private resources
+│   │       └── CloudWatch metric and alarm
+│   └── External registrar integration
+│       ├── Create Route 53 Hosted Zone
+│       └── Update registrar NS records
+├── Amazon VPC Basics
+│   ├── VPC
+│   │   ├── Regional private network
+│   │   └── CIDR range
+│   ├── Subnets
+│   │   ├── Availability Zone resource
+│   │   ├── Public subnet
+│   │   └── Private subnet
+│   ├── Internet access
+│   │   ├── Route Tables
+│   │   ├── Internet Gateway
+│   │   └── NAT Gateway or NAT Instance
+│   ├── Network security
+│   │   ├── Network ACL
+│   │   │   ├── Subnet level
+│   │   │   ├── Stateless
+│   │   │   └── ALLOW and DENY
+│   │   └── Security Group
+│   │       ├── ENI or instance level
+│   │       ├── Stateful
+│   │       └── ALLOW only
+│   ├── VPC Flow Logs
+│   │   ├── VPC, subnet, or ENI scope
+│   │   └── S3, CloudWatch Logs, or Firehose
+│   ├── VPC Peering
+│   │   ├── Non-overlapping CIDRs
+│   │   └── Non-transitive
+│   ├── VPC Endpoints
+│   │   ├── Gateway: S3 and DynamoDB
+│   │   └── Interface: most AWS services
+│   ├── Hybrid connectivity
+│   │   ├── Site-to-Site VPN
+│   │   │   └── Encrypted over public Internet
+│   │   └── Direct Connect
+│   │       └── Physical private connection
+│   └── Three-tier pattern
+│       ├── Route 53 and load balancer
+│       ├── Multi-AZ application tier
+│       ├── ElastiCache sessions and cache
+│       └── RDS data tier
+├── Amazon S3
+│   ├── Buckets
+│   │   ├── Created in a Region
+│   │   ├── Namespace-dependent uniqueness
+│   │   └── Restricted naming rules
+│   ├── Objects
+│   │   ├── Key equals complete object path
+│   │   ├── Prefix plus object name
+│   │   ├── No true directories
+│   │   ├── Maximum size: 50 TB
+│   │   ├── Multipart Upload above 5 GB
+│   │   ├── Metadata
+│   │   ├── Up to 10 tags
+│   │   └── Version ID
+│   ├── Security
+│   │   ├── IAM policies
+│   │   ├── Bucket policies
+│   │   ├── Object and Bucket ACLs
+│   │   ├── Explicit DENY overrides ALLOW
+│   │   └── Block Public Access
+│   ├── Static website hosting
+│   │   └── 403 when public-read policy is missing
+│   ├── Versioning
+│   │   ├── Bucket-level setting
+│   │   ├── Protects against deletion and overwrite
+│   │   ├── Existing objects use null version
+│   │   └── Suspension preserves old versions
+│   ├── Replication
+│   │   ├── CRR and SRR
+│   │   ├── Versioning required at both ends
+│   │   ├── Asynchronous
+│   │   ├── New objects by default
+│   │   ├── Batch Replication for existing or failed objects
+│   │   ├── Optional delete-marker replication
+│   │   └── No replication chaining
+│   ├── Durability
+│   │   └── 99.999999999% for all classes
+│   └── Storage Classes
+│       ├── Standard
+│       ├── Standard-IA
+│       ├── One Zone-IA
+│       ├── Glacier Instant Retrieval
+│       ├── Glacier Flexible Retrieval
+│       ├── Glacier Deep Archive
+│       └── Intelligent-Tiering
+│           ├── Frequent Access
+│           ├── Infrequent Access after 30 days
+│           ├── Archive Instant after 90 days
+│           ├── Optional Archive Access
+│           └── Optional Deep Archive Access
+├── AWS CLI SDK IAM Roles and Policies
+│   ├── EC2 Instance Metadata Service
+│   │   ├── URL: 169.254.169.254/latest/meta-data
+│   │   ├── Returns instance metadata
+│   │   ├── Can return IAM Role name
+│   │   └── Cannot return IAM policy
+│   ├── IMDS versions
+│   │   ├── IMDSv1: direct request
+│   │   └── IMDSv2
+│   │       ├── Obtain limited session token with PUT
+│   │       └── Send token in later request headers
+│   ├── MFA with CLI
+│   │   └── STS GetSessionToken temporary session
+│   ├── AWS SDK
+│   │   ├── Calls AWS from application code
+│   │   ├── Available in multiple languages
+│   │   └── CLI uses the Python SDK
+│   ├── Limits and quotas
+│   │   ├── API rate limits
+│   │   ├── Service Quotas
+│   │   ├── Intermittent error: Exponential Backoff
+│   │   └── Consistent error: request limit increase
+│   └── AWS API request signing
+│       ├── Signature Version 4
+│       ├── Authorization header
+│       ├── Query-string signature
+│       └── S3 pre-signed URL
+├── Amazon S3 Advanced
+│   ├── Lifecycle Rules
+│   │   ├── Transition Actions -> move between storage classes
+│   │   ├── Expiration Actions -> delete objects, versions, incomplete uploads
+│   │   └── Scope -> prefixes or object tags
+│   ├── Storage Class Analysis
+│   │   └── Standard/Standard-IA; daily; first data in 24-48 hours
+│   ├── Event Notifications
+│   │   ├── Lambda, SQS, SNS -> normally seconds, sometimes 1+ minute
+│   │   └── EventBridge -> all events, JSON filtering, archive and replay
+│   ├── Performance
+│   │   ├── Per prefix -> 3,500 writes or 5,500 reads per second
+│   │   ├── Multipart -> recommended >100 MB; required >5 GB
+│   │   └── Transfer Acceleration and Byte-Range Fetches
+│   └── Object Information
+│       ├── Metadata -> x-amz-meta-, keys stored lowercase
+│       └── Tags -> permissions and analytics; external index for search
+├── Amazon S3 Security
+│   ├── Encryption at Rest
+│   │   ├── SSE-S3 -> AWS-owned keys, AES-256, default
+│   │   ├── SSE-KMS -> KMS control and CloudTrail audit
+│   │   ├── SSE-C -> external customer key, HTTPS, key on every request
+│   │   └── Client-Side -> client encrypts/decrypts and manages keys
+│   ├── Encryption in Transit
+│   │   └── HTTPS; enforce with aws:SecureTransport bucket policy
+│   ├── Browser Access
+│   │   └── CORS -> scheme + host + port; preflight and response headers
+│   ├── Destructive Operations
+│   │   └── MFA Delete -> permanent version deletion or versioning suspension
+│   ├── Audit
+│   │   └── Access Logs -> separate same-Region bucket; avoid logging loops
+│   ├── Temporary Access
+│   │   └── Pre-Signed URLs -> signer permissions and limited lifetime
+│   └── Access Abstractions
+│       ├── S3 Access Points -> DNS name and policy
+│       ├── VPC Origin -> VPC Endpoint plus compatible policies
+│       └── S3 Object Lambda -> transform objects during retrieval
+├── Amazon CloudFront
+│   ├── CDN
+│   │   └── Global edge caches, read performance, Shield and WAF integration
+│   ├── Origins
+│   │   ├── S3 + Origin Access Control
+│   │   ├── VPC Origin -> private ALB, NLB, or EC2
+│   │   └── Custom HTTP -> S3 website or public backend
+│   ├── Cache
+│   │   ├── Cache Key -> host, resource, optional headers/cookies/query strings
+│   │   ├── Cache Policy -> key and TTL, 0 seconds to 1 year
+│   │   ├── Origin Request Policy -> forward without changing cache key
+│   │   └── Invalidation -> * or selected path
+│   ├── Routing and Resilience
+│   │   ├── Cache Behaviors -> path-based origins; default /* last
+│   │   └── Origin Group -> primary and secondary failover
+│   ├── Access Control
+│   │   ├── Geo allowlist or blocklist
+│   │   ├── Signed URL -> one file
+│   │   └── Signed Cookies -> multiple files
+│   ├── Security
+│   │   └── Field-Level Encryption -> up to 10 POST fields
+│   └── Operations
+│       ├── Price Classes -> All, 200, 100
+│       └── Real-Time Logs -> Kinesis Data Streams
+├── Containers on AWS
+│   ├── Docker
+│   │   └── Dockerfile -> image -> repository -> container
+│   ├── Container Services
+│   │   ├── ECS -> AWS container orchestration
+│   │   ├── EKS -> managed Kubernetes
+│   │   ├── Fargate -> serverless compute for ECS/EKS
+│   │   └── ECR -> image registry
+│   ├── ECS Compute
+│   │   ├── EC2 Launch Type -> customer manages instances and ECS Agent
+│   │   └── Fargate -> task definition plus CPU/RAM, no instances
+│   ├── ECS Security
+│   │   ├── Instance Profile -> ECS Agent and infrastructure
+│   │   └── Task Role -> application permissions per task definition
+│   ├── ECS Runtime
+│   │   ├── ALB/NLB integration and dynamic port mapping
+│   │   ├── Task Definition -> JSON, up to 10 containers
+│   │   ├── EFS -> persistent multi-AZ shared storage
+│   │   └── Bind Mount -> task-local ephemeral sharing
+│   ├── ECS Scaling
+│   │   ├── Service scaling -> task count
+│   │   └── ASG/Capacity Provider -> EC2 capacity
+│   ├── EC2 Task Placement
+│   │   ├── Strategies -> binpack, random, spread
+│   │   └── Constraints -> distinctInstance, memberOf
+│   └── EKS
+│       ├── Managed nodes, self-managed nodes, or Fargate
+│       └── CSI storage -> EBS, EFS, FSx
+├── AWS Elastic Beanstalk
+│   ├── Managed Deployment Platform
+│   │   └── EC2, ASG, ELB, RDS, scaling, health and configuration
+│   ├── Components
+│   │   ├── Application
+│   │   ├── Application Version
+│   │   └── Environment -> one active version
+│   ├── Environment Types
+│   │   ├── Web Server Tier
+│   │   └── Worker Tier -> SQS-driven scaling
+│   ├── Deployment Modes
+│   │   ├── Single Instance -> development
+│   │   └── High Availability -> load-balanced production
+│   ├── Update Strategies
+│   │   ├── All at once -> fastest, downtime
+│   │   ├── Rolling -> reduced capacity
+│   │   ├── Additional batches -> full capacity, temporary cost
+│   │   ├── Immutable -> temporary ASG, zero downtime, quick rollback
+│   │   ├── Blue/Green -> separate environment and URL swap
+│   │   └── Traffic Splitting -> canary and automatic rollback
+│   ├── Configuration
+│   │   ├── ZIP source plus dependency manifest
+│   │   ├── Maximum 1,000 application versions
+│   │   └── .ebextensions backed by CloudFormation
+│   └── Lifecycle Decisions
+│       ├── Load balancer type change -> new environment
+│       └── Production RDS -> create and manage separately
+├── AWS CloudFormation
+│   ├── Purpose
+│   │   ├── Declarative Infrastructure as Code
+│   │   ├── CloudFormation determines resource ordering
+│   │   └── Version control, review, reproducibility and cost visibility
+│   ├── Deployment model
+│   │   ├── Template uploaded to S3
+│   │   ├── Named stack creates AWS resources
+│   │   ├── Updates use a new template version
+│   │   └── Stack deletion normally deletes managed resources
+│   ├── Template
+│   │   ├── AWSTemplateFormatVersion
+│   │   ├── Description
+│   │   ├── Resources (mandatory)
+│   │   ├── Parameters
+│   │   │   ├── Dynamic inputs and validation constraints
+│   │   │   └── Ref / !Ref
+│   │   ├── Mappings
+│   │   │   ├── Fixed environment or Region-specific values
+│   │   │   └── Fn::FindInMap
+│   │   ├── Outputs
+│   │   │   ├── Export values
+│   │   │   └── Fn::ImportValue
+│   │   └── Conditions
+│   │       └── And, Equals, If, Not, Or
+│   ├── Failure behavior
+│   │   ├── Creation failure -> rollback and deletion by default
+│   │   ├── Update failure -> previous working state
+│   │   └── Rollback failure -> repair + ContinueUpdateRollback
+│   ├── Security and acknowledgement
+│   │   ├── Service role
+│   │   ├── iam:PassRole
+│   │   ├── CAPABILITY_IAM / CAPABILITY_NAMED_IAM
+│   │   └── CAPABILITY_AUTO_EXPAND
+│   ├── Protection
+│   │   ├── DeletionPolicy: Delete, Retain or Snapshot
+│   │   ├── Stack policy protects against updates
+│   │   └── Termination protection blocks stack deletion
+│   └── Extensions
+│       ├── Custom Resources
+│       │   ├── Lambda or SNS backend
+│       │   └── Same-Region ServiceToken
+│       └── StackSets
+│           ├── Multiple accounts and Regions
+│           └── Administrator or delegated administrator
+├── AWS Integration and Messaging
+│   ├── Communication patterns
+│   │   ├── Synchronous -> direct dependency and spike risk
+│   │   └── Asynchronous -> independent scaling and decoupling
+│   ├── Amazon SQS
+│   │   ├── Standard
+│   │   │   ├── Pull model
+│   │   │   ├── At-least-once delivery
+│   │   │   ├── Best-effort ordering
+│   │   │   ├── 1,024 KB messages
+│   │   │   └── Retention: 4 days default, 14 days maximum
+│   │   ├── Visibility Timeout
+│   │   │   ├── 30 seconds default
+│   │   │   └── Expiry makes message visible again
+│   │   ├── DLQ and redrive
+│   │   ├── Delay Queue: up to 15 minutes
+│   │   ├── Long polling: 1-20 seconds
+│   │   └── FIFO
+│   │       ├── Ordered by MessageGroupId
+│   │       ├── 5-minute deduplication window
+│   │       └── 300 msg/s or 3,000 msg/s with batching
+│   ├── Amazon SNS
+│   │   ├── Push-based publish/subscribe
+│   │   ├── Message filtering
+│   │   ├── SNS + SQS fan-out
+│   │   └── FIFO topic for ordering and deduplication
+│   ├── Kinesis Data Streams
+│   │   ├── Real-time retained stream
+│   │   ├── Replay until expiration
+│   │   ├── Ordering by Partition ID
+│   │   └── Provisioned shards or on-demand capacity
+│   ├── Amazon Data Firehose
+│   │   ├── Near-real-time managed delivery
+│   │   ├── Automatic scaling and transformation
+│   │   └── No retained stream or replay
+│   └── Managed Service for Apache Flink
+│       ├── Stateful stream processing
+│       ├── Reads Kinesis Data Streams or MSK
+│       └── Does not read Data Firehose
+├── AWS Monitoring, Troubleshooting and Audit
+│   ├── Amazon CloudWatch
+│   │   ├── Metrics
+│   │   │   ├── Namespaces, timestamps and dimensions
+│   │   │   ├── EC2: 5-minute standard / 1-minute detailed
+│   │   │   └── Custom: 60-second or high resolution
+│   │   ├── Logs
+│   │   │   ├── Log groups and log streams
+│   │   │   ├── Logs Insights -> stored-data queries
+│   │   │   ├── S3 export -> up to 12 hours
+│   │   │   ├── Subscription filters -> real-time processing
+│   │   │   └── Logs Agent / Unified Agent
+│   │   ├── Alarms
+│   │   │   ├── OK / INSUFFICIENT_DATA / ALARM
+│   │   │   ├── Metric and composite alarms
+│   │   │   └── EC2, Auto Scaling and SNS actions
+│   │   └── Synthetics canaries
+│   ├── Amazon EventBridge
+│   │   ├── Scheduled and event-pattern rules
+│   │   ├── Default, partner and custom buses
+│   │   ├── Cross-account resource policies
+│   │   ├── Archive and replay
+│   │   └── Schema Registry
+│   ├── AWS X-Ray
+│   │   ├── Traces -> segments -> subsegments
+│   │   ├── Indexed annotations / unindexed metadata
+│   │   ├── SDK instrumentation + daemon + IAM
+│   │   ├── Default sampling: 1 request/s + 5%
+│   │   └── Service map, latency, errors and faults
+│   └── AWS CloudTrail
+│       ├── API-call audit history
+│       ├── Management events logged by default
+│       ├── Data events not logged by default
+│       ├── Insights anomaly detection
+│       └── 90-day event retention
+├── AWS Lambda
+│   ├── Serverless function execution
+│   │   ├── On-demand and automatic scaling
+│   │   ├── Pay per request and duration
+│   │   ├── 128 MB-10 GB memory
+│   │   └── 3-second default / 15-minute maximum timeout
+│   ├── Invocation
+│   │   ├── Synchronous
+│   │   │   ├── Immediate response
+│   │   │   └── Caller handles retries
+│   │   ├── Asynchronous
+│   │   │   ├── Internal event queue
+│   │   │   ├── Function errors: 3 attempts
+│   │   │   ├── Throttle/system errors: retry up to 6 hours
+│   │   │   └── DLQ or destinations
+│   │   └── Event Source Mapping
+│   │       ├── Kinesis and DynamoDB Streams
+│   │       ├── SQS Standard and FIFO
+│   │       └── Poll, batch and synchronous function call
+│   ├── Permissions
+│   │   ├── Execution role -> function access
+│   │   └── Resource policy -> invocation access
+│   ├── Runtime environment
+│   │   ├── Reusable execution context
+│   │   ├── Initialize clients outside handler
+│   │   ├── /tmp transient storage up to 10 GB
+│   │   └── Layers and EFS
+│   ├── Networking
+│   │   ├── Outside customer VPC by default
+│   │   ├── ENI for VPC attachment
+│   │   └── NAT for internet / endpoint for private AWS access
+│   ├── Concurrency
+│   │   ├── Reserved concurrency -> limit
+│   │   ├── Provisioned concurrency -> avoid cold starts
+│   │   └── Throttling -> 429 for synchronous calls
+│   ├── Deployment
+│   │   ├── ZIP or 10 GB container image
+│   │   ├── Immutable versions
+│   │   ├── Mutable weighted aliases
+│   │   └── CodeDeploy traffic shifting
+│   ├── Edge execution
+│   │   ├── CloudFront Functions -> lightweight viewer logic
+│   │   └── Lambda@Edge -> viewer and origin logic
+│   └── Function URL
+│       ├── Public stable HTTP/S endpoint
+│       ├── NONE or AWS_IAM authentication
+│       └── Cross-account requires identity and resource policies
+├── Amazon DynamoDB
+│   ├── Model
+│   │   ├── Managed, serverless, distributed NoSQL database
+│   │   ├── Multi-AZ replication and low latency
+│   │   └── 400 KB maximum item
+│   ├── Keys
+│   │   ├── Partition key
+│   │   ├── Partition key + sort key
+│   │   └── High-cardinality keys distribute traffic
+│   ├── Capacity
+│   │   ├── Provisioned
+│   │   │   ├── RCU and WCU
+│   │   │   ├── Burst Capacity
+│   │   │   └── Exceeded -> throttle + exponential backoff
+│   │   └── On-demand
+│   │       ├── Automatic scaling
+│   │       ├── RRU and WRU
+│   │       └── About 2.5x provisioned cost
+│   ├── Consistency
+│   │   ├── Eventually consistent by default
+│   │   └── Strong consistency costs 2x RCUs
+│   ├── Operations
+│   │   ├── PutItem / UpdateItem / DeleteItem
+│   │   ├── GetItem
+│   │   ├── Query -> key-based, up to 1 MB
+│   │   ├── Scan -> whole table, expensive
+│   │   ├── BatchWriteItem -> 25 items
+│   │   ├── BatchGetItem -> 100 items
+│   │   └── Conditional writes and optimistic locking
+│   ├── Indexes
+│   │   ├── LSI
+│   │   │   ├── Same partition key
+│   │   │   ├── Created with table
+│   │   │   └── Maximum 5
+│   │   └── GSI
+│   │       ├── Alternative primary key
+│   │       ├── Separate capacity
+│   │       └── GSI throttling can throttle table writes
+│   ├── Performance
+│   │   ├── DAX
+│   │   │   ├── Microsecond cached reads
+│   │   │   └── 5-minute default TTL
+│   │   └── Write sharding
+│   ├── Change processing
+│   │   ├── DynamoDB Streams
+│   │   │   ├── Ordered item changes
+│   │   │   └── 24-hour retention
+│   │   └── TTL
+│   │       ├── Numeric Unix epoch
+│   │       └── Free asynchronous deletion
+│   ├── Transactions
+│   │   ├── ACID and all-or-nothing
+│   │   ├── TransactGetItems / TransactWriteItems
+│   │   └── 2x capacity cost
+│   └── Security and resilience
+│       ├── IAM and fine-grained conditions
+│       ├── KMS and SSL/TLS
+│       ├── VPC endpoints
+│       └── Backup, PITR and Global Tables
+├── Amazon API Gateway
+│   ├── Purpose
+│   │   ├── Build, deploy, manage, secure, throttle, validate, transform, and cache APIs
+│   │   └── Serverless pattern: Client -> API Gateway -> Lambda -> DynamoDB
+│   ├── Integrations
+│   │   ├── Lambda
+│   │   ├── HTTP endpoints
+│   │   ├── AWS services
+│   │   └── MOCK response
+│   ├── Endpoint Types
+│   │   ├── Edge-Optimized: global clients, CloudFront edge routing
+│   │   ├── Regional: same-Region clients
+│   │   └── Private: interface VPC endpoint plus resource policy
+│   ├── Deployment
+│   │   ├── Changes require deployment
+│   │   ├── Stages: dev, test, prod, v1, v2
+│   │   ├── Stage variables select endpoints, ARNs, aliases, or mappings
+│   │   └── Canary: percentage traffic, separate logs and metrics
+│   ├── Integration Types
+│   │   ├── HTTP/AWS: integration request, response, and VTL mappings
+│   │   ├── AWS_PROXY: complete request passed to Lambda
+│   │   └── HTTP_PROXY: request and response passed through
+│   ├── Validation and Caching
+│   │   ├── Invalid parameters or JSON model -> 400 before backend
+│   │   ├── Cache TTL: 0-3600 seconds; default 300
+│   │   └── Cache size: 0.5-237 GB
+│   ├── Usage Plans
+│   │   ├── API keys identify and meter clients
+│   │   ├── Throttle = request rate
+│   │   └── Quota = total request count
+│   ├── Operations
+│   │   ├── CloudWatch Logs and metrics
+│   │   ├── X-Ray tracing
+│   │   ├── Account soft limit: 10,000 rps
+│   │   └── Maximum request timeout: 29 seconds
+│   ├── Security
+│   │   ├── IAM and SigV4: AWS users and roles
+│   │   ├── Cognito User Pools: external users
+│   │   ├── Lambda authorizer: custom or third-party tokens
+│   │   └── Resource policies: account, IP, or VPC endpoint access
+│   ├── API Choices
+│   │   ├── HTTP API: low cost, proxy integrations, CORS, OIDC/OAuth/JWT
+│   │   └── REST API: full features, mappings, API keys, usage plans
+│   └── WebSocket API
+│       ├── Persistent two-way connection
+│       ├── Routes: $connect, $disconnect, $default, custom keys
+│       └── @connections/{connectionId}: POST, GET, DELETE
+├── AWS CICD
+│   ├── Continuous Integration
+│   │   └── Frequent push -> automated build and tests -> fast feedback
+│   ├── Continuous Delivery
+│   │   └── Every passing build remains reliably deployable
+│   ├── CodeCommit
+│   │   ├── Managed private Git repositories
+│   │   ├── SSH or HTTPS authentication
+│   │   ├── IAM authorization
+│   │   ├── KMS encryption at rest
+│   │   └── Cross-account access through STS AssumeRole
+│   ├── CodePipeline
+│   │   ├── Orchestrates source, build, test, deploy, and invoke stages
+│   │   ├── Sequential or parallel actions
+│   │   ├── Manual approval at any stage
+│   │   ├── Artifacts passed through S3
+│   │   └── Failed stage stops pipeline
+│   ├── CodeBuild
+│   │   ├── Managed, continuously scaling CI
+│   │   ├── Docker-based reproducible environments
+│   │   ├── Charged per compute minute
+│   │   └── buildspec.yml at repository root
+│   │       ├── env, install, pre_build, build, post_build
+│   │       └── artifacts and cache
+│   ├── CodeDeploy
+│   │   ├── EC2/on-premises
+│   │   │   ├── Agent required
+│   │   │   ├── In-place or blue/green
+│   │   │   └── AllAtOnce, HalfAtATime, OneAtATime, Custom
+│   │   ├── Lambda
+│   │   │   └── Linear, Canary, or AllAtOnce alias traffic shifting
+│   │   ├── ECS
+│   │   │   └── Blue/green only; Application Load Balancer required
+│   │   └── Rollback redeploys last known good revision as a new deployment
+│   └── CodeArtifact
+│       ├── Managed package and dependency repository
+│       ├── Maven, Gradle, npm, yarn, twine, pip, NuGet
+│       └── Package changes can trigger EventBridge workflows
+├── AWS Serverless Application Model SAM
+│   ├── Definition
+│   │   ├── Serverless development and deployment framework
+│   │   ├── Declarative YAML
+│   │   └── Transforms into CloudFormation
+│   ├── Resources
+│   │   ├── AWS::Serverless::Function
+│   │   ├── AWS::Serverless::Api
+│   │   └── AWS::Serverless::SimpleTable
+│   ├── Deployment
+│   │   └── sam build -> S3 packaging -> sam deploy -> CloudFormation stack
+│   ├── SAM Accelerate
+│   │   ├── sam sync: code and infrastructure
+│   │   ├── sam sync --code: code only, bypass CloudFormation
+│   │   └── sam sync --watch: synchronize detected changes
+│   ├── Permissions
+│   │   └── S3ReadPolicy, SQSPollerPolicy, DynamoDBCrudPolicy
+│   ├── CodeDeploy
+│   │   ├── AutoPublishAlias
+│   │   ├── Canary, Linear, AllAtOnce
+│   │   ├── Pre-traffic and post-traffic hooks
+│   │   └── CloudWatch Alarm rollback
+│   └── Local Tools
+│       ├── sam local start-lambda
+│       ├── sam local invoke
+│       ├── sam local start-api
+│       └── sam local generate-event
+├── AWS Cloud Development Kit CDK
+│   ├── Definition
+│   │   ├── Infrastructure in JavaScript/TypeScript, Python, Java, or .NET
+│   │   ├── Uses constructs
+│   │   └── cdk synth -> CloudFormation template
+│   ├── Construct Levels
+│   │   ├── L1: Cfn resources, explicit properties
+│   │   ├── L2: intent-based resources with defaults and helper methods
+│   │   └── L3: multi-resource architecture patterns
+│   ├── CDK vs SAM
+│   │   ├── CDK: all AWS services, programming languages
+│   │   ├── SAM: serverless-focused, declarative YAML/JSON
+│   │   └── Both use CloudFormation
+│   ├── Commands
+│   │   ├── cdk init, synth, bootstrap, deploy
+│   │   └── cdk diff, destroy
+│   └── Bootstrapping
+│       ├── Required per account and Region
+│       └── Creates CDKToolkit with S3 bucket and IAM roles
+├── Amazon Cognito
+│   ├── Purpose
+│   │   └── Identity for web and mobile application users
+│   ├── Cognito User Pools
+│   │   ├── Authentication and user database
+│   │   ├── Sign-up, sign-in, reset, verification, MFA
+│   │   ├── Social, OIDC, and SAML federation
+│   │   ├── Returns JWT
+│   │   ├── Hosted UI and custom domain
+│   │   ├── Adaptive authentication
+│   │   │   └── Low, medium, high risk -> allow, MFA, or block
+│   │   ├── Lambda triggers
+│   │   │   ├── Authentication and sign-up validation
+│   │   │   ├── Token customization
+│   │   │   └── Migration, messages, analytics
+│   │   └── Integrations
+│   │       ├── API Gateway
+│   │       └── Application Load Balancer
+│   ├── JWT
+│   │   ├── Header, payload, signature
+│   │   ├── Signature must be verified
+│   │   └── sub UUID identifies the user
+│   ├── ALB Authentication
+│   │   ├── HTTPS listener required
+│   │   ├── authenticate-cognito or authenticate-oidc
+│   │   └── Unauthenticated action: authenticate, deny, or allow
+│   ├── Cognito Identity Pools
+│   │   ├── Authorization through temporary AWS credentials
+│   │   ├── Authenticated and guest identities
+│   │   ├── Public, CUP, OIDC, SAML, or developer providers
+│   │   ├── STS AssumeRoleForWebIdentity
+│   │   ├── IAM roles, policies, and policy variables
+│   │   └── Direct access to AWS resources
+│   └── Decision
+│       ├── User Pool = authenticate and issue JWT
+│       ├── Identity Pool = issue AWS credentials and authorize
+│       └── User Pool + Identity Pool = authentication + authorization
+├── Other Serverless
+│   ├── AWS Step Functions
+│   │   ├── JSON state machines
+│   │   ├── Starts through SDK, API Gateway, or EventBridge
+│   │   ├── States
+│   │   │   ├── Task
+│   │   │   ├── Choice
+│   │   │   ├── Fail / Succeed
+│   │   │   ├── Pass
+│   │   │   ├── Wait
+│   │   │   ├── Map
+│   │   │   └── Parallel
+│   │   ├── Error handling
+│   │   │   ├── Retry
+│   │   │   │   ├── IntervalSeconds
+│   │   │   │   ├── BackoffRate
+│   │   │   │   └── MaxAttempts: default 3; 0 disables retries
+│   │   │   └── Catch
+│   │   │       ├── ErrorEquals
+│   │   │       ├── Next
+│   │   │       └── ResultPath
+│   │   ├── External work
+│   │   │   ├── Wait for Task Token
+│   │   │   ├── Activity Workers and heartbeats
+│   │   │   └── Activity maximum: 1 year with active heartbeats
+│   │   └── Workflow types
+│   │       ├── Standard: exactly once, 1 year, over 2,000/s
+│   │       └── Express: 5 minutes, over 100,000/s
+│   │           ├── Asynchronous: at least once
+│   │           └── Synchronous: at most once
+│   ├── AWS AppSync
+│   │   ├── Managed GraphQL
+│   │   ├── Schemas and resolvers
+│   │   ├── Multiple data sources
+│   │   ├── Real-time and offline synchronization
+│   │   └── API key, IAM, OIDC, or Cognito authorization
+│   └── AWS Amplify
+│       ├── Studio
+│       ├── Libraries
+│       ├── CLI
+│       ├── Hosting and CI/CD
+│       ├── Cognito authentication
+│       ├── AppSync and DynamoDB DataStore
+│       └── Cypress E2E testing
+├── Advanced Identity in AWS
+│   ├── AWS STS
+│   │   ├── Temporary, limited credentials
+│   │   ├── AssumeRole: same-account or cross-account
+│   │   │   └── Duration: 15 minutes to 1 hour
+│   │   ├── AssumeRoleWithSAML
+│   │   ├── AssumeRoleWithWebIdentity
+│   │   │   └── Prefer Cognito Identity Pools
+│   │   ├── GetSessionToken for MFA
+│   │   ├── GetFederationToken
+│   │   ├── GetCallerIdentity
+│   │   └── DecodeAuthorizationMessage
+│   ├── IAM authorization
+│   │   ├── Start with implicit deny
+│   │   ├── Explicit deny overrides allow
+│   │   ├── Allow grants access when no explicit deny exists
+│   │   └── IAM and S3 bucket policies are evaluated together
+│   ├── Policy choices
+│   │   ├── Dynamic policy variables
+│   │   ├── AWS managed policies
+│   │   ├── Customer managed policies
+│   │   └── Inline policies
+│   ├── iam:PassRole
+│   │   ├── Needed to pass a role to a service
+│   │   └── Trust policy must allow that service
+│   └── AWS Directory Service
+│       ├── AWS Managed Microsoft AD
+│       ├── AD Connector
+│       └── Simple AD
+├── AWS Security and Encryption
+│   ├── Encryption models
+│   │   ├── In flight: TLS / SSL
+│   │   ├── Server-side at rest
+│   │   └── Client-side
+│   ├── AWS KMS
+│   │   ├── Symmetric AES-256 keys
+│   │   ├── Asymmetric RSA and ECC keys
+│   │   ├── IAM authorization and CloudTrail audit
+│   │   ├── Key policies
+│   │   ├── Rotation and cross-account access
+│   │   ├── Direct encryption: up to 4 KB
+│   │   ├── Envelope encryption: over 4 KB
+│   │   │   ├── GenerateDataKey
+│   │   │   └── Plaintext and encrypted DEK
+│   │   └── ThrottlingException
+│   │       ├── Exponential backoff
+│   │       └── Data-key caching
+│   ├── S3 Bucket Key
+│   │   └── Up to 99% fewer KMS calls and costs
+│   ├── AWS Encryption SDK
+│   │   ├── Envelope encryption
+│   │   └── Data key caching
+│   ├── AWS CloudHSM
+│   │   ├── Dedicated HSM hardware
+│   │   ├── Customer-managed keys and users
+│   │   ├── Multi-AZ clusters
+│   │   └── KMS Custom Key Store
+│   ├── SSM Parameter Store
+│   │   ├── Hierarchical configuration and secrets
+│   │   ├── Optional KMS encryption
+│   │   ├── Standard: 10,000 values, 4 KB
+│   │   └── Advanced: 100,000 values, 8 KB, policies
+│   ├── AWS Secrets Manager
+│   │   ├── Mandatory KMS encryption
+│   │   ├── Lambda-based automatic rotation
+│   │   ├── RDS and database integrations
+│   │   └── Multi-Region replicas
+│   ├── CloudFormation dynamic references
+│   │   ├── ssm
+│   │   ├── ssm-secure
+│   │   └── secretsmanager
+│   ├── Operational security
+│   │   ├── CloudWatch Logs KMS encryption through API
+│   │   └── CodeBuild VPC and secret references
+│   └── AWS Nitro Enclaves
+│       ├── Isolated virtual machines
+│       ├── No persistence, interactive access, or external networking
+│       └── Cryptographic attestation and KMS integration
+├── Other Services
+│   ├── Amazon SES
+│   │   ├── Managed inbound and outbound email
+│   │   ├── APIs or SMTP
+│   │   └── DKIM, SPF, reputation, and delivery statistics
+│   ├── Amazon OpenSearch Service
+│   │   ├── Full-field and partial-match search
+│   │   ├── Managed or serverless clusters
+│   │   ├── Real-time Lambda ingestion
+│   │   ├── Near-real-time Firehose ingestion
+│   │   └── Cognito, IAM, KMS, and TLS
+│   ├── Amazon Athena
+│   │   ├── Serverless SQL for S3
+│   │   ├── $5 per TB scanned
+│   │   ├── Parquet / ORC, compression, and partitions
+│   │   ├── Files over 128 MB reduce overhead
+│   │   └── Federated Query through Lambda connectors
+│   ├── Amazon MSK
+│   │   ├── Fully managed Apache Kafka
+│   │   ├── VPC and up to 3 Availability Zones
+│   │   ├── EBS-backed storage
+│   │   ├── Provisioned or serverless
+│   │   └── 1 MB default message size; configurable higher
+│   ├── Certificates
+│   │   ├── ACM
+│   │   │   ├── Public and private TLS certificates
+│   │   │   └── Automatic renewal
+│   │   └── AWS Private CA
+│   │       └── Organization-trusted X.509 certificates
+│   ├── Amazon Macie
+│   │   └── Sensitive-data and PII discovery in S3
+│   └── AWS AppConfig
+│       ├── Dynamic configuration without restart
+│       ├── JSON Schema or Lambda validation
+│       └── Gradual deployment and automatic rollback
+├── Exam Review and Tips
+│   ├── Preparation
+│   │   ├── Practical AWS development experience
+│   │   ├── Deployment, scaling, CI/CD, decoupling, and automation
+│   │   ├── Whitepapers and service FAQs
+│   │   └── Practice tests and AWS community material
+│   ├── Question strategy
+│   │   ├── Identify the scenario requirement
+│   │   ├── Eliminate definitely wrong answers
+│   │   ├── Prefer the sensible, less complicated valid solution
+│   │   └── Flag uncertain questions and review later
+│   ├── Exam format
+│   │   ├── Fee: $150
+│   │   ├── 65 questions
+│   │   ├── 130 minutes
+│   │   ├── Passing score: 720 / 1,000
+│   │   ├── Result within 5 days
+│   │   └── Retake after 14 days
+│   └── Certification levels
+│       ├── Foundational
+│       ├── Associate
+│       ├── Professional
+│       └── Specialty
+└── Congratulations and Next Steps
+    ├── Select preferred AWS services
+    ├── Continue with specialized study
+    └── Share exam results and useful tips after passing
