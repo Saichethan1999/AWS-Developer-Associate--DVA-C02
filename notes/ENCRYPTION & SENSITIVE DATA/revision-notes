@@ -84,3 +84,163 @@ Exam checklist:
 4. Who can use the key or authorized decryption path?
 5. Where does ciphertext become plaintext?
 6. How is the resulting plaintext handled?
+
+
+SECTION 2 OF 28: ENCRYPTION FUNDAMENTALS AND CRYPTOGRAPHIC OPERATIONS
+
+SECURITY GUARANTEES
+
+- Confidentiality: Prevent unauthorized reading.
+- Integrity: Detect whether data changed.
+- Authenticity: Verify the expected source.
+- Non-repudiation: Evidence making it difficult to deny a signed action.
+
+These guarantees are different. Identify the requirement before choosing
+the cryptographic operation.
+
+
+CORE OPERATIONS
+
+Encryption:
+Plaintext + key → Ciphertext
+Purpose: Confidentiality
+Designed to be reversed through an authorized decryption path.
+
+Hashing:
+Data → Fixed-size digest
+Purpose: One-way representation and change detection.
+There is no normal Decrypt(hash) operation.
+
+Digital signing:
+Data hash + private key → Digital signature
+Purpose: Integrity and authenticity.
+
+Signature verification:
+Data + signature + public key → Valid or invalid
+
+
+HASHING RULES
+
+- Same input produces the same digest.
+- A small input change should produce a very different digest.
+- Original input cannot practically be recovered from the digest.
+- Hashing is not one-to-one.
+- Different inputs can theoretically produce the same digest, called a
+  collision.
+- Secure hashes make finding collisions extremely difficult.
+
+
+PLAIN HASH LIMITATION
+
+A matching hash proves only:
+
+"This file matches this supplied digest."
+
+It does not prove:
+
+"The real company supplied this file or digest."
+
+If an attacker controls both values:
+
+Original file → Malicious file
+Original hash → Hash of malicious file
+
+The customer's calculated hash matches, but authenticity is absent.
+
+Plain hash + trusted expected digest:
+Useful integrity checking.
+
+Plain hash + attacker-controlled expected digest:
+No meaningful authenticity protection.
+
+
+DIGITAL SIGNATURE ADVANTAGE
+
+The company signs using its private key.
+Customers verify using the trusted company public key.
+
+An attacker can create:
+
+- A malicious file
+- A new hash
+- A fake signature
+
+The attacker cannot create a valid company signature without the
+company's private key.
+
+A trusted public key or certificate is still required to establish that
+the verification key actually belongs to the company.
+
+
+SYMMETRIC ENCRYPTION
+
+- One shared secret key encrypts and decrypts.
+- Fast and efficient for large amounts of data.
+- Main problem: Securely distributing and protecting the shared key.
+
+
+ASYMMETRIC CRYPTOGRAPHY
+
+Uses a key pair:
+
+- Public key can be distributed.
+- Private key must remain protected.
+
+Confidentiality:
+Public key encrypts → Private key decrypts
+
+Digital signature:
+Private key signs → Public key verifies
+
+Do not describe signing as ordinary encryption with the private key.
+
+
+SYMMETRIC AND ASYMMETRIC TOGETHER
+
+Asymmetric cryptography:
+Helps establish trust or protect key material.
+
+Symmetric cryptography:
+Efficiently encrypts large application data.
+
+
+MODERN ENCRYPTION RULES
+
+- Encryption should not automatically be assumed to guarantee integrity.
+- Authenticated encryption provides confidentiality and integrity.
+- A nonce or initialization value can make identical plaintext produce
+  different ciphertext under the same key.
+- Cryptographic keys are generated algorithm inputs, not ordinary
+  passwords.
+- The algorithm can be public; the key must be protected.
+- An exposed key can defeat strong encryption.
+- Use established algorithms and trusted libraries.
+- Custom transformations are obfuscation, not secure encryption.
+
+
+VALIDATED SOFTWARE-PACKAGE SCENARIO
+
+Requirement:
+- Package may remain readable.
+- Customers must verify its source and detect modification.
+
+Correct solution:
+- Digitally sign the package.
+- Required guarantees: Authenticity and integrity.
+- Company signs with private key.
+- Customers verify with trusted company public key.
+- Plain unprotected digest is insufficient if an attacker can replace
+  both the package and digest.
+
+
+DANGEROUS CONFUSIONS
+
+- Encryption ≠ Hashing
+- Encryption ≠ Digital signature
+- Confidentiality ≠ Integrity
+- Integrity ≠ Authenticity
+- Matching hash ≠ Publisher identity
+- Public key verification ≠ Proof of company identity unless the public
+  key itself is trusted
+- Obfuscation ≠ Encryption
+

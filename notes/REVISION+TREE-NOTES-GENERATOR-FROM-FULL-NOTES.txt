@@ -1,0 +1,272 @@
+FULL-NOTES REVISION AND KNOWLEDGE-TREE GENERATION PROMPT
+
+I will provide FULL NOTES as the input.
+
+Use only the supplied FULL NOTES as the source of truth.
+
+Do NOT use the current conversation, outside sources, general knowledge,
+previous lessons, or an existing/master Knowledge Tree to add information.
+
+Do NOT teach the material again or regenerate the supplied full notes.
+
+Produce EXACTLY TWO SEPARATE OUTPUTS.
+
+============================================================
+SOURCE-OF-TRUTH RULES
+============================================================
+
+1. Preserve the scope of the supplied FULL NOTES, whether they cover one topic,
+   multiple sections, or several related concepts.
+
+2. Do not add facts, examples, mechanisms, services, exam guidance, or
+   corrections that are absent from the supplied FULL NOTES.
+
+3. If the notes distinguish between covered, demonstrated, partial,
+   exposure-only, uncertain, deferred, or not-covered material, preserve those
+   boundaries.
+
+4. Do not present incomplete or uncertain material as established knowledge.
+
+5. If an explanation was corrected, preserve the final corrected understanding.
+   Include the original misconception only when revision-critical and clearly
+   identify it as incorrect.
+
+6. Do not blindly copy or mechanically compress the source. Reorganize it into
+   a clear structure while preserving its meaning.
+
+7. Remove repetition without removing distinct rules, qualifications,
+   exceptions, relationships, scenarios, or corrections.
+
+8. Preserve conditional wording such as "may," "can," "not guaranteed," and
+   "depends on the implementation." Do not convert it into an absolute rule.
+
+9. Do not infer that a topic was learned merely because it appears in a roadmap,
+   weakness list, future-study section, or list of remaining topics.
+
+10. Do not expand material marked as not covered, deferred, exposure only, or
+    uncertain with outside knowledge.
+
+============================================================
+OUTPUT 1 — CONCISE REVISION NOTES
+============================================================
+
+Create highly condensed revision notes from the supplied FULL NOTES.
+
+This output should answer:
+
+"What are the most important things I absolutely need to remember from these
+full notes?"
+
+Include only the highest-value knowledge found in the source, where applicable:
+
+- Critical definitions
+- Core mental models
+- Key rules and mechanisms
+- Important distinctions
+- Important relationships between concepts
+- Cause-and-effect relationships
+- Exam traps
+- Common misconceptions and their corrected understanding
+- Important exceptions and edge cases
+- High-value examples or scenarios
+- Failure behavior and security implications
+- Anything that would be dangerous to forget
+
+Rules:
+
+1. Organize the revision notes by the actual concepts and relationships in the
+   supplied FULL NOTES.
+
+2. Keep enough explanation to preserve understanding. Do not reduce important
+   concepts to isolated keywords.
+
+3. Prefer compact mental models, decision rules, comparisons, and short
+   scenarios over long prose.
+
+4. Merge repeated explanations into one accurate revision point.
+
+5. Preserve important corrections and explicitly distinguish the corrected
+   model from the misconception when the distinction is revision-critical.
+
+6. Exclude administrative learning history, session narration, confidence-score
+   history, and duplicated completion-state text unless needed to preserve a
+   knowledge or coverage boundary.
+
+7. Do not fill gaps with outside knowledge to make the notes appear complete.
+
+============================================================
+OUTPUT 2 — KNOWLEDGE TREE
+============================================================
+
+Create a STANDALONE HIERARCHICAL KNOWLEDGE TREE representing the actual
+knowledge contained in the supplied FULL NOTES.
+
+THIS IS NOT AN UPDATE TO MY EXISTING AWS DVA-C02 KNOWLEDGE TREE.
+
+DO NOT USE, MODIFY, RECREATE, MERGE WITH, INCLUDE, OR REFERENCE THE OLD/MASTER
+KNOWLEDGE TREE.
+
+The root of the tree must be the main topic represented by the supplied FULL
+NOTES. If the notes provide an explicit title, use that title. Otherwise, derive
+a concise title only from the supplied notes.
+
+The tree must contain the ACTUAL KNOWLEDGE from the supplied FULL NOTES.
+
+Use a hierarchical ASCII structure with:
+
+│
+├──
+└──
+
+Definitions, explanations, important distinctions, rules, mechanisms,
+relationships, examples, corrections, exceptions, failure behavior, and
+exam-relevant information must appear directly under the concepts to which they
+belong.
+
+Do NOT create generic placeholder nodes such as:
+
+- Summary + Notes
+- Important Points
+- Details
+- Key Takeaways
+- Miscellaneous
+
+Instead, put the actual knowledge directly into the hierarchy.
+
+For example, the structure should conceptually be:
+
+MAIN TOPIC
+├── Concept
+│   ├── Definition
+│   │   └── Definition contained in the supplied notes
+│   ├── How It Works
+│   │   └── Mechanism contained in the supplied notes
+│   └── Important Distinction
+│       └── Distinction contained in the supplied notes
+├── Related Concept
+│   ├── Relationship
+│   │   └── Relationship contained in the supplied notes
+│   └── Key Rule
+│       └── Rule contained in the supplied notes
+└── Scenario
+    ├── Conditions
+    │   └── Conditions contained in the supplied notes
+    └── Result
+        └── Outcome contained in the supplied notes
+
+Do not literally use phrases such as "Definition contained in the supplied
+notes." Replace them with the actual knowledge.
+
+============================================================
+KNOWLEDGE TREE RULES
+============================================================
+
+1. The tree represents only the scope and knowledge contained in the supplied
+   FULL NOTES.
+
+2. Do not include unrelated topics or silently fill gaps with general AWS
+   knowledge.
+
+3. Do not reference or attempt to update an existing/master Knowledge Tree.
+
+4. Preserve the hierarchical ASCII format.
+
+5. Nest concepts according to their actual conceptual relationships.
+
+6. Place definitions directly under the concepts they define.
+
+7. Place important distinctions directly under the relevant concepts.
+
+8. Place rules, mechanisms, examples, scenarios, misconceptions, corrections,
+   exam traps, exceptions, and failure behavior under the concepts to which they
+   belong.
+
+9. Do not flatten the knowledge into a simple list.
+
+10. Do not turn the tree into a table.
+
+11. Do not create generic organizational nodes containing no actual knowledge.
+
+12. Keep the tree compact enough for revision but detailed enough that important
+    reasoning is not lost.
+
+13. Do not over-compress the tree into keywords only.
+
+14. Merge duplicate source material into one accurate branch.
+
+15. If a misconception is included, place it under the relevant concept and
+    clearly pair it with the corrected model.
+
+16. Preserve uncertainty and coverage boundaries. Do not convert partial,
+    exposure-only, uncertain, deferred, or not-covered material into established
+    knowledge branches.
+
+17. Roadmaps, future topics, and lists of unlearned material are not knowledge
+    coverage. Exclude them unless their status is needed to define scope.
+
+============================================================
+CRITICAL DISTINCTION
+============================================================
+
+There are TWO completely separate outputs:
+
+OUTPUT 1 = CONCISE REVISION NOTES
+High-value revision material derived only from the supplied FULL NOTES.
+
+OUTPUT 2 = KNOWLEDGE TREE
+A standalone hierarchical representation of the actual knowledge contained in
+the supplied FULL NOTES.
+
+The second output has NOTHING to do with my existing/master Knowledge Tree.
+
+============================================================
+FINAL RESPONSE FORMAT
+============================================================
+
+Return EXACTLY TWO SECTIONS, in this exact order:
+
+1. CONCISE REVISION NOTES
+
+2. KNOWLEDGE TREE
+
+IMPORTANT FORMATTING RULE:
+
+Each section must be contained inside its OWN separate Markdown code block.
+
+There must be NOTHING between each section heading and its corresponding code
+block.
+
+Do NOT place any section heading, label, explanation, preface, conclusion, or
+text from one section inside the other section's code block.
+
+Do NOT nest code blocks inside code blocks.
+
+The final response must visually contain exactly:
+
+CONCISE REVISION NOTES
+[one code block containing only the concise revision notes]
+
+KNOWLEDGE TREE
+[one code block containing only the hierarchical knowledge tree]
+
+The words "KNOWLEDGE TREE" must NOT appear inside the Concise Revision Notes
+code block.
+
+The words "CONCISE REVISION NOTES" must NOT appear inside the Knowledge Tree
+code block.
+
+Before responding, verify that:
+
+1. Exactly two section headings are present.
+2. Exactly two Markdown code blocks are present.
+3. Both code blocks are properly closed.
+4. No section has leaked into the other code block.
+5. No information absent from the supplied FULL NOTES was added.
+
+============================================================
+INPUT
+============================================================
+
+FULL NOTES PATH:
+
+C:\Users\919823\OneDrive - American Airlines, Inc\Kernel\AWS-Developer-Associate--DVA-C02\notes\IAM, AUTHENTICATION & AUTHORIZATION\full-notes

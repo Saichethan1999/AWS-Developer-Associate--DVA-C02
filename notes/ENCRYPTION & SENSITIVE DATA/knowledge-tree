@@ -159,3 +159,291 @@ WHY ENCRYPTION EXISTS
     ├── Identify who can use the key or decryption path.
     ├── Locate where ciphertext becomes plaintext.
     └── Examine how plaintext is handled after decryption.
+
+
+ENCRYPTION FUNDAMENTALS AND CRYPTOGRAPHIC OPERATIONS
+│
+├── Cryptography
+│   ├── Definition
+│   │   └── The broader practice of protecting information through
+│   │       mathematical techniques.
+│   └── Security Guarantees
+│       ├── Confidentiality
+│       ├── Integrity
+│       ├── Authenticity
+│       └── Evidence supporting non-repudiation
+│
+├── Confidentiality
+│   ├── Definition
+│   │   └── Prevents unauthorized people or systems from reading
+│   │       information.
+│   ├── Primary Mechanism
+│   │   └── Encryption transforms readable plaintext into ciphertext.
+│   └── Limitation
+│       └── Does not necessarily hide the existence, location, size, or
+│           surrounding metadata of the protected data.
+│
+├── Integrity
+│   ├── Definition
+│   │   └── Detects whether data was modified after creation or
+│   │       transmission.
+│   ├── Example
+│   │   └── Detecting a transfer amount changed from 1,000 to 9,000.
+│   └── Distinction from Confidentiality
+│       ├── Confidentiality asks whether unauthorized parties can read
+│       │   the data.
+│       └── Integrity asks whether the data was changed.
+│
+├── Authenticity
+│   ├── Definition
+│   │   └── Establishes whether data came from the expected source or
+│   │       someone possessing the expected cryptographic authority.
+│   └── Example
+│       └── Verifying that a software package came from the intended
+│           company.
+│
+├── Non-Repudiation
+│   ├── Definition
+│   │   └── Evidence that makes it difficult for a sender to credibly
+│   │       deny a signed cryptographic action.
+│   ├── Supporting Mechanism
+│   │   └── Digital signatures can provide evidence supporting
+│   │       non-repudiation.
+│   └── Dependencies
+│       ├── Secure control of the private key
+│       ├── Trustworthy identity-to-key connection
+│       ├── Absence of key compromise
+│       └── Reliable surrounding audit evidence
+│
+├── Encryption
+│   ├── Definition
+│   │   └── Converts readable plaintext into unreadable ciphertext using
+│   │       a cryptographic algorithm and key.
+│   ├── Flow
+│   │   └── Plaintext + key → Encryption algorithm → Ciphertext
+│   └── Primary Guarantee
+│       └── Confidentiality
+│
+├── Decryption
+│   ├── Definition
+│   │   └── Converts compatible ciphertext back into plaintext.
+│   ├── Flow
+│   │   └── Ciphertext + required key operation → Plaintext
+│   └── Key Relationship
+│       ├── A compatible key operation can recover the plaintext.
+│       └── An unrelated key should fail to recover the plaintext.
+│
+├── Hashing
+│   ├── Definition
+│   │   └── Transforms input data into a fixed-size output called a hash
+│   │       or digest.
+│   ├── Flow
+│   │   └── Input data → Hash function → Fixed-size digest
+│   ├── Properties
+│   │   ├── The same input produces the same digest.
+│   │   ├── A small input change should produce a very different digest.
+│   │   ├── The original input cannot practically be recovered from the
+│   │   │   digest.
+│   │   └── Finding different inputs with the same digest should be
+│   │       extremely difficult.
+│   ├── One-Way Nature
+│   │   └── There is no normal Decrypt(hash) operation.
+│   ├── Collision
+│   │   ├── Definition
+│   │   │   └── Two different inputs producing the same digest.
+│   │   └── Security Requirement
+│   │       └── A secure hash makes deliberately finding a collision
+│   │           extremely difficult.
+│   └── Correction
+│       └── Hashing is deterministic and one-way but is not mathematically
+│           one-to-one.
+│
+├── Encryption vs Hashing
+│   ├── Encryption
+│   │   └── Designed to be reversed through an authorized operation.
+│   └── Hashing
+│       └── Designed as a one-way transformation.
+│
+├── Plain Digest Verification
+│   ├── What a Match Proves
+│   │   └── The downloaded file matches the supplied expected digest.
+│   ├── What a Match Does Not Prove
+│   │   └── The intended company published the file or digest.
+│   ├── Attacker-Controlled File and Digest
+│   │   ├── Attacker replaces the original file with a malicious file.
+│   │   ├── Attacker calculates the malicious file's digest.
+│   │   ├── Attacker replaces the original digest.
+│   │   └── Customer's calculated digest matches while authenticity is
+│   │       absent.
+│   └── Trusted-Channel Requirement
+│       ├── A plain digest is useful when the expected value arrives
+│       │   through a trusted, unmodified channel.
+│       └── A plain digest provides no meaningful authenticity when the
+│           attacker controls both the file and expected digest.
+│
+├── Digital Signature
+│   ├── Creation
+│   │   ├── Data is hashed.
+│   │   └── The digest is signed using the signer's private key.
+│   ├── Guarantees
+│   │   ├── Integrity
+│   │   │   └── Modified data causes verification to fail.
+│   │   ├── Authenticity
+│   │   │   └── A valid signature was created using the corresponding
+│   │   │       private key.
+│   │   └── Evidence supporting non-repudiation
+│   └── Limitation
+│       └── Signing does not make data confidential or unreadable.
+│
+├── Signature Verification
+│   ├── Inputs
+│   │   ├── Received data
+│   │   ├── Digital signature
+│   │   └── Corresponding public key
+│   ├── Result
+│   │   └── Valid or invalid
+│   ├── Meaning of Valid Result
+│   │   ├── The signature corresponds to the received data.
+│   │   ├── The corresponding private key created the signature.
+│   │   └── The data was not modified after signing.
+│   └── Identity Limitation
+│       └── The verifier must separately trust that the public key belongs
+│           to the claimed company.
+│
+├── Digital Signature vs Plain Hash
+│   ├── Plain Hash
+│   │   └── Asks whether data matches a particular digest.
+│   ├── Digital Signature
+│   │   └── Asks whether data matches what the holder of the corresponding
+│   │       private key signed.
+│   └── Attacker Limitation
+│       └── An attacker can create a new file and digest but cannot create
+│           a valid company signature without the company's private key.
+│
+├── Public-Key Trust
+│   ├── Requirement
+│   │   └── Customers need a trusted company public key or a trusted
+│   │       certificate connecting the key to the company.
+│   └── Untrusted-Key Attack
+│       ├── Attacker generates a separate key pair.
+│       ├── Attacker signs malicious data using the attacker's private key.
+│       └── Attacker falsely labels the attacker's public key as the
+│           company's key.
+│
+├── Symmetric Encryption
+│   ├── Definition
+│   │   └── Uses the same shared secret key for encryption and decryption.
+│   ├── Advantages
+│   │   ├── Fast
+│   │   ├── Efficient for large amounts of data
+│   │   └── Suitable for files, objects, database values, and network
+│   │       traffic
+│   └── Key-Distribution Problem
+│       └── Every authorized encrypting or decrypting system needs secure
+│           access to the shared secret.
+│
+├── Asymmetric Cryptography
+│   ├── Key Pair
+│   │   ├── Public key can be distributed.
+│   │   └── Private key must remain protected.
+│   ├── Confidentiality Flow
+│   │   ├── Public key encrypts.
+│   │   └── Corresponding private key decrypts.
+│   ├── Signature Flow
+│   │   ├── Private key signs.
+│   │   └── Corresponding public key verifies.
+│   └── Important Distinction
+│       └── Signing is a distinct cryptographic operation and should not
+│           be described merely as ordinary encryption using a private
+│           key.
+│
+├── Symmetric and Asymmetric Relationship
+│   ├── Symmetric Strength
+│   │   └── Efficient encryption of large application data.
+│   ├── Asymmetric Strength
+│   │   └── Public distribution, trust establishment, and public
+│   │       verification.
+│   └── Combined Use
+│       └── Asymmetric cryptography can help establish trust or protect
+│           key material while symmetric encryption protects large data.
+│
+├── Cryptographic Keys
+│   ├── Definition
+│   │   └── Generated cryptographic material intended for use by an
+│   │       algorithm.
+│   ├── Distinction from Passwords
+│   │   ├── Passwords are commonly selected or entered by humans.
+│   │   └── Cryptographic keys are generated for algorithmic use.
+│   └── Security Rule
+│       └── Strong encryption can be defeated if the key is exposed.
+│
+├── Algorithm and Key Secrecy
+│   ├── Algorithm
+│   │   └── May be publicly known.
+│   ├── Key
+│   │   └── Must receive the required confidentiality and access
+│   │       protection.
+│   └── Design Rule
+│       └── Security should not depend on hiding the algorithm.
+│
+├── Nonces and Initialization Values
+│   ├── Nonce
+│   │   └── A value intended for one-time use in its required
+│   │       cryptographic context.
+│   ├── Encryption Model
+│   │   └── Plaintext + key + required unique value → Ciphertext
+│   └── Effect
+│       └── Identical plaintext encrypted under the same key can produce
+│           different ciphertext.
+│
+├── Authenticated Encryption
+│   ├── Guarantees
+│   │   ├── Confidentiality
+│   │   └── Integrity protection
+│   ├── Output
+│   │   └── Ciphertext plus an authentication tag.
+│   └── Decryption Behavior
+│       ├── Valid authentication tag → Decrypt
+│       └── Invalid authentication tag → Reject
+│
+├── Encryption and Obfuscation
+│   ├── Obfuscation
+│   │   └── Makes information less obvious or harder to read casually.
+│   ├── Encryption
+│   │   └── Uses established algorithms and keys to provide defined
+│   │       security guarantees.
+│   └── Engineering Rule
+│       └── Use trusted algorithms, libraries, and managed integrations
+│           instead of inventing custom cryptography.
+│
+├── Validated Software-Package Scenario
+│   ├── Requirements
+│   │   ├── The package may remain publicly readable.
+│   │   ├── Customers must verify the publisher.
+│   │   └── Customers must detect modification.
+│   ├── Required Guarantees
+│   │   ├── Authenticity
+│   │   └── Integrity
+│   ├── Correct Operation
+│   │   └── Digitally sign the package rather than primarily encrypting it.
+│   ├── Company Operation
+│   │   └── Sign using the company's private key.
+│   ├── Customer Operation
+│   │   └── Verify using the trusted company public key.
+│   └── Plain-Hash Weakness
+│       └── An attacker controlling the download location can replace both
+│           the package and its unprotected digest.
+│
+└── Cryptographic Requirement Selection
+    ├── Hide content
+    │   └── Use encryption for confidentiality.
+    ├── Detect modification
+    │   └── Use integrity protection.
+    ├── Verify source
+    │   └── Use authenticity mechanisms such as digital signatures.
+    ├── Create a one-way representation
+    │   └── Use cryptographic hashing.
+    ├── Efficiently encrypt large data
+    │   └── Use symmetric encryption.
+    └── Enable public verification
+        └── Use asymmetric cryptography and a trusted public key.

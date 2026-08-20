@@ -515,3 +515,887 @@ Also ask:
 
 Encryption is effective only when key access and plaintext handling are
 also controlled.
+
+
+SECTION 2 OF 28: ENCRYPTION FUNDAMENTALS AND CRYPTOGRAPHIC OPERATIONS
+
+1. CRYPTOGRAPHY
+
+Cryptography is the broader practice of protecting information through
+mathematical techniques.
+
+Encryption is one cryptographic operation, but cryptography can provide
+several different security guarantees:
+
+- Confidentiality
+- Integrity
+- Authenticity
+- Evidence supporting non-repudiation
+
+A system must first identify the required security guarantee. Saying
+only "we need encryption" can be incorrect when the real requirement is
+integrity or authenticity.
+
+
+2. CONFIDENTIALITY
+
+Definition:
+
+Confidentiality prevents unauthorized people or systems from reading
+information.
+
+Encryption primarily provides confidentiality:
+
+Plaintext
+    |
+    | Encryption
+    v
+Ciphertext
+
+Someone who obtains ciphertext should not be able to understand the
+original plaintext without the required cryptographic authority.
+
+Important limitation:
+
+Encryption primarily protects the content. It does not necessarily hide:
+
+- The fact that data exists
+- The location of the data
+- The approximate size of the data
+- Who is communicating
+- Every piece of surrounding metadata
+
+
+3. INTEGRITY
+
+Definition:
+
+Integrity means detecting whether data was changed after it was created
+or sent.
+
+Example:
+
+Original value:
+TransferAmount = 1,000
+
+Modified value:
+TransferAmount = 9,000
+
+An integrity mechanism should allow the receiving system to detect that
+the value was modified.
+
+Critical distinction:
+
+Confidentiality:
+"Can an unauthorized party read the data?"
+
+Integrity:
+"Has the data been changed?"
+
+These guarantees are independent. Data can be:
+
+- Confidential but modified
+- Readable but unchanged
+- Both confidential and integrity-protected
+- Neither confidential nor integrity-protected
+
+Encryption must not automatically be assumed to provide integrity.
+Modern authenticated-encryption mechanisms can provide confidentiality
+and integrity together.
+
+
+4. AUTHENTICITY
+
+Definition:
+
+Authenticity establishes whether information came from the expected
+source or was produced by someone possessing the expected cryptographic
+authority.
+
+Example:
+
+A customer receives a software package and needs to establish whether
+it was genuinely published by the expected company.
+
+Critical distinction:
+
+- Confidentiality protects against unauthorized reading.
+- Integrity detects changes.
+- Authenticity verifies the expected source.
+
+
+5. NON-REPUDIATION
+
+Definition:
+
+Non-repudiation involves evidence that makes it difficult for a sender
+to credibly deny having performed a cryptographic action.
+
+Digital signatures can support non-repudiation because a signature made
+using a private key can be verified using the corresponding public key.
+
+However, real non-repudiation also depends on:
+
+- Whether the private key was securely controlled
+- Whether the key was correctly connected to an identity
+- Whether the private key was compromised
+- Whether surrounding audit evidence is reliable
+
+Digital signatures can provide:
+
+- Integrity
+- Authenticity
+- Evidence supporting non-repudiation
+
+A digital signature does not provide confidentiality by itself.
+
+
+6. CORE CRYPTOGRAPHIC OPERATIONS
+
+The operations established in this section were:
+
+1. Encryption
+2. Decryption
+3. Hashing
+4. Digital signing
+5. Signature verification
+
+These operations are related, but they are not synonyms.
+
+
+7. ENCRYPTION
+
+Definition:
+
+Encryption transforms readable plaintext into unreadable ciphertext
+using a cryptographic algorithm and key.
+
+Mental model:
+
+Plaintext + Key
+        |
+        | Encryption algorithm
+        v
+Ciphertext
+
+Conceptual representation:
+
+Encrypt(plaintext, key) → ciphertext
+
+Primary security goal:
+
+Confidentiality
+
+The ciphertext can be stored or transmitted. Obtaining the ciphertext
+alone should not allow an unauthorized party to recover the plaintext.
+
+
+8. DECRYPTION
+
+Definition:
+
+Decryption transforms compatible ciphertext back into plaintext.
+
+Mental model:
+
+Ciphertext + Required key operation
+        |
+        | Decryption algorithm
+        v
+Plaintext
+
+Conceptual representation:
+
+Decrypt(ciphertext, key) → plaintext
+
+The decryption operation must be compatible with the encryption
+operation and key relationship.
+
+Simplified example:
+
+Ciphertext encrypted under KeyA
+        |
+        ├── Compatible KeyA operation → Original plaintext
+        └── Unrelated KeyB operation  → Failure
+
+The exact key relationship depends on whether symmetric or asymmetric
+cryptography is being used.
+
+
+9. HASHING
+
+Definition:
+
+Hashing transforms input data into a fixed-size output called a hash or
+digest.
+
+Mental model:
+
+Input data
+    |
+    | Cryptographic hash function
+    v
+Fixed-size digest
+
+Conceptual representation:
+
+Hash(data) → digest
+
+Important cryptographic-hash properties:
+
+- The same input produces the same digest.
+- A small input change should produce a significantly different digest.
+- The original input cannot practically be recovered from the digest.
+- Finding two different inputs that produce the same digest should be
+  extremely difficult.
+
+Hashing is not encryption:
+
+Encryption:
+- Designed to be reversed through an authorized decryption operation.
+
+Hashing:
+- Designed to be a one-way transformation.
+- There is no normal Decrypt(hash) operation.
+
+A digest can help detect whether data changed by comparing a newly
+calculated digest with a trusted expected digest.
+
+
+10. HASHING IS NOT ONE-TO-ONE
+
+The learner initially described hashing as possibly being one-to-one.
+That is not technically correct.
+
+A hash function accepts inputs of different sizes but produces a
+fixed-size output:
+
+Small input ─┐
+Large input ─┼──> Fixed-size digest
+Huge input  ─┘
+
+Because many possible inputs are mapped into a limited set of digest
+values, two different inputs can theoretically produce the same digest.
+
+This is called a collision.
+
+A secure cryptographic hash function makes deliberately finding a
+collision extremely difficult. It does not make collisions
+mathematically impossible.
+
+Correct understanding:
+
+- Hashing is designed to be one-way.
+- Hashing is deterministic: the same input produces the same digest.
+- Hashing is not mathematically one-to-one.
+- Secure hash functions make practical collision discovery extremely
+  difficult.
+
+
+11. LIMITATION OF AN UNPROTECTED HASH
+
+Suppose a company publishes:
+
+Package: original-package.zip
+Hash:    ABC123
+
+The customer downloads the package, independently calculates its hash,
+and compares it with the published value:
+
+Hash(downloaded package) = ABC123
+
+If the values match, the customer knows:
+
+"The downloaded package matches the package represented by the
+published digest."
+
+The customer does not automatically know:
+
+"The real company created and published this digest."
+
+A plain digest contains no publisher identity and no protected proof of
+who published it.
+
+
+12. REPLACING BOTH THE FILE AND HASH
+
+The learner correctly identified the important attack:
+
+An intelligent attacker who controls the download location would not
+necessarily replace only the file. The attacker could replace both:
+
+Original package
+    → Replaced with malicious package
+
+Original digest
+    → Replaced with digest of malicious package
+
+The customer then calculates:
+
+Hash(malicious package) = attacker's replacement digest
+
+The hashes match perfectly.
+
+The hash function did not fail. The security design failed because the
+expected digest did not arrive through a trusted, unmodified channel.
+
+Critical rule:
+
+Plain hash + trusted delivery of expected hash
+    → Useful integrity checking
+
+Plain hash + attacker controls file and expected hash
+    → No meaningful authenticity protection
+
+
+13. WHEN A PLAIN HASH IS USEFUL
+
+A plain hash can be useful when:
+
+- The expected digest is obtained through a trusted channel that the
+  attacker cannot modify.
+- The file and expected digest are obtained through independent channels.
+- The purpose is to detect accidental download corruption.
+- The source is already trusted, and only byte-level consistency needs
+  verification.
+
+Example:
+
+File obtained from Mirror A
+Expected digest obtained securely from Company B
+
+In this case, modifying only the downloaded file causes the newly
+calculated digest to differ from the trusted expected digest.
+
+
+14. DIGITAL SIGNING
+
+Definition:
+
+A digital signature is created using a private key and can be verified
+using the corresponding public key.
+
+Simplified signing flow:
+
+Data
+  |
+  | Calculate hash
+  v
+Digest
+  |
+  | Sign using private key
+  v
+Digital signature
+
+The signature is stored or transmitted alongside the data.
+
+Digital signing can provide:
+
+- Integrity: Modified data causes signature verification to fail.
+- Authenticity: The valid signature was created using the corresponding
+  private key.
+- Evidence supporting non-repudiation when the private key and identity
+  were properly controlled.
+
+A signature does not make the signed data unreadable.
+
+
+15. SIGNATURE VERIFICATION
+
+A signature is verified using the corresponding public key:
+
+Received data
+      +
+Digital signature
+      +
+Public key
+      |
+      | Signature verification
+      v
+Valid or invalid
+
+A valid result means:
+
+- The signature corresponds to that data.
+- The signature was produced using the private key corresponding to the
+  verification public key.
+- The data was not modified after being signed.
+
+A valid signature does not, by itself, prove that the key belongs to a
+particular trusted company. The verifier must also trust the connection
+between the public key and the claimed identity.
+
+
+16. WHY DIGITAL SIGNATURES ARE STRONGER THAN PLAIN HASHES
+
+An attacker can:
+
+- Modify a software package
+- Calculate a new digest
+- Replace the published digest
+- Replace an existing signature with a fake value
+
+However, the attacker cannot generate a valid company signature for the
+modified package without the company's private key.
+
+Modified package
+      |
+      | Calculate new hash
+      v
+New digest
+      |
+      | Attacker lacks company private key
+      v
+Cannot generate valid company signature
+      |
+      v
+Verification with trusted company public key fails
+
+Core distinction:
+
+Plain hash:
+"Does this data match this digest?"
+
+Digital signature:
+"Does this data match what the holder of the corresponding private key
+signed?"
+
+
+17. PUBLIC-KEY TRUST REQUIREMENT
+
+Digital signatures still require the customer to possess a trusted copy
+of the company's public key or a trusted certificate connecting the
+public key to the company.
+
+Otherwise, an attacker could:
+
+- Generate an attacker-controlled key pair
+- Sign the malicious package using the attacker's private key
+- Supply the attacker's public key
+- Falsely label that key as the company's public key
+
+Therefore, three separate questions exist:
+
+Hash:
+"Does this file match this digest?"
+
+Digital signature:
+"Was this file signed by the private key corresponding to this public
+key?"
+
+Trusted public key or certificate:
+"Does this public key actually belong to the intended company?"
+
+Certificates and certificate trust will be covered in later sections.
+
+
+18. VALIDATED SOFTWARE-PACKAGE SCENARIO
+
+Scenario:
+
+A company publishes a software package. Customers may freely download
+and read it, so confidentiality is unnecessary. Customers must verify:
+
+- The package came from the company.
+- The package was not modified.
+
+Validated solution:
+
+- The company should digitally sign the package.
+- The required guarantees are authenticity and integrity.
+- The company signs using its private key.
+- Customers verify using the company's trusted public key.
+- Encryption is not the primary solution because the package is meant
+  to remain readable.
+- A plain, unprotected hash is weaker because an attacker controlling
+  the download location can replace both the package and its digest.
+
+
+19. SYMMETRIC ENCRYPTION
+
+Definition:
+
+Symmetric encryption uses the same shared secret key for encryption and
+decryption.
+
+Mental model:
+
+              Shared secret key
+                /           \
+               /             \
+      Encrypt data        Decrypt data
+
+Conceptual representation:
+
+Ciphertext = Encrypt(plaintext, SecretKey)
+
+Plaintext = Decrypt(ciphertext, SecretKey)
+
+Advantages:
+
+- Fast
+- Efficient for large amounts of data
+- Suitable for files, objects, database values, and network traffic
+
+Primary challenge:
+
+The same secret must be available wherever encryption or decryption is
+performed. This creates a secure key-distribution problem.
+
+If the secret key is exposed, someone possessing it may be able to
+decrypt the protected data.
+
+
+20. ASYMMETRIC CRYPTOGRAPHY
+
+Definition:
+
+Asymmetric cryptography uses a mathematically related key pair:
+
+- Public key
+- Private key
+
+The public key can be distributed.
+The private key must remain protected.
+
+Asymmetric cryptography supports:
+
+- Public-key encryption
+- Private-key decryption
+- Private-key signing
+- Public-key signature verification
+
+
+21. ASYMMETRIC CONFIDENTIALITY FLOW
+
+For confidentiality:
+
+Sender encrypts using recipient's public key
+        |
+        v
+Ciphertext
+        |
+Recipient decrypts using corresponding private key
+        |
+        v
+Plaintext
+
+Rule:
+
+Public key  → Encrypt
+Private key → Decrypt
+
+
+22. ASYMMETRIC SIGNATURE FLOW
+
+For digital signatures:
+
+Private key → Sign
+Public key  → Verify
+
+Critical distinction:
+
+Confidentiality use:
+- Public key encrypts.
+- Private key decrypts.
+
+Signature use:
+- Private key signs.
+- Public key verifies.
+
+Do not describe signing merely as "encrypting with the private key."
+Signing is a distinct cryptographic operation with its own rules.
+
+
+23. SYMMETRIC VS ASYMMETRIC CRYPTOGRAPHY
+
+Symmetric cryptography:
+
+- Uses one shared secret key.
+- Is generally faster.
+- Is suitable for large-data encryption.
+- Has a secure key-distribution challenge.
+
+Asymmetric cryptography:
+
+- Uses a public and private key pair.
+- Is generally slower.
+- Allows the public key to be distributed.
+- Supports public-key encryption and digital signatures.
+- Enables public verification without exposing the private key.
+
+Real systems often combine both:
+
+Asymmetric cryptography
+        |
+        | Helps establish trust or protect key material
+        v
+Symmetric key
+        |
+        | Efficiently encrypts actual data
+        v
+Large application data
+
+This relationship connects to envelope encryption, which will be taught
+in a later section.
+
+
+24. CRYPTOGRAPHIC KEYS ARE NOT PASSWORDS
+
+A password is commonly selected or entered by a human.
+
+A cryptographic key is generated material intended for use by a
+cryptographic algorithm.
+
+Password:
+- Usually human-selected or human-entered.
+
+Cryptographic key:
+- Generated cryptographic material used by algorithms.
+
+A password can be processed through a specialized key-derivation
+function to derive cryptographic material, but a password should not be
+casually treated as equivalent to a properly generated cryptographic
+key.
+
+
+25. THE ALGORITHM IS NOT THE SECRET
+
+Secure cryptographic systems should not depend on hiding the algorithm.
+
+Algorithm:
+- Can be publicly known.
+
+Key:
+- Must receive the required confidentiality and access protection.
+
+Security should depend primarily on protecting the key, not on hoping
+attackers never learn which algorithm is being used.
+
+A secret custom transformation is not a sound encryption approach.
+
+
+26. UNIQUE VALUES IN ENCRYPTION
+
+Secure encryption commonly uses additional values, such as an
+initialization vector or nonce, along with the plaintext and key.
+
+A nonce is a value intended to be used only once in its required
+cryptographic context.
+
+Simplified model:
+
+Plaintext + Key + Unique value
+        |
+        v
+Ciphertext
+
+The same plaintext encrypted using the same key can produce different
+ciphertext when different required unique values are used:
+
+Plaintext: "APPROVED"
+Key:       Same key
+
+Encryption with UniqueValue1 → CiphertextA
+Encryption with UniqueValue2 → CiphertextB
+
+Therefore, do not assume:
+
+Same plaintext + same key = visibly identical ciphertext every time
+
+DVA-C02 does not require manually implementing these mechanisms.
+
+
+27. AUTHENTICATED ENCRYPTION
+
+Modern systems commonly use authenticated encryption to provide:
+
+- Confidentiality
+- Integrity protection
+
+Conceptual flow:
+
+Plaintext
+    +
+Key
+    +
+Required additional values
+        |
+        v
+Ciphertext + authentication tag
+
+An authentication tag is a cryptographic value used to detect
+unauthorized modification.
+
+During decryption:
+
+Ciphertext + authentication tag
+        |
+        | Verify
+        v
+Valid   → Decrypt
+Invalid → Reject
+
+Critical rule:
+
+Modern encryption should normally protect both confidentiality and
+integrity through established cryptographic designs rather than custom
+implementation.
+
+
+28. KEY SECURITY DETERMINES DATA SECURITY
+
+Strong encryption cannot compensate for an exposed key:
+
+Strong encryption algorithm
+        +
+Exposed key
+        =
+Protected data may still be compromised
+
+Key-management questions include:
+
+- Who can use the key?
+- Where is the key stored?
+- Is it copied into source code?
+- Is it written into logs?
+- Can unauthorized systems request decryption?
+- Can key usage be audited?
+- Can access be revoked?
+- Can the key be rotated where appropriate?
+
+These key-management problems explain why managed services such as AWS
+KMS exist.
+
+
+29. ENCRYPTION VS OBFUSCATION
+
+Obfuscation:
+
+Makes information less obvious or more difficult to read casually.
+
+Encryption:
+
+Uses established cryptographic algorithms and keys to provide defined
+security guarantees.
+
+Examples such as reversing text, replacing characters, or adding a
+secret number are custom transformations. They should not be treated as
+secure encryption.
+
+Application developers should normally use:
+
+- Established cryptographic algorithms
+- Trusted libraries
+- AWS-managed encryption integrations
+- AWS KMS where appropriate
+
+Do not invent custom cryptography.
+
+
+30. COMMON MISCONCEPTIONS AND EXAM TRAPS
+
+Misconception:
+"Hashing and encryption are the same."
+
+Correction:
+Encryption is designed to be reversed using an authorized cryptographic
+operation. Hashing is designed to be one-way.
+
+Misconception:
+"A digital signature encrypts the document."
+
+Correction:
+A signature provides integrity and authenticity but does not hide the
+document.
+
+Misconception:
+"The public key must be kept secret."
+
+Correction:
+The public key is intended for distribution. The private key must remain
+protected.
+
+Misconception:
+"Asymmetric cryptography is always better."
+
+Correction:
+It solves different problems but is generally slower. Symmetric
+encryption is better suited for large amounts of data.
+
+Misconception:
+"Encryption automatically guarantees integrity."
+
+Correction:
+Do not assume this. Use authenticated encryption or another suitable
+integrity mechanism.
+
+Misconception:
+"The same plaintext must always produce identical ciphertext."
+
+Correction:
+Secure encryption commonly uses required unique values that can produce
+different ciphertext.
+
+Misconception:
+"A hidden algorithm is enough for security."
+
+Correction:
+The algorithm may be public. The key is the critical secret.
+
+Misconception:
+"A custom character transformation is encryption."
+
+Correction:
+It is generally obfuscation, not trusted cryptographic protection.
+
+Misconception:
+"A matching file hash proves the publisher."
+
+Correction:
+It proves only that the file matches the supplied digest. The digest
+itself must be trusted.
+
+Misconception:
+"An attacker will modify the file but leave the original hash."
+
+Correction:
+A capable attacker controlling both can replace the file and hash.
+A plain hash protects nothing when both values are attacker-controlled.
+
+
+31. DVA-C02 DECISION MODEL
+
+Identify the actual security requirement:
+
+Need to hide content?
+    → Confidentiality through encryption
+
+Need to detect modification?
+    → Integrity protection
+
+Need to verify the source?
+    → Authenticity, commonly through digital signatures
+
+Need a one-way representation?
+    → Cryptographic hashing
+
+Need efficient encryption of large data?
+    → Symmetric encryption
+
+Need public verification or public-key distribution?
+    → Asymmetric cryptography
+
+Need integrity and authenticity for a publicly readable package?
+    → Digital signature, not encryption
+
+Before selecting a cryptographic control, ask:
+
+- What information is being protected?
+- From whom is it being protected?
+- Is confidentiality required?
+- Is integrity required?
+- Is authenticity required?
+- Where do encryption and decryption happen?
+- Who owns and protects the key?
+- How is the trusted public key connected to the expected identity?
